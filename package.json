@@ -1,0 +1,29 @@
+{
+  "name": "woocommerce-react",
+  "version": "1.0.0",
+  "description": "React implementation of a store, with Woocommerce backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mofesolapaul/woocommerce-react.git"
+  },
+  "author": "Banjo Mofesola Paul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mofesolapaul/woocommerce-react/issues"
+  },
+  "homepage": "https://github.com/mofesolapaul/woocommerce-react#readme",
+  "dependencies": {
+    "next": "^5.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "webpack-bundle-analyzer": "^2.10.0"
+  }
+}
