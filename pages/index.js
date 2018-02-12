@@ -1,7 +1,8 @@
 import React from 'react'
-import Layout from '../layouts/_default'
-import Wc from '../WooCommerce/Wc'
-import Css from '../styles/vars'
+import Layout from '../src/layouts/_default'
+import Wc from '../src/WooCommerce/Wc'
+import css from '../styles/vars'
+import {ProductsContainer} from '../src/containers'
 
 const fetchData = async(count = 2) => {
     return await Wc.get('products', { per_page: count, page: 1 })
@@ -26,12 +27,18 @@ export default class Index extends React.Component {
         const items = data? data.map(p => <li key={p.id}>{p.name}</li>):[]
         return <Layout>
             <h1 className="title">Smoothie Express</h1>
-            <h4 className="slogan">find the perfect blend</h4>
+            <div className="text-center">
+                <h4 className="slogan">find the perfect blend</h4>
+            </div>
+            <ProductsContainer>
+            </ProductsContainer>
+            
+            {/* style */}
             <style jsx>{`
                 .title {
                     text-transform: uppercase;
-                    color: ${Css.colors.fallleaf};
-                    text-shadow: ${Css.colors.bluetwilight} 2px 2px;
+                    color: ${css.colors.fallleaf};
+                    // text-shadow: ${css.colors.bluetwilight} 2px 2px;
                     letter-spacing: 1px;
                     word-spacing: 2px;
                     transition: .5s ease-out;
@@ -44,6 +51,13 @@ export default class Index extends React.Component {
                 .slogan {
                     text-align: center;
                     margin-top: .5rem;
+                    display: inline-block;
+                    color: ${css.colors.rogueblue};
+                    position: relative;
+                }
+                .slogan::before, .slogan::after {
+                    content: '';
+                    position: absolute;
                 }
             `}</style>
         </Layout>
