@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build && next export",
+    "start": "next start",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,17 @@
   },
   "homepage": "https://github.com/mofesolapaul/woocommerce-react#readme",
   "dependencies": {
+    "@zeit/next-sass": "0.0.9",
+    "crypto-js": "^3.1.9-1",
     "next": "^5.0.0",
+    "node-fetch": "^2.0.0",
+    "node-sass": "^4.7.2",
+    "oauth-1.0a": "^2.2.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
+    "jest": "^22.2.2",
     "webpack-bundle-analyzer": "^2.10.0"
   }
 }
