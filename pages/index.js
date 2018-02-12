@@ -1,29 +1,9 @@
 import React from 'react'
 import Layout from '../layouts/_default'
-import Api from '../WooCommerce/Api'
+import Wc from '../WooCommerce/Wc'
 
 const fetchData = async(count = 2) => {
-    let res = await Api.get('products', {
-        per_page: count,
-        page: 1
-    })
-    if (!res) return {}
-    let data = await res.json()
-    
-    if (data.fallback) {
-        data = await new Promise((resolve) => {
-            var xhttp = new XMLHttpRequest()
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                   resolve(JSON.parse(this.responseText))
-                }
-            };
-            xhttp.open(data.fallback.method, data.fallback.url, true)
-            xhttp.send()
-        })
-    }
-
-    return { data }
+    return await Wc.get('products', { per_page: count, page: 1 })
 }
 
 export default class Index extends React.Component {
