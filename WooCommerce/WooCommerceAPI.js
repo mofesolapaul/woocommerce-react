@@ -4,6 +4,8 @@
  */
 'use strict';
 
+const crypto = require('crypto'); // De-paule
+const fetch = require('node-fetch') // De-paule
 import OAuth from 'oauth-1.0a';
 // import {warn} from '@app/Omni'
 
@@ -42,7 +44,7 @@ WooCommerceAPI.prototype._setDefaultsOptions = function (opt) {
   this.encoding = opt.encoding || 'utf8';
   this.queryStringAuth = opt.queryStringAuth || true;
   this.port = opt.port || '';
-  this.timeout = opt.timeout || 10;
+  this.timeout = opt.timeout || 0;
 };
 
 WooCommerceAPI.prototype._normalizeQueryString = function (url) {
@@ -89,10 +91,14 @@ WooCommerceAPI.prototype._getUrl = function (endpoint) {
 WooCommerceAPI.prototype._getOAuth = function () {
   let data = {
     consumer: {
-      public: this.consumerKey,
+      key: this.consumerKey,
       secret: this.consumerSecret
     },
-    signature_method: 'HMAC-SHA256'
+    signature_method: 'HMAC-SHA1',
+    // de-paule: I added hash_function, cos it breaks without it
+    hash_function(base_string, key) {
+      return crypto.createHmac('sha1', key).update(base_string).digest('base64');
+    }
   };
 
   if (-1 < ['v1', 'v2'].indexOf(this.version)) data.last_ampersand = false;
@@ -166,7 +172,7 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
     };
     params.body = JSON.stringify(data);
   }
-  // console.log(params.url);
+  // console.log(params);
   return await fetch(params.url, params);
 };
 

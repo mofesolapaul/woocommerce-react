@@ -3,11 +3,11 @@ import Layout from '../layouts/_default'
 import Api from '../WooCommerce/Api'
 
 const fetchData = async() => {
-    let data = await Api.get('products', {
+    let res = await Api.get('products', {
         per_page: 2,
         page: 1
     })
-    console.log(data)
+    let data = await res.json()
     return { data }
 }
 
