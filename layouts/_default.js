@@ -1,4 +1,4 @@
-import '../styles/layouts/default.scss'
+// import '../styles/layouts/default.scss'
 
 const Layout = props => (
     <div className="layout">

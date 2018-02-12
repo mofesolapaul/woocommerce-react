@@ -46,3 +46,4 @@ yarn-error.log*
 ### Project specific
 .next
 WooCommerce/Config.js
+out
