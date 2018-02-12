@@ -1,6 +1,9 @@
 /*
  * WooCommerce API
  * DO NOT TOUCH!
+ * 
+ * Scratch that, feel free to touch. I had a lot of touching to do to get this little sumbich to work
+ * you just might have a heckuva lot to do to make it fit your peculiar case
  */
 'use strict';
 
