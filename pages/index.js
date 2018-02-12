@@ -7,6 +7,7 @@ const fetchData = async(count = 2) => {
         per_page: count,
         page: 1
     })
+    if (!res) return {}
     let data = await res.json()
     
     if (data.fallback) {

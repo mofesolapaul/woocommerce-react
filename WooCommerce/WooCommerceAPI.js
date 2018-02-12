@@ -165,7 +165,9 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
   // warn(params)
 
   if (method == 'GET') {
-    params.headers = {'Cache-Control': 'no-cache'};
+    params.headers = {
+      'Cache-Control': 'no-cache'
+    };
   } else if (method == 'POST') {
     params.headers = {
       'Accept': 'application/json',
@@ -173,10 +175,11 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
     };
     params.body = JSON.stringify(data);
   }
-  // console.log(params);
+  
   try {
     data = await fetch(params.url, params);
   } catch (e) {
+    if (e.code == 'ENOTFOUND') return
     data = new Response(JSON.stringify({fallback: params}))
   }
   return data;
