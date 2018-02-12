@@ -1,8 +1,15 @@
 import css from '../../styles/vars'
+import {ProductsList} from '../components'
 
-const ProductsContainer = () => (
-    <div className="ProductsContainer">
+const ProductsContainer = props => (
+    <div className="wrapper">
+        <div className="ProductsContainer">
+            {props.children}
+        </div>
         <style jsx>{`
+            .wrapper {
+                position: relative
+            }
             .ProductsContainer {
                 background: ${css.colors.ultrawhite};
                 border-radius: 3px;

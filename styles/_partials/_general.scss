@@ -18,3 +18,8 @@ h1, h2, h3, h4, h5, h6 {
 .text-center {
     text-align: center
 }
+.clearfix::after, .clearfix::before {
+    display: table;
+    clear: both;
+    content: '';
+}
