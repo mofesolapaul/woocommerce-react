@@ -28,7 +28,7 @@ export default class Index extends React.Component {
     }
     render() {
         return <Layout>
-            <h1 className="title">Smoothie Express</h1>
+            <h1 className="title font-sourcesans">Smoothie Express</h1>
             <div className="text-center">
                 <h4 className="slogan">find the perfect blend</h4>
             </div>
