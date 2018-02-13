@@ -5,18 +5,22 @@ const Product = ({item,_key: key}) => (
         <div className="img-wrapper">
             <div className="img"></div>
         </div>
-        <div className="clearfix">
+        <div className="flex">
             <h4 className="title slim">{item.name}</h4>
+            <a className="btn add-to-cart-btn">+</a>
         </div>
         <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
         {/* style */}
         <style jsx>{`
             .Product {
-                width: calc(calc(100% / 4) - .75%);
                 float: left;
+                width: 100%;
             }
             @media screen and (min-width: 961px) {
+                .Product {
+                    width: calc(calc(100% / 4) - .75%);
+                }
                 .Product.shift4 {
                     margin-left: 1%;
                 }
@@ -29,7 +33,7 @@ const Product = ({item,_key: key}) => (
                     margin-left: 1.5%;
                 }
             }
-            @media screen and (max-width: 780px) {
+            @media screen and (min-width: 500px) and (max-width: 780px) {
                 .Product {
                     width: calc(calc(100% / 2) - 0.75%);
                 }
@@ -61,11 +65,7 @@ const Product = ({item,_key: key}) => (
                 transition: .5s ease-out;
                 z-index: 1;
             }
-            .title {
-                color: ${css.colors.rogueblue};
-                transition: .25s ease-out;
-                margin-bottom: 0;
-            }
+            
             .Product:hover .title {
                 color: ${css.colors.fallleaf};
             }
@@ -74,6 +74,20 @@ const Product = ({item,_key: key}) => (
             }
             .Product:hover .img-wrapper::before {
                 top: 0;
+            }
+            .flex {}
+            .title {
+                color: ${css.colors.rogueblue};
+                transition: .25s ease-out;
+                margin-bottom: 0;
+            }
+            .btn {
+                display: inline-block;
+                border: solid ${css.colors.orchidash} 1px;
+                border-radius: 2px;
+                padding: 2px 5px;
+            }
+            .add-to-cart-btn {
             }
             .desc {
                 color: ${css.colors.bluetwilight};

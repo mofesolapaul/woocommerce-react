@@ -6,25 +6,26 @@ import {ProductsContainer} from '../src/containers'
 import {ProductsList} from '../src/components'
 import constants from '../src/constants'
 
-const fetchData = async(count = 2) => {
-    return await Wc.get('products', { per_page: count, page: 1 })
+const _products = async(per_page, page) => {
+    return await Wc.get('products', { per_page, page })
 }
 
 export default class Index extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            limit: 6,
-            fetched: [],
+            per_page: 8,
+            products: [],
+            page: 1,
         }
     }
-    componentWillMount() {
-        this.refresh();
+    componentDidMount() {
+        this.fetchProducts();
     }
-    async refresh() {
-        let {limit} = this.state
-        const f = (await fetchData(limit)).data
-        this.setState({ limit, fetched: f||constants.products })
+    async fetchProducts() {
+        let {per_page, page} = this.state
+        const f = (await _products(per_page, page)).data
+        this.setState({ per_page, products: f||constants.products, page: f?page+1:page })
     }
     render() {
         return <Layout>
@@ -34,7 +35,7 @@ export default class Index extends React.Component {
             </div>
             
             <ProductsContainer>
-                <ProductsList items={this.state.fetched}>
+                <ProductsList items={this.state.products}>
                 </ProductsList>
             </ProductsContainer>
             
