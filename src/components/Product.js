@@ -19,15 +19,15 @@ const Product = ({item,_key: key}) => (
                 float: left;
                 width: 100%;
             }
-            @media screen and (min-width: 961px) {
-                .Product {
-                    width: calc(calc(100% / 4) - .75%);
-                }
-                .Product.shift4 {
-                    margin-left: 1%;
-                }
-            }
-            @media screen and (min-width: 781px) and (max-width: 960px) {
+            // @media screen and (min-width: 961px) {
+            //     .Product {
+            //         width: calc(calc(100% / 4) - .75%);
+            //     }
+            //     .Product.shift4 {
+            //         margin-left: 1%;
+            //     }
+            // }
+            @media screen and (min-width: 781px) {
                 .Product {
                     width: calc(calc(100% / 3) - 1%);
                 }

@@ -39,13 +39,13 @@ const ProductsList = ({items}) => (
                 position: relative;
                 display: block;
             }
-            @media screen and (min-width: 961px) {
-                .clear4 {
-                    clear: both;
-                    display: block;
-                }
-            }
-            @media screen and (min-width: 781px) and (max-width: 960px) {
+            // @media screen and (min-width: 961px) {
+            //     .clear4 {
+            //         clear: both;
+            //         display: block;
+            //     }
+            // }
+            @media screen and (min-width: 781px) {
                 .clear3 {
                     clear: both;
                     display: block;
