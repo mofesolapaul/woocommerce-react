@@ -19,7 +19,7 @@ export default class Index extends React.Component {
         }
     }
     componentWillMount() {
-        this.refresh()
+        this.refresh();
     }
     async refresh() {
         let {limit} = this.state

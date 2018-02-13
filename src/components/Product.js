@@ -4,7 +4,7 @@ const Product = ({item,_key: key}) => (
     <div className={`Product ${key%3!=0?'shift':''}`}>
         <div className="img"></div>
         <div className="clearfix">
-            <h4 className="title">{item.name}</h4>
+            <h4 className="title slim">{item.name}</h4>
         </div>
         <style jsx>{`
             .Product {
@@ -18,10 +18,13 @@ const Product = ({item,_key: key}) => (
             }
             .img {
                 height: 240px;
-                background: ${css.colors.fallleaf};
+                background: url(${item.images.length? item.images[0].src:''}) no-repeat center;
+                background-size: cover;
+                background-color: ${css.colors.wisteriasnow};
             }
             .title {
-                color: ${css.colors.fallleaf};
+                color: ${css.colors.bluetwilight};
+                transition: .25s ease-out;
             }
             @media screen and (max-width: 960px) {
                 .Product {
@@ -30,6 +33,9 @@ const Product = ({item,_key: key}) => (
                 .Product:nth-child(even) {
                     margin-left: 1.5%;
                 }
+            }
+            .Product:hover .title {
+                color: ${css.colors.fallleaf};
             }
         `}</style>
     </div>

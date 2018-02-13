@@ -178,13 +178,13 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
     };
     params.body = JSON.stringify(data);
   }
-  
+  // console.log(params.url)
   try {
     // bad things happen when params follow GET, like turning to OPTIONS midway and ultimately failing
     data = method == 'GET'? await fetch(params.url):await fetch(params.url, params);
   } catch (e) {
     // we'll still leave this, fallback things
-    if (e.code == 'ENOTFOUND') return
+    if (e.code) return
     data = new Response(JSON.stringify({fallback: params}))
   }
   return data;

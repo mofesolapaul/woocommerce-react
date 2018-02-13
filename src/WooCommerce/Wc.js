@@ -8,7 +8,6 @@ const Wc = {
         let res = await Api.get(endpoint, options)
         if (!res) return {}
         let data = await res.json()
-        
         return await this.assert(data)
     },
     async post(endpoint, options) {
@@ -21,18 +20,20 @@ const Wc = {
     },
     async assert(data) {
         if (data.fallback) {
-            data = await new Promise((resolve) => {
-                var xhttp = new XMLHttpRequest()
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status != 200) resolve(null)
-                    if (this.readyState == 4 && this.status == 200) {
-                        resolve(JSON.parse(this.responseText))
-                    }
-                };
-                xhttp.open(data.fallback.method, data.fallback.url, true)
-                _method == 'POST'? xhttp.setRequestHeader('Content-type', 'application/json'):null
-                _method == 'POST'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
-            })
+            try {
+                data = await new Promise((resolve, reject) => {
+                    var xhttp = new XMLHttpRequest()
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status != 200) resolve(null)
+                        if (this.readyState == 4 && this.status == 200) {
+                            resolve(JSON.parse(this.responseText))
+                        }
+                    };
+                    xhttp.open(data.fallback.method, data.fallback.url, true)
+                    _method == 'POST'? xhttp.setRequestHeader('Content-type', 'application/json'):null
+                    _method == 'POST'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
+                }).catch(e => console.log('catching'), data = null)
+            } catch (e) { data = null }
         }
         return {data}
     }
