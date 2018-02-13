@@ -7,12 +7,22 @@ const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
 
 const ProductsList = ({items}) => (
     <div className="ProductsList clearfix">
-        { items.map((product, index) => <View key={index}>
-            <Product _key={index} item={product} />
-            {(index+1)%2 || items.length-1 == index? null:<Clear k={2} />}
-            {(index+1)%3 || items.length-1 == index? null:<Clear k={3} />}
-            {(index+1)%4 || items.length-1 == index? null:<Clear k={4} />}
-        </View>) }
+        <View>
+            { items.map((product, index) => <View key={index}>
+                <Product _key={index} item={product} />
+                {(index+1)%2 || items.length-1 == index? null:<Clear k={2} />}
+                {(index+1)%3 || items.length-1 == index? null:<Clear k={3} />}
+                {(index+1)%4 || items.length-1 == index? null:<Clear k={4} />}
+            </View>) }
+            <div className="clearfix"></div>
+        </View>
+
+        {/* show more button */}
+        <div className="show-more-pane">
+            <a className="btn show-more-btn">Show more</a>
+        </div>
+
+        {/* style */}
         <style global jsx>{`
             .ProductsList {}
             .product-row-divider {
@@ -46,6 +56,23 @@ const ProductsList = ({items}) => (
                     clear: both;
                     display: block;
                 }
+            }
+
+            .show-more-pane {
+                margin-top: 2rem;
+                text-align: center;
+            }
+            .show-more-btn {
+                padding: 1rem;
+                text-transform: uppercase;
+                border-radius: 100px;
+                background: ${css.colors.ultrawhite};
+                border: none;
+                filter: drop-shadow(0px 4px 6px rgba(82,89,101,.25));
+            }
+            .show-more-btn:hover {
+                background: ${css.colors.rogueblue};
+                color: ${css.colors.ultrawhite};
             }
         `}</style>
     </div>
