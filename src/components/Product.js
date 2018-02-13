@@ -1,13 +1,15 @@
 import css from '../../styles/vars'
+import { CartButtons, PriceDisplay } from './'
 
 const Product = ({item,_key: key}) => (
     <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
         <div className="img-wrapper">
             <div className="img"></div>
+            <PriceDisplay price={item.price} />
         </div>
         <div className="flex">
             <h4 className="title slim">{item.name}</h4>
-            <a className="btn add-to-cart-btn">+</a>
+            <CartButtons />
         </div>
         <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
@@ -75,19 +77,18 @@ const Product = ({item,_key: key}) => (
             .Product:hover .img-wrapper::before {
                 top: 0;
             }
-            .flex {}
+            
+            .flex {
+                align-items: center;
+                padding: 1rem 0;
+            }
             .title {
                 color: ${css.colors.rogueblue};
                 transition: .25s ease-out;
                 margin-bottom: 0;
-            }
-            .btn {
-                display: inline-block;
-                border: solid ${css.colors.orchidash} 1px;
-                border-radius: 2px;
-                padding: 2px 5px;
-            }
-            .add-to-cart-btn {
+                font-size: 150%;
+                flex-grow: 1;
+                margin: 0;
             }
             .desc {
                 color: ${css.colors.bluetwilight};
