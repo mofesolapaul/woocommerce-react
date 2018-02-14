@@ -16,7 +16,7 @@ export default class ProductImage extends React.Component {
                 resolve(this.src)
             }
             img.src = this.props.src
-        }).then(data => (console.log(`loaded: ${data}`), this.setState({ image: data })))
+        }).then(data => this.setState({ image: data }))
     }
     render() {
         return <div className="img">
