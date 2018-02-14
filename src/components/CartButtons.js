@@ -3,9 +3,6 @@ import css from '../../styles/vars'
 import {View} from './'
 
 export default class CartButton extends React.Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return <View>
             <a className="btn cart-btn left">{`\u2013`}</a>
