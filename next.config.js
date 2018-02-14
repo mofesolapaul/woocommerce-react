@@ -21,6 +21,5 @@ module.exports = {
         }
     
         return config
-    },
-    withSass: require('@zeit/next-sass')()
+    }
 }

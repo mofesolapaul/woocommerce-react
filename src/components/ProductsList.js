@@ -5,6 +5,11 @@ import { Product } from '.';
 // clearfixes for proper layout
 const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
 
+// show more
+const ShowMore = () => <div className="show-more-pane">
+    <a className="btn show-more-btn">Show more</a>
+</div>
+
 const ProductsList = ({items}) => (
     <div className="ProductsList clearfix">
         <View>
@@ -18,9 +23,7 @@ const ProductsList = ({items}) => (
         </View>
 
         {/* show more button */}
-        <div className="show-more-pane">
-            <a className="btn show-more-btn">Show more</a>
-        </div>
+        { items.length? <ShowMore />:null }
 
         {/* style */}
         <style global jsx>{`
