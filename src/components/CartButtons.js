@@ -19,6 +19,7 @@ export default class CartButton extends React.Component {
                 line-height: 24px; 
                 text-align: center; 
                 font-size: 16px;
+                transition: none;
             }
             .cart-btn:hover {
                 background: ${css.colors.fallleaf};
@@ -31,6 +32,11 @@ export default class CartButton extends React.Component {
             }
             .right {
                 border-radius: 0 50% 50% 0;
+            }
+            .cart-btn:active {
+                background: ${css.colors.fallleafdark};
+                box-shadow: rgba(82,89,101,.25) 1px 2px 6px inset;
+                user-select: none;
             }
             `}</style>
         </View>

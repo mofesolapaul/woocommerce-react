@@ -13,5 +13,6 @@ export default {
         bluetwilight: '#919ea1',
         // accent
         fallleaf: '#b66448',
+        fallleafdark: '#a35940',
     },
 }
