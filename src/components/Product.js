@@ -1,5 +1,4 @@
 import css from '../../styles/vars'
-import VisibilitySensor from 'react-visibility-sensor'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 const Product = ({item,_key: key}) => (
@@ -15,6 +14,11 @@ const Product = ({item,_key: key}) => (
         <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
         {/* style */}
+        <style global jsx>{`
+            .Product:hover .img {
+                transform: scale(1.2);
+            }
+        `}</style>
         <style jsx>{`
             .Product {
                 float: left;
@@ -64,9 +68,6 @@ const Product = ({item,_key: key}) => (
             
             .Product:hover .title {
                 color: ${css.colors.fallleaf};
-            }
-            .Product:hover .img {
-                transform: scale(1.2);
             }
             .Product:hover .img-wrapper::before {
                 top: 0;

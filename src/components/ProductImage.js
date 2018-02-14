@@ -23,6 +23,7 @@ export default class ProductImage extends React.Component {
             {/* style */}
             <style jsx>{`
                 .img {
+                    visibility: ${this.props.hidden? 'collapse':'visible'}
                     height: 100%;
                     background: url(${this.state.image}) no-repeat center;
                     background-size: cover;
