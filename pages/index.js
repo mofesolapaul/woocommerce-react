@@ -14,20 +14,50 @@ export default class Index extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            per_page: 8,
+            per_page: 12,
             products: [],
+            productsOnDisplay: [],
             page: 1,
+            displayOnFetch: false,
+            noMoreProductsFromServer: false,
         }
     }
     componentDidMount() {
-        this.fetchProducts();
+        this.showProducts();
     }
     async fetchProducts() {
-        let {per_page, page} = this.state
+        console.log('fetch products')
+        let {per_page, page, products} = this.state
         const f = (await _products(per_page, page)).data
-        this.setState({ per_page, products: f||constants.products, page: f?page+1:page })
+        products = products.concat(f)
+
+        this.setState({
+            per_page,
+            products,
+            page: !!f?page+1:page,
+            noMoreProductsFromServer: !!f&&!f.length
+        })
+        if (this.state.displayOnFetch) this.showProducts(true)
+    }
+    showProducts(nofetch) {
+        console.log('show products')
+        let {products, productsOnDisplay} = this.state
+        if (products.length) {
+            productsOnDisplay = productsOnDisplay.concat( products.splice(0, 6) )
+            this.setState({products, productsOnDisplay, displayOnFetch: false})
+        } else this.setState({displayOnFetch: true})
+        
+        // load more from server
+        if (nofetch === true) return
+        if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());
     }
     render() {
+        const productListProps = {
+            items: this.state.productsOnDisplay, // products to display
+            _showMore: this.showProducts.bind(this), // handler for show more button
+            canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
+        }
+
         return <Layout>
             <h1 className="title font-sourcesans">Smoothie Express</h1>
             <div className="text-center">
@@ -35,8 +65,7 @@ export default class Index extends React.Component {
             </div>
             
             <ProductsContainer>
-                <ProductsList items={this.state.products}>
-                </ProductsList>
+                <ProductsList {...productListProps} />
             </ProductsContainer>
             
             {/* style */}

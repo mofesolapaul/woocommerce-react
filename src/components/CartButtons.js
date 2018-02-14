@@ -16,7 +16,7 @@ export default class CartButton extends React.Component {
             .cart-btn {
                 width: 28px;
                 height: 28px;
-                line-height: 24px; 
+                line-height: 24px;
                 text-align: center; 
                 font-size: 16px;
                 transition: none;
