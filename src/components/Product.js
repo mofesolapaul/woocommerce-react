@@ -1,4 +1,5 @@
 import css from '../../styles/vars'
+import VisibilitySensor from 'react-visibility-sensor'
 import { CartButtons, PriceDisplay } from './'
 
 const Product = ({item,_key: key}) => (

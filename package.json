@@ -30,6 +30,7 @@
     "oauth-1.0a": "^2.2.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-visibility-sensor": "^3.11.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },
