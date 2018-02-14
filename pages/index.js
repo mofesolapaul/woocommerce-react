@@ -26,7 +26,6 @@ export default class Index extends React.Component {
         this.showProducts();
     }
     async fetchProducts() {
-        console.log('fetch products')
         let {per_page, page, products} = this.state
         const f = (await _products(per_page, page)).data
         products = products.concat(f)
@@ -40,7 +39,6 @@ export default class Index extends React.Component {
         if (this.state.displayOnFetch) this.showProducts(true)
     }
     showProducts(nofetch) {
-        console.log('show products')
         let {products, productsOnDisplay} = this.state
         if (products.length) {
             productsOnDisplay = productsOnDisplay.concat( products.splice(0, 6) )
