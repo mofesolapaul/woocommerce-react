@@ -27,8 +27,15 @@ export default class Index extends React.Component {
     }
     async fetchProducts() {
         let {per_page, page, products} = this.state
-        const f = (await _products(per_page, page)).data
-        products = products.concat(f)
+        let f = (await _products(per_page, page)).data
+
+        // only pick properties we need
+        if (!!f) {
+            f = f.map(p =>
+                (({name, price, images, description, short_description: about}) => ({name, price, images, description, about}))(p)
+            )
+            products = products.concat(f)
+        }
 
         this.setState({
             per_page,
