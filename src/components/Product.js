@@ -1,10 +1,10 @@
 import css from '../../styles/vars'
-import { CartButtons, PriceDisplay } from './'
+import { CartButtons, PriceDisplay, ProductImage } from './'
 
 const Product = ({item,_key: key}) => (
     <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
         <div className="img-wrapper">
-            <div className="img"></div>
+            <ProductImage src={item.images.length? item.images[0].src:''} />
             <PriceDisplay price={item.price} />
         </div>
         <div className="flex">
@@ -14,6 +14,11 @@ const Product = ({item,_key: key}) => (
         <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
         {/* style */}
+        <style global jsx>{`
+            .Product:hover .img {
+                transform: scale(1.2);
+            }
+        `}</style>
         <style jsx>{`
             .Product {
                 float: left;
@@ -47,14 +52,7 @@ const Product = ({item,_key: key}) => (
                 position: relative;
                 height: 240px;
                 overflow: hidden;
-            }
-            .img {
-                height: 100%;
-                background: url(${item.images.length? item.images[0].src:''}) no-repeat center;
-                background-size: cover;
                 background-color: ${css.colors.wisteriasnow};
-                position: relative;
-                transition: 4s ease-in;
             }
             .img-wrapper::before {
                 content: '';
@@ -70,9 +68,6 @@ const Product = ({item,_key: key}) => (
             
             .Product:hover .title {
                 color: ${css.colors.fallleaf};
-            }
-            .Product:hover .img {
-                transform: scale(1.2);
             }
             .Product:hover .img-wrapper::before {
                 top: 0;
