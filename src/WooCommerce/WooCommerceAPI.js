@@ -1,6 +1,9 @@
 /*
  * WooCommerce API
  * DO NOT TOUCH!
+ * 
+ * Scratch that, feel free to touch. I had a lot of touching to do to get this little sumbich to work
+ * you just might have a heckuva lot to do to make it fit your peculiar case
  */
 'use strict';
 
@@ -165,7 +168,9 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
   // warn(params)
 
   if (method == 'GET') {
-    params.headers = {'Cache-Control': 'no-cache'};
+    params.headers = {
+      'Cache-Control': 'no-cache'
+    };
   } else if (method == 'POST') {
     params.headers = {
       'Accept': 'application/json',
@@ -173,10 +178,13 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
     };
     params.body = JSON.stringify(data);
   }
-  // console.log(params);
+  // console.log(params.url)
   try {
-    data = await fetch(params.url, params);
+    // bad things happen when params follow GET, like turning to OPTIONS midway and ultimately failing
+    data = method == 'GET'? await fetch(params.url):await fetch(params.url, params);
   } catch (e) {
+    // we'll still leave this, fallback things
+    if (e.code) return
     data = new Response(JSON.stringify({fallback: params}))
   }
   return data;
