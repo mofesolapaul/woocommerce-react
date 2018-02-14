@@ -32,7 +32,7 @@ const Wc = {
                     xhttp.open(data.fallback.method, data.fallback.url, true)
                     _method == 'POST'? xhttp.setRequestHeader('Content-type', 'application/json'):null
                     _method == 'POST'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
-                }).catch(e => console.log('catching'), data = null)
+                }).catch(e => data = null)
             } catch (e) { data = null }
         }
         return {data}

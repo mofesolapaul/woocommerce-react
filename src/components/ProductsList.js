@@ -5,7 +5,14 @@ import { Product } from '.';
 // clearfixes for proper layout
 const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
 
-const ProductsList = ({items}) => (
+// show more
+const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
+    <a onClick={finished? null:clickHandler} className={`btn show-more-btn ${finished? 'dead':''}`}>
+        {!finished? 'Show more':"Yup, that's all!"}
+    </a>
+</div>
+
+const ProductsList = ({items, _showMore, canShowMore}) => (
     <div className="ProductsList clearfix">
         <View>
             { items.map((product, index) => <View key={index}>
@@ -18,9 +25,7 @@ const ProductsList = ({items}) => (
         </View>
 
         {/* show more button */}
-        <div className="show-more-pane">
-            <a className="btn show-more-btn">Show more</a>
-        </div>
+        { items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }
 
         {/* style */}
         <style global jsx>{`
@@ -70,9 +75,10 @@ const ProductsList = ({items}) => (
                 border: none;
                 filter: drop-shadow(0px 4px 6px rgba(82,89,101,.25));
             }
-            .show-more-btn:hover {
+            .show-more-btn:hover, .show-more-btn.dead {
                 background: ${css.colors.rogueblue};
                 color: ${css.colors.ultrawhite};
+                filter: none;
             }
         `}</style>
     </div>
