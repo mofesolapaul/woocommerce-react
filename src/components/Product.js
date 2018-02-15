@@ -1,12 +1,20 @@
 import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
+import {Cart} from '../stores'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state = {
+            qty: 0
+        }
+    }
     buttonAction(up = true) {
         if (!!up) actions.addToCart(this.props.item)
         else actions.removeFromCart(this.props.item)
+        this.setState({ qty: Cart.getQty(this.props.item.id) })
     }
     render() {
         let {item,_key: key} = this.props

@@ -11,14 +11,20 @@ export default flux.createStore({
         if (!!this.orders[item.id]) this.orders[item.id].qty++
         else this.orders[item.id] = { product: item, qty: 1 }
         this.emit('order.add')
-        console.log(this.orders)
     },
     removeFromCart: function(item) {
         if (!!this.orders[item.id]) {
             if (this.orders[item.id].qty == 1) delete this.orders[item.id]
             else this.orders[item.id].qty-- 
             this.emit('order.remove')
-            console.log(this.orders)
         }
     },
+    persist: function() {
+
+    },
+    exports: {
+        getQty: function(id) {
+            return !!this.orders[id]? this.orders[id].qty:0
+        }
+    }
 })

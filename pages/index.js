@@ -26,8 +26,11 @@ export default class Index extends React.Component {
         }
     }
     componentWillMount() {
-        Cart.on('*', () => {})
+        // Cart.on('order.*', () => { console.log('store changed') })
         this.showProducts();
+    }
+    componentWillUnmount() {
+        // Cart.off('order.*')
     }
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay} = this.state 
