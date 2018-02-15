@@ -1,5 +1,5 @@
 import css from '../../styles/vars'
-import { Loading, Product, View } from '.'
+import { Loading, NotFound, Product, View } from '.'
 
 // clearfixes for proper layout
 const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
@@ -11,9 +11,10 @@ const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
     </a>
 </div>
 
-const ProductsList = ({items, _showMore, canShowMore, loading}) => (
+const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
     <div className="ProductsList clearfix">
         <Loading visible={loading} />
+        <NotFound visible={notfound} retryHandler={_showMore} />
 
         <View>
             { items.map((product, index) => <View key={index}>

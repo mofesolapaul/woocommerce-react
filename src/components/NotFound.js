@@ -1,6 +1,7 @@
 import css from '../../styles/vars'
 
-export default ({msg, retryHandler}) => (
+export default ({msg, retryHandler, visible}) => (
+    !!visible?
     <div className="NotFound">
         <span className="circle"></span>
         <p>{msg||"We couldn't load them awesome smoothies, please try again"}</p>
@@ -10,11 +11,12 @@ export default ({msg, retryHandler}) => (
         <style jsx>{`
             .NotFound {
                 padding: 3rem;
-                border-radius: 8px;
-                border: dashed thick ${css.colors.bluetwilight};
+                border-radius: 16px;
+                border: double thick ${css.colors.orchidash};
                 width: 30%;
                 max-width: 360px;
                 text-align: center;
+                margin: auto;
             }
             .circle {
                 display: block;
@@ -26,6 +28,7 @@ export default ({msg, retryHandler}) => (
                 margin: 1rem auto;
             }
             .circle::before {
+                content: '';
                 width: 24px;
                 height: 24px;
                 border-radius: inherit;
@@ -35,7 +38,9 @@ export default ({msg, retryHandler}) => (
                 right: 0;
                 bottom: 0;
                 margin: auto;
+                position: absolute;
             }
         `}</style>
     </div>
+    :null
 )

@@ -21,6 +21,7 @@ export default class Index extends React.Component {
             displayOnFetch: false,
             noMoreProductsFromServer: false,
             loading: true,
+            loadingFailed: false,
         }
     }
     componentDidMount() {
@@ -28,17 +29,17 @@ export default class Index extends React.Component {
     }
     async fetchProducts() {
         this.setState({ loading: true })
-        await new Promise(resolve => setTimeout(resolve, 30000)) // sleep
+        // await new Promise(resolve => setTimeout(resolve, 30000)) // sleep
         let {per_page, page, products} = this.state 
         let f = (await _products(per_page, page)).data
 
-        // only pick properties we need
         if (!!f) {
+            // only pick properties we need
             f = f.map(p =>
                 (({name, price, images, description, short_description: about}) => ({name, price, images, description, about}))(p)
             )
             products = products.concat(f)
-        }
+        } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })
 
         this.setState({
             per_page,
@@ -66,6 +67,7 @@ export default class Index extends React.Component {
             _showMore: this.showProducts.bind(this), // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
             loading: this.state.loading, // show loader or not
+            notfound: this.state.loadingFailed, // did we fail to load products from server?
         }
 
         return <Layout>
