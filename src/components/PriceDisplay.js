@@ -1,7 +1,7 @@
 import css from '../../styles/vars'
 import {View} from './'
 
-export default ({price}) => <View>
+export default ({price, qty}) => <View>
     <span className="price-display font-playfair">{`\u20A6 ${price||'0.00'}`}</span>
 
     {/* style */}

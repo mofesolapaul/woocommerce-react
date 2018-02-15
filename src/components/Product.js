@@ -7,9 +7,10 @@ import { CartButtons, PriceDisplay, ProductImage } from './'
 class Product extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {
-            qty: 0
-        }
+        this.state = { qty: 0 }
+    }
+    componentDidMount() {
+        this.setState({ qty: Cart.getQty(this.props.item.id) })
     }
     buttonAction(up = true) {
         if (!!up) actions.addToCart(this.props.item)
@@ -21,7 +22,7 @@ class Product extends React.Component{
         return <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
             <div className="img-wrapper">
                 <ProductImage src={item.images.length? item.images[0].src:''} />
-                <PriceDisplay price={item.price} />
+                <PriceDisplay qty={this.state.qty} price={item.price} />
             </div>
             <div className="flex">
                 <h4 className="title slim">{item.name}</h4>
