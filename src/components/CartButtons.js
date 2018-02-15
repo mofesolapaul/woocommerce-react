@@ -1,14 +1,13 @@
 import React from 'react'
 import css from '../../styles/vars'
 import {View} from './'
-import actions from '../actions'
 
-export default class CartButton extends React.Component {
+export default class CartButtons extends React.Component {
     add() {
-        actions.addToCart()
+        this.props.handler && this.props.handler()
     }
     remove() {
-        actions.removeFromCart()
+        this.props.handler && this.props.handler(false)
     }
     render() {
         return <View>

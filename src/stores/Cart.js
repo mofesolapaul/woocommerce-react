@@ -8,9 +8,9 @@ export default flux.createStore({
         actions.removeFromCart,
     ],
     addToCart: function(item) {
-        console.log('Add to cart')
+        console.log('Add to cart', item)
     },
     removeFromCart: function(item) {
-        console.log('Remove from cart')
+        console.log('Remove from cart', item)
     },
 })
