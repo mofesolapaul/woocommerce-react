@@ -3,7 +3,7 @@ import {View} from './'
 
 export default ({price, qty}) => <View>
     <div className="price-display font-playfair">
-        {!!qty? <span className="qty font-sourcesans">x {qty}</span>:null}
+        {!!qty? <span className="qty font-sourcesans">{price} x {qty}</span>:null}
         {`\u20A6 ${price*(!qty?1:qty)||'0.00'}`}
     </div>
 
