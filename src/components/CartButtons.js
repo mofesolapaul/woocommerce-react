@@ -17,6 +17,7 @@ export default class CartButton extends React.Component {
                 text-align: center; 
                 font-size: 16px;
                 transition: none;
+                padding: 0;
             }
             .cart-btn:hover {
                 background: ${css.colors.fallleaf};

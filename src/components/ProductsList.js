@@ -1,6 +1,5 @@
 import css from '../../styles/vars'
-import { View } from '../components'
-import { Product } from '.';
+import { Loading, NotFound, Product, View } from '.'
 
 // clearfixes for proper layout
 const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
@@ -12,7 +11,7 @@ const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
     </a>
 </div>
 
-const ProductsList = ({items, _showMore, canShowMore}) => (
+const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
     <div className="ProductsList clearfix">
         <View>
             { items.map((product, index) => <View key={index}>
@@ -24,12 +23,18 @@ const ProductsList = ({items, _showMore, canShowMore}) => (
             <div className="clearfix"></div>
         </View>
 
+        {/* ux */}
+        <Loading visible={loading} />
+        <NotFound visible={notfound} retryHandler={_showMore} />
+
         {/* show more button */}
-        { items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }
+        { !!items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }
 
         {/* style */}
         <style global jsx>{`
-            .ProductsList {}
+            .ProductsList {
+                position: relative;
+            }
             .product-row-divider {
                 display: none;
                 padding: 1rem 1rem 2.5rem;
@@ -69,7 +74,6 @@ const ProductsList = ({items, _showMore, canShowMore}) => (
             }
             .show-more-btn {
                 padding: 1rem;
-                text-transform: uppercase;
                 border-radius: 100px;
                 background: ${css.colors.ultrawhite};
                 border: none;
