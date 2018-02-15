@@ -13,9 +13,6 @@ const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
 
 const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
     <div className="ProductsList clearfix">
-        <Loading visible={loading} />
-        <NotFound visible={notfound} retryHandler={_showMore} />
-
         <View>
             { items.map((product, index) => <View key={index}>
                 <Product _key={index} item={product} />
@@ -25,6 +22,10 @@ const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
             </View>) }
             <div className="clearfix"></div>
         </View>
+
+        {/* ux */}
+        <Loading visible={loading} />
+        <NotFound visible={notfound} retryHandler={_showMore} />
 
         {/* show more button */}
         { !!items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }

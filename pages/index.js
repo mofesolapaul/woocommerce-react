@@ -4,7 +4,7 @@ import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import {ProductsContainer} from '../src/containers'
 import { ProductsList } from '../src/components'
-import constants from '../src/constants'
+import {sleep} from '../src/constants'
 
 const _products = async(per_page, page) => {
     return await Wc.get('products', { per_page, page })
@@ -29,7 +29,7 @@ export default class Index extends React.Component {
     }
     async fetchProducts() {
         this.setState({ loading: true, loadingFailed: false })
-        await new Promise(resolve => setTimeout(resolve, 500)) // sleep
+        await sleep(500) // sleep for a half second
         let {per_page, page, products} = this.state 
         let f = (await _products(per_page, page)).data
 
