@@ -15,6 +15,7 @@
     width: 100%;
     z-index: 999;
     .balls {
+        padding: 5% 0;
         text-align: center;
         .ball {
             width: 20px;
@@ -23,6 +24,9 @@
             border-radius: 100%;
             display: inline-block;
             position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
             &:nth-child(1) {
                 @include use-anim(loading-ball-1, 2s, $iteration: infinite, $direction: alternate);
             }
