@@ -1,6 +1,4 @@
-import React from 'react'
-
-const Loading = ({visible}) => (visible
+export default ({visible}) => (visible
     ? <div className="loading">
             <div className="balls">
                 <div className="ball"></div>
@@ -9,5 +7,3 @@ const Loading = ({visible}) => (visible
             </div>
         </div>
     : null)
-
-export default Loading
