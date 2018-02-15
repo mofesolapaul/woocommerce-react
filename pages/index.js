@@ -28,9 +28,9 @@ export default class Index extends React.Component {
         this.showProducts();
     }
     async fetchProducts() {
-        this.setState({ loading: true, loadingFailed: false })
+        let {per_page, page, products, productsOnDisplay} = this.state 
+        this.setState({ loading: !products.length, loadingFailed: false })
         await sleep(500) // sleep for a half second
-        let {per_page, page, products} = this.state 
         let f = (await _products(per_page, page)).data
 
         if (!!f) {
