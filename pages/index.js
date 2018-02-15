@@ -4,7 +4,8 @@ import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import {ProductsContainer} from '../src/containers'
 import { ProductsList } from '../src/components'
-import {sleep} from '../src/constants'
+import constants, {sleep} from '../src/constants'
+import {Cart} from '../src/stores'
 
 const _products = async(per_page, page) => {
     return await Wc.get('products', { per_page, page })
@@ -24,19 +25,23 @@ export default class Index extends React.Component {
             loadingFailed: false,
         }
     }
-    componentDidMount() {
+    componentWillMount() {
+        // Cart.on('order.*', () => { console.log('store changed') })
         this.showProducts();
+    }
+    componentWillUnmount() {
+        // Cart.off('order.*')
     }
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay} = this.state 
         this.setState({ loading: !products.length, loadingFailed: false })
         await sleep(500) // sleep for a half second
-        let f = (await _products(per_page, page)).data
+        let f = constants.products || (await _products(per_page, page)).data
 
         if (!!f) {
             // only pick properties we need
             f = f.map(p =>
-                (({name, price, images, description, short_description: about}) => ({name, price, images, description, about}))(p)
+                (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
             )
             products = products.concat(f)
         } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })
