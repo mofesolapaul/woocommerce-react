@@ -3,7 +3,7 @@ import Layout from '../src/layouts/_default'
 import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import {ProductsContainer} from '../src/containers'
-import {ProductsList} from '../src/components'
+import { ProductsList } from '../src/components'
 import constants from '../src/constants'
 
 const _products = async(per_page, page) => {
@@ -20,13 +20,16 @@ export default class Index extends React.Component {
             page: 1,
             displayOnFetch: false,
             noMoreProductsFromServer: false,
+            loading: true,
         }
     }
     componentDidMount() {
         this.showProducts();
     }
     async fetchProducts() {
-        let {per_page, page, products} = this.state
+        this.setState({ loading: true })
+        await new Promise(resolve => setTimeout(resolve, 30000)) // sleep
+        let {per_page, page, products} = this.state 
         let f = (await _products(per_page, page)).data
 
         // only pick properties we need
@@ -41,7 +44,8 @@ export default class Index extends React.Component {
             per_page,
             products,
             page: !!f?page+1:page,
-            noMoreProductsFromServer: !!f&&!f.length
+            noMoreProductsFromServer: !!f&&!f.length,
+            loading: false
         })
         if (this.state.displayOnFetch) this.showProducts(true)
     }
@@ -61,6 +65,7 @@ export default class Index extends React.Component {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts.bind(this), // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
+            loading: this.state.loading, // show loader or not
         }
 
         return <Layout>

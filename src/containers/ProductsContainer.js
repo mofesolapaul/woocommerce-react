@@ -1,5 +1,4 @@
 import css from '../../styles/vars'
-import {ProductsList} from '../components'
 
 const ProductsContainer = props => (
     <div className="wrapper">

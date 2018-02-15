@@ -1,0 +1,87 @@
+@import "_quick_mixins";
+@import "_vars";
+@mixin glossy_fill($color1, $color2, $color3) {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f3f3f3+50,ededed+51,ffffff+100;White+Gloss+%232 */
+    background: $color1;
+    /* Old browsers */
+    background: -moz-linear-gradient(-45deg, $color1 0%, $color2 50%, $color3 51%, $color1 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, $color1 0%, $color2 50%, $color3 51%, $color1 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, $color1 0%, $color2 50%, $color3 51%, $color1 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color1', endColorstr='$color1', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+}
+
+@mixin use-gpu {
+    -webkit-transform: translateZ(0);
+}
+
+@mixin add_animate_css($animation) {
+    @extend .animated;
+    @extend #{$animation};
+}
+
+@mixin hide-this {
+    display: none;
+}
+
+@mixin trans($duration: 500ms) {
+    .trans {
+        transition: all $duration ease-in-out;
+    }
+}
+
+@mixin shade($i) {
+    %bg-1 {
+        background: $theme-1
+    }
+    %bg-2 {
+        background: $theme-2
+    }
+    %bg-3 {
+        background: $theme-3
+    }
+    %bg-4 {
+        background: $theme-4
+    }
+    %bg-5 {
+        background: $theme-5
+    }
+    @extend %bg-#{$i};
+}
+
+@mixin clearfix {
+    &:before,
+    &:after {
+        content: " "; // 1
+        display: table; // 2
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+@mixin mediabtw($from, $to) {
+    @media (min-width: $from) and (max-width: $to) {
+        @content;
+    }
+}
+
+@mixin login-signup-screen {
+    @include font-sourcesanspro;
+    @include full-height;
+    @include flex-center;
+    @include box-sizing(border-box);
+    overflow-x: hidden;
+    background: $gradient-softblue;
+    color: #fff;
+}
+
+@mixin default-font-size {
+    font-size: 16px;
+    @media(min-width: $lg) {
+        font-size: 2.3vmin;
+    }
+}

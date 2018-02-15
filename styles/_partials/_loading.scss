@@ -1,0 +1,40 @@
+// Variables
+@import "vars";
+// Animations
+@import "anims";
+// Define animations
+@include define-anim-loading-ball-1;
+@include define-anim-loading-ball-2;
+@include define-anim-color-pulse(blackish, $desertbone, $fallleaf);
+
+// Loading
+.loading {
+    // @include absolute-full;
+    // background: rgba($color-softblue, .8);
+    position: relative;
+    width: 100%;
+    z-index: 999;
+    .balls {
+        text-align: center;
+        .ball {
+            width: 20px;
+            height: 20px;
+            background: $wisteriasnow;
+            border-radius: 100%;
+            display: inline-block;
+            position: absolute;
+            &:nth-child(1) {
+                @include use-anim(loading-ball-1, 2s, $iteration: infinite, $direction: alternate);
+            }
+            &:nth-child(2) {
+                z-index: 1;
+                background: #fff;
+                box-shadow: rgba(#000, .1) 0 0 0 8px;
+                @include use-anim(color-pulse-blackish, 1s, $iteration: infinite, $direction: alternate);
+            }
+            &:nth-child(3) {
+                @include use-anim(loading-ball-2, 2s, $iteration: infinite, $direction: alternate);
+            }
+        }
+    }
+}

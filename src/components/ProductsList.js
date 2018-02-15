@@ -1,6 +1,5 @@
 import css from '../../styles/vars'
-import { View } from '../components'
-import { Product } from '.';
+import { Loading, Product, View } from '.'
 
 // clearfixes for proper layout
 const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
@@ -12,8 +11,10 @@ const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
     </a>
 </div>
 
-const ProductsList = ({items, _showMore, canShowMore}) => (
+const ProductsList = ({items, _showMore, canShowMore, loading}) => (
     <div className="ProductsList clearfix">
+        <Loading visible={loading} />
+
         <View>
             { items.map((product, index) => <View key={index}>
                 <Product _key={index} item={product} />
@@ -25,11 +26,13 @@ const ProductsList = ({items, _showMore, canShowMore}) => (
         </View>
 
         {/* show more button */}
-        { items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }
+        { !!items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }
 
         {/* style */}
         <style global jsx>{`
-            .ProductsList {}
+            .ProductsList {
+                position: relative;
+            }
             .product-row-divider {
                 display: none;
                 padding: 1rem 1rem 2.5rem;
