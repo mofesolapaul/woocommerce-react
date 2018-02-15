@@ -2,7 +2,10 @@ import css from '../../styles/vars'
 import {View} from './'
 
 export default ({price, qty}) => <View>
-    <span className="price-display font-playfair">{`\u20A6 ${price||'0.00'}`}</span>
+    <div className="price-display font-playfair">
+        {!!qty? <span className="qty font-sourcesans">x {qty}</span>:null}
+        {`\u20A6 ${price*(!qty?1:qty)||'0.00'}`}
+    </div>
 
     {/* style */}
     <style jsx>{`
@@ -15,8 +18,13 @@ export default ({price, qty}) => <View>
         font-size: larger;
         padding: .4rem .8rem;
         color: ${css.colors.ultrawhite};
-        background: ${css.colors.rogueblue}
+        background: ${!qty? css.colors.rogueblue:'teal'}
         padding-left: 1.2rem;
+    }
+    .qty {
+        font-size: x-small;
+        display: block;
+        text-align: right;
     }
     `}</style>
 </View>
