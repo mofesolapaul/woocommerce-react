@@ -38,7 +38,7 @@ export default class Index extends React.Component {
         if (!!f) {
             // only pick properties we need
             f = f.map(p =>
-                (({name, price, images, description, short_description: about}) => ({name, price, images, description, about}))(p)
+                (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
             )
             products = products.concat(f)
         } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })

@@ -5,7 +5,6 @@ import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
     buttonAction(up = true) {
-        console.log(up)
         if (!!up) actions.addToCart(this.props.item)
         else actions.removeFromCart(this.props.item)
     }

@@ -8,9 +8,17 @@ export default flux.createStore({
         actions.removeFromCart,
     ],
     addToCart: function(item) {
-        console.log('Add to cart', item)
+        if (!!this.orders[item.id]) this.orders[item.id].qty++
+        else this.orders[item.id] = { product: item, qty: 1 }
+        this.emit('order.add')
+        console.log(this.orders)
     },
     removeFromCart: function(item) {
-        console.log('Remove from cart', item)
+        if (!!this.orders[item.id]) {
+            if (this.orders[item.id].qty == 1) delete this.orders[item.id]
+            else this.orders[item.id].qty-- 
+            this.emit('order.remove')
+            console.log(this.orders)
+        }
     },
 })
