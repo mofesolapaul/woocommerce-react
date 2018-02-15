@@ -73,7 +73,6 @@ const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
             }
             .show-more-btn {
                 padding: 1rem;
-                text-transform: uppercase;
                 border-radius: 100px;
                 background: ${css.colors.ultrawhite};
                 border: none;

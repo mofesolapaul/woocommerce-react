@@ -2,10 +2,10 @@ import css from '../../styles/vars'
 
 export default ({msg, retryHandler, visible}) => (
     !!visible?
-    <div className="NotFound">
+    <div className="NotFound" onClick={retryHandler}>
         <span className="circle"></span>
         <p>{msg||"We couldn't load them awesome smoothies, please try again"}</p>
-        {!!retryHandler? <a class="btn">Retry</a>:null}
+        {!!retryHandler? <a className="btn">Retry</a>:null}
 
         {/* style */}
         <style jsx>{`
@@ -15,8 +15,16 @@ export default ({msg, retryHandler, visible}) => (
                 border: double thick ${css.colors.orchidash};
                 width: 30%;
                 max-width: 360px;
+                min-width: 210px;
                 text-align: center;
                 margin: auto;
+                transition: .25s ease-in-out;
+            }
+            .NotFound:hover {
+                background: ${css.colors.desertbone};
+            }
+            .NotFound:hover .btn {
+                background: ${css.colors.ultrawhite};
             }
             .circle {
                 display: block;

@@ -28,8 +28,8 @@ export default class Index extends React.Component {
         this.showProducts();
     }
     async fetchProducts() {
-        this.setState({ loading: true })
-        // await new Promise(resolve => setTimeout(resolve, 30000)) // sleep
+        this.setState({ loading: true, loadingFailed: false })
+        await new Promise(resolve => setTimeout(resolve, 500)) // sleep
         let {per_page, page, products} = this.state 
         let f = (await _products(per_page, page)).data
 
