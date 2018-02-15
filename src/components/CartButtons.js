@@ -1,12 +1,19 @@
 import React from 'react'
 import css from '../../styles/vars'
 import {View} from './'
+import actions from '../actions'
 
 export default class CartButton extends React.Component {
+    add() {
+        actions.addToCart()
+    }
+    remove() {
+        actions.removeFromCart()
+    }
     render() {
         return <View>
-            <a className="btn cart-btn left">{`\u2013`}</a>
-            <a className="btn cart-btn right">+</a>
+            <a className="btn cart-btn left" onClick={this.remove.bind(this)}>{`\u2013`}</a>
+            <a className="btn cart-btn right" onClick={this.add.bind(this)}>+</a>
 
             {/* style */}
             <style jsx>{`
