@@ -1,14 +1,18 @@
 import React from 'react'
 import {Cart} from '../stores'
-import {CartIcon} from '../components'
+import { CartIcon, OrderList } from '../components'
 import {kformat} from '../constants'
+
+const NEUTRAL = 0
+const ORDER_PREVIEW = 1
 
 export default class ShoppingCart extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             isEmpty: true,
-            total: 0
+            total: 0,
+            state: NEUTRAL,
         }
     }
     componentWillMount() {
@@ -24,12 +28,21 @@ export default class ShoppingCart extends React.Component {
         })
     }
     openCart() {
-        
+        this.setState({
+            state: ORDER_PREVIEW
+        })
     }
     render() {
-        return <div className="ShoppingCart">
-            {!this.state.isEmpty? <CartIcon clickHandler={this.openCart.bind(this)}
-                                    total={kformat(this.state.total)} />:null}
-        </div>
+        let view = null
+        switch (this.state.state) {
+            case ORDER_PREVIEW:
+                view = <OrderList items={Cart.getAllOrders()} />
+                break;
+            default:
+                view = !this.state.isEmpty?
+                    <CartIcon clickHandler={this.openCart.bind(this)} total={kformat(this.state.total)} />:null
+                break;
+        }
+        return <div className="ShoppingCart">{view}</div>
     }
 }
