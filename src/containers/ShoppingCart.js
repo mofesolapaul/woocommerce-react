@@ -19,7 +19,6 @@ export default class ShoppingCart extends React.Component {
         this.setState({
             isEmpty: Cart.isEmpty()
         })
-        console.log(this.state.isEmpty)
     }
     render() {
         return <div className="ShoppingCart">

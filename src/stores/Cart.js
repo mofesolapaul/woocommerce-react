@@ -27,7 +27,7 @@ export default flux.createStore({
             return !!this.orders[id]? this.orders[id].qty:0
         },
         isEmpty: function() {
-            return this.orders.length == 0
+            return Object.keys(this.orders).length == 0
         }
     }
 })
