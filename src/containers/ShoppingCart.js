@@ -15,7 +15,7 @@ export default class ShoppingCart extends React.Component {
         Cart.off('order.*', this.updateState)
     }
     updateState() {
-        
+        console.log("ShoppingCart aye!")
     }
     render() {
         return <div className="ShoppingCart">
