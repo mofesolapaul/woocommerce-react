@@ -1,5 +1,6 @@
 import React from 'react'
 import {Cart} from '../stores'
+import {CartIcon} from '../components'
 
 export default class ShoppingCart extends React.Component {
     constructor(props) {
@@ -9,17 +10,20 @@ export default class ShoppingCart extends React.Component {
         }
     }
     componentWillMount() {
-        Cart.on('order.*', this.updateState)
+        Cart.on('order.*', this.updateState.bind(this))
     }
     componentWillUnmount() {
-        Cart.off('order.*', this.updateState)
+        Cart.off('order.*', this.updateState.bind(this))
     }
     updateState() {
-        console.log("ShoppingCart aye!")
+        this.setState({
+            isEmpty: Cart.isEmpty()
+        })
+        console.log(this.state.isEmpty)
     }
     render() {
         return <div className="ShoppingCart">
-            {!this.state.isEmpty? null:null}
+            {!this.state.isEmpty? <CartIcon />:null}
         </div>
     }
 }

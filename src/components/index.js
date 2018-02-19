@@ -1,4 +1,5 @@
 import CartButtons from './CartButtons'
+import CartIcon from './CartIcon'
 import Loading from './Loading'
 import NotFound from './NotFound'
 import PriceDisplay from './PriceDisplay'
@@ -9,6 +10,7 @@ import View from './View'
 
 export {
     CartButtons,
+    CartIcon,
     Loading,
     NotFound,
     PriceDisplay,

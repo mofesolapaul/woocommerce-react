@@ -25,6 +25,9 @@ export default flux.createStore({
     exports: {
         getQty: function(id) {
             return !!this.orders[id]? this.orders[id].qty:0
+        },
+        isEmpty: function() {
+            return this.orders.length == 0
         }
     }
 })
