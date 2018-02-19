@@ -25,7 +25,7 @@ export default ({clickHandler, visible, total}) => (
                 right: 1.5rem;
                 z-index: 99;
                 visibility: collapse;
-                animation: snap-in .5s ease-in-out; 
+                animation: snap-in .35s ease-in-out; 
                 animation-fill-mode: both;
                 cursor: pointer;
                 overflow: hidden;
