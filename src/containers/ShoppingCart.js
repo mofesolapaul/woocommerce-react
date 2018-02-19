@@ -22,7 +22,6 @@ export default class ShoppingCart extends React.Component {
             isEmpty: Cart.isEmpty(),
             total: Cart.getTotal(),
         })
-        console.log(this.state)
     }
     openCart() {
         console.log('Cart Open');
