@@ -32,11 +32,17 @@ export default class ShoppingCart extends React.Component {
             state: ORDER_PREVIEW
         })
     }
+    closeCart() {
+        this.setState({
+            state: NEUTRAL
+        })
+    }
     render() {
         let view = null
         switch (this.state.state) {
             case ORDER_PREVIEW:
-                view = <OrderList items={Cart.getAllOrders()} />
+                view = <OrderList items={Cart.getAllOrders()}
+                            dismissHandler={this.closeCart.bind(this)} />
                 break;
             default:
                 view = !this.state.isEmpty?

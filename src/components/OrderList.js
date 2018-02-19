@@ -7,6 +7,9 @@ export default class OrderList extends React.Component {
     }
     render() {
         return <div className="OrderPreview">
+            <h1 className="font-sourcesans">Order Preview
+                <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
+            </h1>
 
             {/* styles */}
             <style jsx>{`
@@ -29,6 +32,17 @@ export default class OrderList extends React.Component {
                         bottom: -65%;
                         animation: drawUp ease-in .25s both;
                     }
+                }
+                .close {
+                    font-weight: 100;
+                    border: none;
+                    opacity: .4;
+                    float: right;
+                    padding: 0 .5rem;
+                    cursor: pointer;
+                }
+                .close:hover {
+                    opacity: .8;
                 }
             `}</style>
         </div>
