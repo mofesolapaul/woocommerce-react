@@ -24,7 +24,7 @@ export default class ShoppingCart extends React.Component {
         })
     }
     openCart() {
-        console.log('Cart Open');
+        
     }
     render() {
         return <div className="ShoppingCart">

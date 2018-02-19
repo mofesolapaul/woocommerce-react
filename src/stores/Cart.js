@@ -36,6 +36,9 @@ export default flux.createStore({
                 total += (this.orders[o].qty * this.orders[o].product.price)
             })
             return total;
+        },
+        getAllOrders: function() {
+            return Object.values(this.orders)
         }
     }
 })
