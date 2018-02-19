@@ -1,7 +1,12 @@
 import css from '../../styles/vars'
 
 export default ({clickHandler, visible}) => (
-    <div className="CartIcon">
+    <div className="CartIcon" onClick={clickHandler}>
+        <div className="wrapper">
+            <div className="icon"></div>
+            <div className="price"></div>
+        </div>
+        <div className="frame"></div>
         {/* style */}
         <style jsx>{`
             @keyframes snap-in {
@@ -12,13 +17,8 @@ export default ({clickHandler, visible}) => (
                 100% { visibility: visible; transform: scale(1) }
             }
             .CartIcon {
-                width: 54px;
-                height: 54px;
-                border-radius: 100%;
-                border: thick ${css.colors.ultrawhite} solid;
-                background: url('/static/img/cart.png') center no-repeat;
-                background-size: 50%;
-                background-color: ${css.colors.fallleaf};
+                width: 64px;
+                height: 64px;
                 filter: drop-shadow(0px 8px 10px rgba(66,68,73,.3));
                 position: fixed;
                 bottom: 1.5rem;
@@ -27,8 +27,34 @@ export default ({clickHandler, visible}) => (
                 visibility: collapse;
                 animation: snap-in .5s ease-in-out; 
                 animation-fill-mode: both;
-                box-sizing: content-box;
                 cursor: pointer;
+                overflow: hidden;
+            }
+            .wrapper {
+                height: 100%;
+            }
+            .icon, .price {
+                height: 100%;
+                border-radius: 100%;
+                background: white;
+            }
+            .icon {
+                background: url('/static/img/cart.png') center no-repeat;
+                background-size: 50%;
+                background-color: ${css.colors.fallleaf};
+            }
+            .price {
+                
+            }
+            .frame {
+                height: 100%;
+                width: 100%;
+                border: 5px ${css.colors.ultrawhite} solid;
+                // box-sizing: content-box;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 100%;
             }
         `}</style>
     </div>

@@ -20,9 +20,12 @@ export default class ShoppingCart extends React.Component {
             isEmpty: Cart.isEmpty()
         })
     }
+    openCart() {
+        console.log('Cart Open');
+    }
     render() {
         return <div className="ShoppingCart">
-            {!this.state.isEmpty? <CartIcon />:null}
+            {!this.state.isEmpty? <CartIcon clickHandler={this.openCart.bind(this)} />:null}
         </div>
     }
 }
