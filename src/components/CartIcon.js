@@ -1,10 +1,10 @@
 import css from '../../styles/vars'
 
-export default ({clickHandler, visible}) => (
+export default ({clickHandler, visible, total}) => (
     <div className="CartIcon" onClick={clickHandler}>
         <div className="wrapper">
             <div className="icon"></div>
-            <div className="price"></div>
+            {total? <div className="price"><strong>{total}</strong></div>:null}
         </div>
         <div className="frame"></div>
         {/* style */}
@@ -29,13 +29,17 @@ export default ({clickHandler, visible}) => (
                 animation-fill-mode: both;
                 cursor: pointer;
                 overflow: hidden;
+                border-radius: 100%;
             }
             .wrapper {
                 height: 100%;
+                transition: margin-top .25s ease-out;
+            }
+            .CartIcon:hover .wrapper {
+                margin-top: ${total? '-100%':0};
             }
             .icon, .price {
                 height: 100%;
-                border-radius: 100%;
                 background: white;
             }
             .icon {
@@ -44,16 +48,20 @@ export default ({clickHandler, visible}) => (
                 background-color: ${css.colors.fallleaf};
             }
             .price {
-                
+                background-color: teal;
+                color: white;
+                font-size: larger;
+                text-align: center;
+                line-height: 64px;
             }
             .frame {
-                height: 100%;
-                width: 100%;
-                border: 5px ${css.colors.ultrawhite} solid;
+                height: calc(100% + 4px);
+                width: calc(100% + 4px);
+                border: 7px ${css.colors.ultrawhite} solid;
                 // box-sizing: content-box;
                 position: absolute;
-                top: 0;
-                left: 0;
+                top: -2px;
+                left: -2px;
                 border-radius: 100%;
             }
         `}</style>

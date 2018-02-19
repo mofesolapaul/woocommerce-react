@@ -1,5 +1,6 @@
 import flux from 'flux-react'
 import actions from '../actions'
+import {isEmpty} from '../constants'
 
 export default flux.createStore({
     orders: {},
@@ -27,7 +28,14 @@ export default flux.createStore({
             return !!this.orders[id]? this.orders[id].qty:0
         },
         isEmpty: function() {
-            return Object.keys(this.orders).length == 0
+            return isEmpty(this.orders)
+        },
+        getTotal: function() {
+            let total = 0
+            isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
+                total += (this.orders[o].qty * this.orders[o].product.price)
+            })
+            return total;
         }
     }
 })
