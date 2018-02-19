@@ -10,16 +10,19 @@ export default class ShoppingCart extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isEmpty: true,
-            total: 0,
+            isEmpty: Cart.isEmpty(),
+            total: Cart.getTotal(),
             state: NEUTRAL,
         }
+
+        // bind
+        this.updateState = this.updateState.bind(this)
     }
     componentWillMount() {
-        Cart.on('order.*', this.updateState.bind(this))
+        Cart.on('order.*', this.updateState)
     }
     componentWillUnmount() {
-        Cart.off('order.*', this.updateState.bind(this))
+        Cart.off('order.*', this.updateState)
     }
     updateState() {
         this.setState({

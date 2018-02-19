@@ -5,6 +5,22 @@ import {Cart} from '../stores'
 export default class OrderList extends React.Component {
     constructor(props) {
         super(props)
+        this.state = { total: Cart.getTotal() }
+        
+        // bind
+        this.updateState = this.updateState.bind(this)
+    }
+    componentWillMount() {
+        Cart.on('order.*', this.updateState)
+    }
+    componentWillUnmount() {
+        Cart.off('order.*', this.updateState)
+    }
+    updateState() {
+        console.log('try updating')
+        this.setState({
+            total: Cart.getTotal(),
+        })
     }
     render() {
         return <div className="OrderPreview">
@@ -18,10 +34,10 @@ export default class OrderList extends React.Component {
                     <ul>
                         <li>
                             <strong className="subheading">Subtotal</strong>
-                            <span className="price">N3,000</span></li>
+                            <span className="price">N{this.state.total}</span></li>
                         <li>
                             <strong className="subheading">Total</strong>
-                            <span className="price">N3,000</span></li>
+                            <span className="price">N{this.state.total}</span></li>
                     </ul>
                 </div>
                 <div className="list">
