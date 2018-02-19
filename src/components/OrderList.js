@@ -1,5 +1,5 @@
-import css from '../../styles/vars'
 import React from 'react'
+import css from '../../styles/vars'
 import {Cart} from '../stores'
 
 export default class OrderList extends React.Component {
@@ -11,6 +11,22 @@ export default class OrderList extends React.Component {
             <h1 className="font-sourcesans">Order Preview
                 <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
             </h1>
+
+            <div className="wrapper">
+                <div className="summary">
+                    <h4 className="summary-heading">Summary</h4>
+                    <ul>
+                        <li>
+                            <strong className="subheading">Subtotal</strong>
+                            <span className="price">N3,000</span></li>
+                        <li>
+                            <strong className="subheading">Total</strong>
+                            <span className="price">N3,000</span></li>
+                    </ul>
+                </div>
+                <div className="list">
+                </div>
+            </div>
 
             {/* styles */}
             <style jsx>{`
@@ -52,6 +68,35 @@ export default class OrderList extends React.Component {
                 }
                 .close:hover {
                     opacity: .8;
+                }
+
+                // wrapper
+                @media screen and (min-width: 720px) {
+                    .summary {
+                        float: right;
+                        width: 30%;
+                        text-align: right;
+                        position: relative;
+                    }
+                    .summary::before {
+                        content: '';
+                        height: 1px;
+                        width: 100%;
+                        background: ${css.colors.orchidash};
+                        margin: auto;
+                        position: absolute;
+                        display: block;
+                        bottom: 0;
+                    }
+                }
+                .summary-heading {
+                    text-transform: uppercase
+                }
+                .subheading {
+                    float: left;
+                }
+                .summary li {
+                    padding: .5rem 0
                 }
             `}</style>
         </div>
