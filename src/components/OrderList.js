@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import css from '../../styles/vars'
 import {Cart} from '../stores'
 import {moneyFormat} from '../constants'
@@ -25,6 +26,9 @@ export default class OrderList extends React.Component {
     }
     render() {
         return <div className="OrderPreview">
+            <Head>
+                <title>SmoothieExpress: Order Review</title>
+            </Head>
             <h1 className="font-sourcesans">Order Review
                 <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
             </h1>
