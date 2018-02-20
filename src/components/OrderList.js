@@ -4,6 +4,11 @@ import css from '../../styles/vars'
 import {Cart} from '../stores'
 import {moneyFormat} from '../constants'
 
+// show more
+const OkBtn = ({clickHandler, finished}) => <div className="text-center">
+    <a onClick={finished? null:clickHandler} className={`btn sleek-btn green no-shadow`}>Continue</a>
+</div>
+
 export default class OrderList extends React.Component {
     constructor(props) {
         super(props)
@@ -35,15 +40,18 @@ export default class OrderList extends React.Component {
 
             <div className="wrapper">
                 <div className="summary">
-                    <h4 className="summary-heading">Summary</h4>
-                    <ul>
-                        <li>
-                            <strong className="subheading">Subtotal</strong>
-                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
-                        <li>
-                            <strong className="subheading">Total</strong>
-                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
-                    </ul>
+                    <div className="content relative">
+                        <h4 className="summary-heading">Summary</h4>
+                        <ul>
+                            <li>
+                                <strong className="subheading">Subtotal</strong>
+                                <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                            <li>
+                                <strong className="subheading">Total</strong>
+                                <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                        </ul>
+                    </div>
+                    <OkBtn />
                 </div>
                 <div className="list">
                 </div>
@@ -96,10 +104,9 @@ export default class OrderList extends React.Component {
                     .summary {
                         float: right;
                         width: 30%;
-                        text-align: right;
                         position: relative;
                     }
-                    .summary::before {
+                    .summary > .content::before {
                         content: '';
                         height: 1px;
                         width: 100%;
@@ -110,8 +117,16 @@ export default class OrderList extends React.Component {
                         bottom: 0;
                     }
                 }
+                .summary {
+                    text-align: right;
+                }
                 .summary-heading {
                     text-transform: uppercase
+                }
+                @media screen and (max-width: 719px) {
+                    .summary-heading {
+                        display: none;
+                    }
                 }
                 .subheading {
                     float: left;
