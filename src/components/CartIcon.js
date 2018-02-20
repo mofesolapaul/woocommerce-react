@@ -11,9 +11,9 @@ export default ({clickHandler, visible, total}) => (
         <style jsx>{`
             @keyframes snap-in {
                 0% { visibility: visible; transform: scale(0) }
-                90% { transform: scale(1.2) }
-                93% { transform: scale(0.9) } 
-                98% { transform: scale(1.1) }
+                80% { transform: scale(1.5) }
+                90% { transform: scale(0.9) } 
+                98% { transform: scale(1.2) }
                 100% { visibility: visible; transform: scale(1) }
             }
             .CartIcon {

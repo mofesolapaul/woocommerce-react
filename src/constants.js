@@ -26,3 +26,5 @@ export const isEmpty = o => {
             break;
     }
 }
+
+export const moneyFormat = amt => amt.toLocaleString('en-US')

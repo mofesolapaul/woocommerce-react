@@ -1,6 +1,7 @@
 import React from 'react'
 import css from '../../styles/vars'
 import {Cart} from '../stores'
+import {moneyFormat} from '../constants'
 
 export default class OrderList extends React.Component {
     constructor(props) {
@@ -24,7 +25,7 @@ export default class OrderList extends React.Component {
     }
     render() {
         return <div className="OrderPreview">
-            <h1 className="font-sourcesans">Order Preview
+            <h1 className="font-sourcesans">Order Review
                 <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
             </h1>
 
@@ -34,10 +35,10 @@ export default class OrderList extends React.Component {
                     <ul>
                         <li>
                             <strong className="subheading">Subtotal</strong>
-                            <span className="price">N{this.state.total}</span></li>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
                         <li>
                             <strong className="subheading">Total</strong>
-                            <span className="price">N{this.state.total}</span></li>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
                     </ul>
                 </div>
                 <div className="list">
