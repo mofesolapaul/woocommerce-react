@@ -30,6 +30,7 @@ export default ({clickHandler, visible, total}) => (
                 cursor: pointer;
                 overflow: hidden;
                 border-radius: 100%;
+                transition: .25s ease-out;
             }
             .wrapper {
                 height: 100%;
@@ -63,6 +64,16 @@ export default ({clickHandler, visible, total}) => (
                 top: -2px;
                 left: -2px;
                 border-radius: 100%;
+            }
+            @media screen and (min-width: 781px) {
+                .CartIcon {
+                    width: 90px;
+                    height: 90px;
+                }
+                .price {
+                    font-size: x-large;
+                    line-height: 90px;
+                }
             }
         `}</style>
     </div>
