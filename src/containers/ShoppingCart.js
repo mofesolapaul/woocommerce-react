@@ -1,6 +1,6 @@
 import React from 'react'
 import {Cart} from '../stores'
-import { CartIcon, OrderList } from '../components'
+import { CartIcon, OrderList, View } from '../components'
 import {kformat} from '../constants'
 
 const NEUTRAL = 0
@@ -44,8 +44,20 @@ export default class ShoppingCart extends React.Component {
         let view = null
         switch (this.state.state) {
             case ORDER_PREVIEW:
-                view = <OrderList items={Cart.getAllOrders()}
+                view = <View>
+                        <OrderList items={Cart.getAllOrders()}
                             dismissHandler={this.closeCart.bind(this)} />
+                        <div className="blankette"></div>
+
+                        {/* styles */}
+                        <style jsx>{`
+                            @media screen and (min-width: 500px) {
+                                .blankette {
+                                    height: 60vh;
+                                }
+                            }
+                        `}</style>
+                    </View>
                 break;
             default:
                 view = !this.state.isEmpty?
