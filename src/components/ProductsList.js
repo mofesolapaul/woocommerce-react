@@ -6,7 +6,7 @@ const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
 
 // show more
 const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
-    <a onClick={finished? null:clickHandler} className={`btn show-more-btn ${finished? 'dead':''}`}>
+    <a onClick={finished? null:clickHandler} className={`btn sleek-btn ${finished? 'dead':''}`}>
         {!finished? 'Show more':"Yup, that's all!"}
     </a>
 </div>
@@ -71,18 +71,6 @@ const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
             .show-more-pane {
                 margin-top: 2rem;
                 text-align: center;
-            }
-            .show-more-btn {
-                padding: 1rem;
-                border-radius: 100px;
-                background: ${css.colors.ultrawhite};
-                border: none;
-                filter: drop-shadow(0px 4px 6px rgba(82,89,101,.25));
-            }
-            .show-more-btn:hover, .show-more-btn.dead {
-                background: ${css.colors.rogueblue};
-                color: ${css.colors.ultrawhite};
-                filter: none;
             }
         `}</style>
     </div>

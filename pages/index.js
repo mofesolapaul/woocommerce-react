@@ -2,7 +2,7 @@ import React from 'react'
 import Layout from '../src/layouts/_default'
 import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
-import {ProductsContainer} from '../src/containers'
+import { ProductsContainer, ShoppingCart } from '../src/containers'
 import { ProductsList } from '../src/components'
 import constants, {sleep} from '../src/constants'
 import {Cart} from '../src/stores'
@@ -26,12 +26,9 @@ export default class Index extends React.Component {
         }
     }
     componentWillMount() {
-        // Cart.on('order.*', () => { console.log('store changed') })
         this.showProducts();
     }
-    componentWillUnmount() {
-        // Cart.off('order.*')
-    }
+    componentWillUnmount() {}
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay} = this.state 
         this.setState({ loading: !products.length, loadingFailed: false })
@@ -84,6 +81,8 @@ export default class Index extends React.Component {
             <ProductsContainer>
                 <ProductsList {...productListProps} />
             </ProductsContainer>
+
+            <ShoppingCart />
             
             {/* style */}
             <style jsx>{`

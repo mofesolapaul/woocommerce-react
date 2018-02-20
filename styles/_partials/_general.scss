@@ -47,3 +47,31 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
+.sleek-btn {
+    padding: 1rem;
+    border-radius: 100px;
+    background: $ultrawhite;
+    border: none;
+    &:not(.no-shadow) {
+        filter: drop-shadow(0px 4px 6px rgba(82,89,101,.25));
+    }
+    &:hover, &.dead {
+        background: $rogueblue;
+        color: $ultrawhite;
+        filter: none;
+    }
+    &.green {
+        background: teal;
+        color: $ultrawhite;
+        &:hover {
+            background: darken(teal, 5%);
+        }
+    }
+}
+ul {
+    padding: 0;
+    list-style: none;
+}
+.relative {
+    position: relative;
+}

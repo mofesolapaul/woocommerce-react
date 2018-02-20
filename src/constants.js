@@ -12,3 +12,19 @@ export default {
 }
 
 export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+export const kformat = num => (
+    num > 999999? (num/1000).toFixed(1) + 'M' : (
+        num > 999? (num/1000).toFixed(1) + 'k' : num
+    )
+)
+
+export const isEmpty = o => {
+    switch (typeof o) {
+        case 'object':
+            return Object.keys(o).length == 0
+            break;
+    }
+}
+
+export const moneyFormat = amt => amt.toLocaleString('en-US')
