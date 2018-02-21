@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import css from '../../styles/vars'
 import {Cart} from '../stores'
+import actions from '../actions'
 import {moneyFormat} from '../constants'
 import {OrderItem} from '.'
 
@@ -34,6 +35,7 @@ export default class OrderList extends React.Component {
         switch (type) {
             case 'order.qty.change':
                 if (!data.el.value || data.el.value < 1) data.el.value = 1;
+                else actions.updateQty(data.id, data.el.value)
                 break;
         }
     }

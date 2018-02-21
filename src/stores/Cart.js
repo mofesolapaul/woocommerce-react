@@ -20,6 +20,16 @@ export default flux.createStore({
             this.emit('order.remove')
         }
     },
+    deleteOrder: function(id) {
+        delete this.orders[id]
+        this.emit('order.delete')
+    },
+    updateQty: function(id, qty) {
+        if (this.orders.id) {
+            this.orders[id].qty = qty
+            this.emit('order.qty')
+        }
+    },
     persist: function() {
 
     },
