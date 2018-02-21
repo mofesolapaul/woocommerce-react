@@ -74,18 +74,14 @@ export default class OrderList extends React.Component {
                     left: 0;
                     z-index: 999;
                     transition: .25s ease-in-out;
+                    height: 100%;
+                    bottom: -100%;
+                    animation: drawUp ease-in .25s both;
                 }
-                @media screen and (min-width: 500px) {
+                @media screen and (min-width: 720px) {
                     .OrderPreview {
                         height: 60%;
                         bottom: -65%;
-                        animation: drawUp ease-in .25s both;
-                    }
-                }
-                @media screen and (max-width: 499px) {
-                    .OrderPreview {
-                        height: 100%;
-                        bottom: -100%;
                         animation: drawUp ease-in .25s both;
                     }
                 }
@@ -108,10 +104,13 @@ export default class OrderList extends React.Component {
                     flex-grow: 1;
                 }
                 @media screen and (min-width: 720px) {
+                    .wrapper {
+                        flex-direction: row-reverse;
+                    }
                     .summary {
-                        float: right;
                         width: 30%;
                         position: relative;
+                        padding-left: .5rem;
                     }
                     .summary > .content::before {
                         content: '';
@@ -131,8 +130,14 @@ export default class OrderList extends React.Component {
                     text-transform: uppercase
                 }
                 @media screen and (max-width: 719px) {
+                    .wrapper {
+                        flex-direction: column;
+                    }
                     .summary-heading {
                         display: none;
+                    }
+                    .summary {
+                        padding-bottom: .5rem;
                     }
                 }
                 .subheading {
@@ -145,6 +150,7 @@ export default class OrderList extends React.Component {
                 // list
                 .list {
                     flex-grow: 1;
+                    overflow-y: auto;
                 }
             `}</style>
         </div>
