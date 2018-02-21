@@ -54,7 +54,7 @@ export default class OrderList extends React.Component {
                     <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
                 </h1>
                 <div className="wrapper flex">
-                    <div className="summary">
+                    {!!items.length? <div className="summary">
                         <div className="content relative">
                             <h4 className="summary-heading">Summary</h4>
                             <ul>
@@ -67,7 +67,7 @@ export default class OrderList extends React.Component {
                             </ul>
                         </div>
                         <OkBtn />
-                    </div>
+                    </div>:null}
                     <div className="list">{items}</div>
                 </div>
             </div>
