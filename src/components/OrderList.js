@@ -17,6 +17,7 @@ export default class OrderList extends React.Component {
         
         // bind
         this.updateState = this.updateState.bind(this)
+        this.actionHandler = this.actionHandler.bind(this)
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
@@ -30,8 +31,11 @@ export default class OrderList extends React.Component {
             total: Cart.getTotal(),
         })
     }
+    actionHandler(type, data) {
+        console.log(type, data)
+    }
     render() {
-        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} />)
+        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />)
         return <div className="OrderPreview">
             <Head>
                 <title>SmoothieExpress: Order Review</title>

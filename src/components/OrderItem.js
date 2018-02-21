@@ -1,7 +1,7 @@
 import css from '../../styles/vars'
 import {moneyFormat} from '../constants'
 
-export default ({item, clickHandler}) => <div className="OrderItem flex">
+export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />
     <div className="info">
         <h3 className="title font-sourcesans">{item.product.name}</h3>
@@ -9,7 +9,8 @@ export default ({item, clickHandler}) => <div className="OrderItem flex">
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
-        <input type="number" value={item.qty} />
+        <input type="number" min="1" defaultValue={item.qty}
+            onChange={e => actionHandler('order.qty.change', {id: item.product.id, el: e.target})} />
     </div>
 
     {/* styles */}
