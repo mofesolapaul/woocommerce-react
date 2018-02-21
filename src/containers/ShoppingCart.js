@@ -1,7 +1,7 @@
 import React from 'react'
 import {Cart} from '../stores'
 import { CartIcon, OrderList, View } from '../components'
-import {kformat} from '../constants'
+import {bindToThis, kformat} from '../constants'
 
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
@@ -16,7 +16,9 @@ export default class ShoppingCart extends React.Component {
         }
 
         // bind
-        this.updateState = this.updateState.bind(this)
+        bindToThis(this, 'updateState')
+        bindToThis(this, 'closeCart')
+        bindToThis(this, 'openCart')
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
@@ -46,7 +48,7 @@ export default class ShoppingCart extends React.Component {
             case ORDER_PREVIEW:
                 view = <View>
                         <OrderList items={Cart.getAllOrders()}
-                            dismissHandler={this.closeCart.bind(this)} />
+                            dismissHandler={this.closeCart} />
                         <div className="blankette"></div>
 
                         {/* styles */}
@@ -61,7 +63,7 @@ export default class ShoppingCart extends React.Component {
                 break;
             default:
                 view = !this.state.isEmpty?
-                    <CartIcon clickHandler={this.openCart.bind(this)} total={kformat(this.state.total)} />:null
+                    <CartIcon clickHandler={this.openCart} total={kformat(this.state.total)} />:null
                 break;
         }
         return <div className="ShoppingCart">{view}</div>

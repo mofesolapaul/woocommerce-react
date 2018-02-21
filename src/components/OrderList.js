@@ -3,7 +3,7 @@ import Head from 'next/head'
 import css from '../../styles/vars'
 import {Cart} from '../stores'
 import actions from '../actions'
-import {moneyFormat} from '../constants'
+import {bindToThis, moneyFormat} from '../constants'
 import {OrderItem} from '.'
 
 // show more
@@ -17,8 +17,8 @@ export default class OrderList extends React.Component {
         this.state = { total: Cart.getTotal() }
         
         // bind
-        this.updateState = this.updateState.bind(this)
-        this.actionHandler = this.actionHandler.bind(this)
+        bindToThis(this, 'updateState')
+        bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)

@@ -1,14 +1,15 @@
 import React from 'react'
 import css from '../../styles/vars'
 import {View} from './'
+import {bindToThis} from '../constants'
 
 export default class CartButtons extends React.Component {
     constructor(props) {
         super(props)
 
         // bind
-        this.add = this.add.bind(this)
-        this.remove = this.remove.bind(this)
+        bindToThis(this, 'add')
+        bindToThis(this, 'remove')
     }
     add() {
         this.props.handler && this.props.handler('cart.button.add')

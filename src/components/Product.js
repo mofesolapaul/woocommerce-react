@@ -2,15 +2,29 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
+import {bindToThis} from '../constants'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
     constructor(props) {
         super(props)
         this.state = { qty: 0 }
+
+        // bind
+        bindToThis(this, 'updateState')
+        bindToThis(this, 'buttonAction')
     }
-    componentDidMount() {
+    componentWillMount() {
+        Cart.on('order.*', this.updateState)
         this.setState({ qty: Cart.getQty(this.props.item.id) })
+    }
+    componentWillUnmount() {
+        Cart.off('order.*', this.updateState)
+    }
+    updateState() {
+        this.setState({
+            qty: Cart.getQty(this.props.item.id),
+        })
     }
     buttonAction(sig) {
         if (sig == 'cart.button.add') actions.addToCart(this.props.item)
@@ -26,7 +40,7 @@ class Product extends React.Component{
             </div>
             <div className="flex">
                 <h4 className="title slim">{item.name}</h4>
-                <CartButtons handler={this.buttonAction.bind(this)} />
+                <CartButtons handler={this.buttonAction} />
             </div>
             <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
