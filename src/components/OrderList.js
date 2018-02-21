@@ -32,7 +32,11 @@ export default class OrderList extends React.Component {
         })
     }
     actionHandler(type, data) {
-        console.log(type, data)
+        switch (type) {
+            case 'order.qty.change':
+                if (!data.el.value || data.el.value < 1) data.el.value = 1;
+                break;
+        }
     }
     render() {
         const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />)
