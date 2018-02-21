@@ -21,7 +21,6 @@ export default class OrderList extends React.Component {
         bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
-        console.log('Order Change')
         Cart.on('order.*', this.updateState)
     }
     componentWillUnmount() {
@@ -37,6 +36,9 @@ export default class OrderList extends React.Component {
             case 'order.qty.change':
                 if (!data.el.value || data.el.value < 1) data.el.value = 1;
                 else actions.updateQty(data.id, data.el.value)
+                break;
+            case 'order.delete':
+                actions.deleteOrder(data.id)
                 break;
         }
     }

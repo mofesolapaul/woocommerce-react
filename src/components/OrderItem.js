@@ -6,7 +6,8 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="info">
         <h3 className="title font-sourcesans">{item.product.name}</h3>
         <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
-        <a className="btn">Remove from cart</a>
+        <a className="btn"
+            onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
