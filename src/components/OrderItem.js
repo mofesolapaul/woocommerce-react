@@ -7,6 +7,10 @@ export default ({item, clickHandler}) => <div className="OrderItem flex">
         <h3 className="title font-sourcesans">{item.product.name}</h3>
         <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
     </div>
+    <div className="action">
+        <div><strong>Qty:</strong></div>
+        <input type="number" value={item.qty} />
+    </div>
 
     {/* styles */}
     <style jsx>{`

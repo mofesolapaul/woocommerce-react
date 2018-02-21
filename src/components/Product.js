@@ -12,9 +12,9 @@ class Product extends React.Component{
     componentDidMount() {
         this.setState({ qty: Cart.getQty(this.props.item.id) })
     }
-    buttonAction(up = true) {
-        if (!!up) actions.addToCart(this.props.item)
-        else actions.removeFromCart(this.props.item)
+    buttonAction(sig) {
+        if (sig == 'cart.button.add') actions.addToCart(this.props.item)
+        else if (sig == 'cart.button.remove') actions.removeFromCart(this.props.item)
         this.setState({ qty: Cart.getQty(this.props.item.id) })
     }
     render() {

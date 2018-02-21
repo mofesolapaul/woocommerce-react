@@ -143,6 +143,9 @@ export default class OrderList extends React.Component {
                     .summary {
                         padding-bottom: 1rem;
                     }
+                    .list {
+                        padding-top: .5rem;
+                    }
                 }
                 .subheading {
                     float: left;
