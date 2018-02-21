@@ -85,6 +85,9 @@ export default class OrderList extends React.Component {
                         bottom: -65%;
                         animation: drawUp ease-in .25s both;
                     }
+                    .list {
+                        margin-right: 1rem;
+                    }
                 }
                 .close {
                     font-weight: 100;
@@ -113,16 +116,16 @@ export default class OrderList extends React.Component {
                         position: relative;
                         padding-left: .5rem;
                     }
-                    .summary > .content::before {
-                        content: '';
-                        height: 1px;
-                        width: 100%;
-                        background: ${css.colors.orchidash};
-                        margin: auto;
-                        position: absolute;
-                        display: block;
-                        bottom: 0;
-                    }
+                }
+                .summary > .content::before {
+                    content: '';
+                    height: 1px;
+                    width: 100%;
+                    background: ${css.colors.orchidash};
+                    margin: auto;
+                    position: absolute;
+                    display: block;
+                    bottom: 0;
                 }
                 .summary {
                     text-align: right;
@@ -138,7 +141,7 @@ export default class OrderList extends React.Component {
                         display: none;
                     }
                     .summary {
-                        padding-bottom: .5rem;
+                        padding-bottom: 1rem;
                     }
                 }
                 .subheading {

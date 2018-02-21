@@ -4,15 +4,24 @@ import {moneyFormat} from '../constants'
 export default ({item, clickHandler}) => <div className="OrderItem flex">
     <div className="img" />
     <div className="info">
-        <h3 className="title">{item.product.name}</h3>
-        <p className="text">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
+        <h3 className="title font-sourcesans">{item.product.name}</h3>
+        <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
     </div>
 
     {/* styles */}
     <style jsx>{`
         .OrderItem {
             color: ${css.colors.rogueblue};
-            margin-bottom: .5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .OrderItem + .OrderItem > .info::before {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: ${css.colors.orchidash};
+            top: -.5rem;
+            content: '';
         }
         .img {
             width: 48px;
