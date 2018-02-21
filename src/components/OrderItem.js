@@ -6,10 +6,11 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="info">
         <h3 className="title font-sourcesans">{item.product.name}</h3>
         <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
+        <a className="btn">Remove from cart</a>
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
-        <input type="number" min="1" defaultValue={item.qty}
+        <input className="qty font-playfair" type="number" min="1" value={item.qty}
             onChange={e => actionHandler('order.qty.change', {id: item.product.id, el: e.target})} />
     </div>
 
@@ -43,7 +44,24 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
             margin: 0
         }
         .text {
-            margin-top: 2px;
+            margin: 2px 0;
+        }
+        .qty {
+            border: solid thin ${css.colors.wisteriasnow};
+            background: none !important;
+            font-size: larger;
+            padding: 4px;
+            max-width: 64px;
+            margin-top: 4px;
+        }
+        .btn {
+            padding: 2px 4px;
+            background: ${css.colors.desertbone};
+            color: ${css.colors.fallleaf};
+            font-size: x-small;
+            border: none;
+            font-weight: lighter;
+            letter-spacing: .5px;
         }
     `}</style>
 </div>

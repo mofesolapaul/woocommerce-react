@@ -26,7 +26,6 @@ export default class OrderList extends React.Component {
         Cart.off('order.*', this.updateState)
     }
     updateState() {
-        console.log('try updating')
         this.setState({
             total: Cart.getTotal(),
         })
