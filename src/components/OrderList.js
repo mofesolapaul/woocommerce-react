@@ -34,26 +34,28 @@ export default class OrderList extends React.Component {
             <Head>
                 <title>SmoothieExpress: Order Review</title>
             </Head>
-            <h1 className="font-sourcesans">Order Review
-                <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
-            </h1>
 
-            <div className="wrapper">
-                <div className="summary">
-                    <div className="content relative">
-                        <h4 className="summary-heading">Summary</h4>
-                        <ul>
-                            <li>
-                                <strong className="subheading">Subtotal</strong>
-                                <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
-                            <li>
-                                <strong className="subheading">Total</strong>
-                                <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
-                        </ul>
+            <div className="flex col">
+                <h1 className="font-sourcesans">Order Review
+                    <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
+                </h1>
+                <div className="wrapper flex">
+                    <div className="summary">
+                        <div className="content relative">
+                            <h4 className="summary-heading">Summary</h4>
+                            <ul>
+                                <li>
+                                    <strong className="subheading">Subtotal</strong>
+                                    <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                                <li>
+                                    <strong className="subheading">Total</strong>
+                                    <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                            </ul>
+                        </div>
+                        <OkBtn />
                     </div>
-                    <OkBtn />
-                </div>
-                <div className="list">
+                    <div className="list">
+                    </div>
                 </div>
             </div>
 
@@ -99,7 +101,12 @@ export default class OrderList extends React.Component {
                     opacity: .8;
                 }
 
-                // wrapper
+                .flex {
+                    height: 100%;
+                }
+                .wrapper {
+                    flex-grow: 1;
+                }
                 @media screen and (min-width: 720px) {
                     .summary {
                         float: right;
@@ -133,6 +140,11 @@ export default class OrderList extends React.Component {
                 }
                 .summary li {
                     padding: .5rem 0
+                }
+
+                // list
+                .list {
+                    flex-grow: 1;
                 }
             `}</style>
         </div>
