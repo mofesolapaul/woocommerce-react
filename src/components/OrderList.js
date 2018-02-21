@@ -21,6 +21,7 @@ export default class OrderList extends React.Component {
         bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
+        console.log('Order Change')
         Cart.on('order.*', this.updateState)
     }
     componentWillUnmount() {

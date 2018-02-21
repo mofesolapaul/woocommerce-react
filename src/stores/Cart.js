@@ -7,6 +7,8 @@ export default flux.createStore({
     actions: [
         actions.addToCart,
         actions.removeFromCart,
+        actions.deleteOrder,
+        actions.updateQty,
     ],
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
@@ -25,7 +27,7 @@ export default flux.createStore({
         this.emit('order.delete')
     },
     updateQty: function(id, qty) {
-        if (this.orders.id) {
+        if (this.orders[id]) {
             this.orders[id].qty = qty
             this.emit('order.qty')
         }
