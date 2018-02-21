@@ -2,6 +2,7 @@ import CartButtons from './CartButtons'
 import CartIcon from './CartIcon'
 import Loading from './Loading'
 import NotFound from './NotFound'
+import OrderItem from './OrderItem'
 import OrderList from './OrderList'
 import PriceDisplay from './PriceDisplay'
 import Product from './Product'
@@ -14,6 +15,7 @@ export {
     CartIcon,
     Loading,
     NotFound,
+    OrderItem,
     OrderList,
     PriceDisplay,
     Product,

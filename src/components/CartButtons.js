@@ -1,18 +1,26 @@
 import React from 'react'
 import css from '../../styles/vars'
 import {View} from './'
+import {bindToThis} from '../constants'
 
 export default class CartButtons extends React.Component {
+    constructor(props) {
+        super(props)
+
+        // bind
+        bindToThis(this, 'add')
+        bindToThis(this, 'remove')
+    }
     add() {
-        this.props.handler && this.props.handler()
+        this.props.handler && this.props.handler('cart.button.add')
     }
     remove() {
-        this.props.handler && this.props.handler(false)
+        this.props.handler && this.props.handler('cart.button.remove')
     }
     render() {
         return <View>
-            <a className="btn cart-btn left" onClick={this.remove.bind(this)}>{`\u2013`}</a>
-            <a className="btn cart-btn right" onClick={this.add.bind(this)}>+</a>
+            <a className="btn cart-btn left" onClick={this.remove}>{`\u2013`}</a>
+            <a className="btn cart-btn right" onClick={this.add}>+</a>
 
             {/* style */}
             <style jsx>{`

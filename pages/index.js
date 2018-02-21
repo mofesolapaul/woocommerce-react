@@ -4,7 +4,7 @@ import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
 import { ProductsList } from '../src/components'
-import constants, {sleep} from '../src/constants'
+import constants, {bindToThis, sleep} from '../src/constants'
 import {Cart} from '../src/stores'
 
 const _products = async(per_page, page) => {
@@ -24,6 +24,9 @@ export default class Index extends React.Component {
             loading: true,
             loadingFailed: false,
         }
+
+        // bind
+        bindToThis(this, 'showProducts')
     }
     componentWillMount() {
         this.showProducts();
@@ -66,7 +69,7 @@ export default class Index extends React.Component {
     render() {
         const productListProps = {
             items: this.state.productsOnDisplay, // products to display
-            _showMore: this.showProducts.bind(this), // handler for show more button
+            _showMore: this.showProducts, // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
             loading: this.state.loading, // show loader or not
             notfound: this.state.loadingFailed, // did we fail to load products from server?

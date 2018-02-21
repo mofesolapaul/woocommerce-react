@@ -2,7 +2,9 @@ import React from 'react'
 import Head from 'next/head'
 import css from '../../styles/vars'
 import {Cart} from '../stores'
-import {moneyFormat} from '../constants'
+import actions from '../actions'
+import {bindToThis, moneyFormat} from '../constants'
+import {OrderItem} from '.'
 
 // show more
 const OkBtn = ({clickHandler, finished}) => <div className="text-center">
@@ -15,7 +17,8 @@ export default class OrderList extends React.Component {
         this.state = { total: Cart.getTotal() }
         
         // bind
-        this.updateState = this.updateState.bind(this)
+        bindToThis(this, 'updateState')
+        bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
@@ -24,36 +27,48 @@ export default class OrderList extends React.Component {
         Cart.off('order.*', this.updateState)
     }
     updateState() {
-        console.log('try updating')
         this.setState({
             total: Cart.getTotal(),
         })
     }
+    actionHandler(type, data) {
+        switch (type) {
+            case 'order.qty.change':
+                if (!data.el.value || data.el.value < 1) data.el.value = 1;
+                else actions.updateQty(data.id, data.el.value)
+                break;
+            case 'order.delete':
+                actions.deleteOrder(data.id)
+                break;
+        }
+    }
     render() {
+        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />)
         return <div className="OrderPreview">
             <Head>
                 <title>SmoothieExpress: Order Review</title>
             </Head>
-            <h1 className="font-sourcesans">Order Review
-                <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
-            </h1>
 
-            <div className="wrapper">
-                <div className="summary">
-                    <div className="content relative">
-                        <h4 className="summary-heading">Summary</h4>
-                        <ul>
-                            <li>
-                                <strong className="subheading">Subtotal</strong>
-                                <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
-                            <li>
-                                <strong className="subheading">Total</strong>
-                                <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
-                        </ul>
-                    </div>
-                    <OkBtn />
-                </div>
-                <div className="list">
+            <div className="flex col">
+                <h1 className="font-sourcesans">Order Review
+                    <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
+                </h1>
+                <div className="wrapper flex">
+                    {!!items.length? <div className="summary">
+                        <div className="content relative">
+                            <h4 className="summary-heading">Summary</h4>
+                            <ul>
+                                <li>
+                                    <strong className="subheading">Subtotal</strong>
+                                    <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                                <li>
+                                    <strong className="subheading">Total</strong>
+                                    <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                            </ul>
+                        </div>
+                        <OkBtn />
+                    </div>:null}
+                    <div className="list">{items}</div>
                 </div>
             </div>
 
@@ -72,19 +87,18 @@ export default class OrderList extends React.Component {
                     left: 0;
                     z-index: 999;
                     transition: .25s ease-in-out;
+                    height: 100%;
+                    bottom: -100%;
+                    animation: drawUp ease-in .25s both;
                 }
-                @media screen and (min-width: 500px) {
+                @media screen and (min-width: 720px) {
                     .OrderPreview {
                         height: 60%;
                         bottom: -65%;
                         animation: drawUp ease-in .25s both;
                     }
-                }
-                @media screen and (max-width: 499px) {
-                    .OrderPreview {
-                        height: 100%;
-                        bottom: -100%;
-                        animation: drawUp ease-in .25s both;
+                    .list {
+                        margin-right: 1rem;
                     }
                 }
                 .close {
@@ -99,23 +113,31 @@ export default class OrderList extends React.Component {
                     opacity: .8;
                 }
 
-                // wrapper
+                .flex {
+                    height: 100%;
+                }
+                .wrapper {
+                    flex-grow: 1;
+                }
                 @media screen and (min-width: 720px) {
+                    .wrapper {
+                        flex-direction: row-reverse;
+                    }
                     .summary {
-                        float: right;
                         width: 30%;
                         position: relative;
+                        padding-left: .5rem;
                     }
-                    .summary > .content::before {
-                        content: '';
-                        height: 1px;
-                        width: 100%;
-                        background: ${css.colors.orchidash};
-                        margin: auto;
-                        position: absolute;
-                        display: block;
-                        bottom: 0;
-                    }
+                }
+                .summary > .content::before {
+                    content: '';
+                    height: 1px;
+                    width: 100%;
+                    background: ${css.colors.orchidash};
+                    margin: auto;
+                    position: absolute;
+                    display: block;
+                    bottom: 0;
                 }
                 .summary {
                     text-align: right;
@@ -124,8 +146,17 @@ export default class OrderList extends React.Component {
                     text-transform: uppercase
                 }
                 @media screen and (max-width: 719px) {
+                    .wrapper {
+                        flex-direction: column;
+                    }
                     .summary-heading {
                         display: none;
+                    }
+                    .summary {
+                        padding-bottom: 1rem;
+                    }
+                    .list {
+                        padding-top: .5rem;
                     }
                 }
                 .subheading {
@@ -133,6 +164,12 @@ export default class OrderList extends React.Component {
                 }
                 .summary li {
                     padding: .5rem 0
+                }
+
+                // list
+                .list {
+                    flex-grow: 1;
+                    overflow-y: auto;
                 }
             `}</style>
         </div>
