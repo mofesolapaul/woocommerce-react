@@ -3,6 +3,7 @@ import Head from 'next/head'
 import css from '../../styles/vars'
 import {Cart} from '../stores'
 import {moneyFormat} from '../constants'
+import {OrderItem} from '.'
 
 // show more
 const OkBtn = ({clickHandler, finished}) => <div className="text-center">
@@ -30,6 +31,7 @@ export default class OrderList extends React.Component {
         })
     }
     render() {
+        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} />)
         return <div className="OrderPreview">
             <Head>
                 <title>SmoothieExpress: Order Review</title>
@@ -54,8 +56,7 @@ export default class OrderList extends React.Component {
                         </div>
                         <OkBtn />
                     </div>
-                    <div className="list">
-                    </div>
+                    <div className="list">{items}</div>
                 </div>
             </div>
 
