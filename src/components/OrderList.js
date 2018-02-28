@@ -8,7 +8,7 @@ import {OrderItem} from '.'
 
 // show more
 const OkBtn = ({clickHandler, finished}) => <div className="text-center">
-    <a onClick={finished? null:clickHandler} className={`btn sleek-btn green no-shadow`}>Continue</a>
+    <a onClick={() => finished? null:clickHandler('order.checkout.pick_location')} className={`btn sleek-btn green no-shadow`}>Continue</a>
 </div>
 
 export default class OrderList extends React.Component {
@@ -30,7 +30,7 @@ export default class OrderList extends React.Component {
         this.setState({
             total: Cart.getTotal(),
         })
-        if (Cart.isEmpty()) this.props.dismissHandler()
+        if (Cart.isEmpty()) this.actionHandler('cart.dismiss')
     }
     actionHandler(type, data) {
         switch (type) {
@@ -41,6 +41,9 @@ export default class OrderList extends React.Component {
             case 'order.delete':
                 actions.deleteOrder(data.id)
                 break;
+            default:
+                this.props.actionHandler && this.props.actionHandler(type, data)
+                break
         }
     }
     render() {
@@ -52,7 +55,7 @@ export default class OrderList extends React.Component {
 
             <div className="flex col">
                 <h1 className="font-sourcesans">Order Review
-                    <a className="close" onClick={this.props.dismissHandler}>{`\u00d7`}</a>
+                    <a className="close" onClick={() => this.actionHandler('cart.dismiss')}>{`\u00d7`}</a>
                 </h1>
                 <div className="wrapper flex">
                     <div className="summary">
@@ -67,7 +70,7 @@ export default class OrderList extends React.Component {
                                     <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
                             </ul>
                         </div>
-                        <OkBtn />
+                        <OkBtn clickHandler={this.actionHandler} />
                     </div>
                     <div className="list">{items}</div>
                 </div>

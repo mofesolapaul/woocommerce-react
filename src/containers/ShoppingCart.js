@@ -5,6 +5,7 @@ import {bindToThis, kformat} from '../constants'
 
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
+const PICK_LOCATION = 2
 
 export default class ShoppingCart extends React.Component {
     constructor(props) {
@@ -19,6 +20,7 @@ export default class ShoppingCart extends React.Component {
         bindToThis(this, 'updateState')
         bindToThis(this, 'closeCart')
         bindToThis(this, 'openCart')
+        bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
@@ -32,6 +34,16 @@ export default class ShoppingCart extends React.Component {
             total: Cart.getTotal(),
         })
     }
+    actionHandler(type, data) {
+        switch (type) {
+            case 'order.checkout.pick_location':
+                this.pickLocation()
+                break;
+            case 'cart.dismiss':
+                this.closeCart()
+                break;
+        }
+    }
     openCart() {
         this.setState({
             state: ORDER_PREVIEW
@@ -42,13 +54,19 @@ export default class ShoppingCart extends React.Component {
             state: NEUTRAL
         })
     }
+    pickLocation() {
+        this.setState({
+            state: PICK_LOCATION
+        })
+        console.log('pick location')
+    }
     render() {
         let view = null
         switch (this.state.state) {
             case ORDER_PREVIEW:
                 view = <View>
                         <OrderList items={Cart.getAllOrders()}
-                            dismissHandler={this.closeCart} />
+                            actionHandler={this.actionHandler} />
                         <div className="blankette"></div>
 
                         {/* styles */}
