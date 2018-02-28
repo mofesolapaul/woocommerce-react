@@ -30,7 +30,7 @@ const MapElement = compose(
                         // all of this nesting ugliness is based on the result object structure
                         let {legs} = result.routes[0]
                         if (legs[0]) {
-                            this.props.actionHandler({
+                            this.props.actionHandler('map.destination.meta', {
                                 mapDestinationDistance: legs[0].distance.text,
                                 mapDestinationDuration: legs[0].duration.text,
                             })
