@@ -12,7 +12,7 @@ class Product extends React.Component{
 
         // bind
         bindToThis(this, 'updateState')
-        bindToThis(this, 'buttonAction')
+        bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
@@ -26,9 +26,12 @@ class Product extends React.Component{
             qty: Cart.getQty(this.props.item.id),
         })
     }
-    buttonAction(sig) {
-        if (sig == 'cart.button.add') actions.addToCart(this.props.item)
-        else if (sig == 'cart.button.remove') actions.removeFromCart(this.props.item)
+    actionHandler(type, data) {
+        switch (type) {
+            default:
+                this.props.actionHandler(type, this.props.item)
+                break;
+        }
         this.setState({ qty: Cart.getQty(this.props.item.id) })
     }
     render() {
@@ -40,7 +43,7 @@ class Product extends React.Component{
             </div>
             <div className="flex">
                 <h4 className="title slim">{item.name}</h4>
-                <CartButtons handler={this.buttonAction} />
+                <CartButtons handler={this.actionHandler} />
             </div>
             <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 

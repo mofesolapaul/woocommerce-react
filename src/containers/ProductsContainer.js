@@ -2,12 +2,17 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
+import {bindToThis} from '../constants'
 import { Loading, NotFound, Product, ProductRowDivider, ShowMoreBtn, View } from '../components'
 
 class ProductsContainer extends React.Component {
     constructor(props) {
         super(props)
         this.state = {...this.props}
+
+        // bind
+        bindToThis(this, 'updateState')
+        bindToThis(this, 'actionHandler')
     }
     componentWillReceiveProps(props) {
         this.setState({
@@ -25,6 +30,16 @@ class ProductsContainer extends React.Component {
     updateState() {
         // this.setState({})
     }
+    actionHandler(type, data) {
+        switch (type) {
+            case 'cart.button.add':
+                actions.addToCart(data)
+                break;
+            case 'cart.button.remove':
+                actions.removeFromCart(data)
+                break;
+        }
+    }
     render() {
         let {items, _showMore, canShowMore, loading, notfound} = this.state
         return <div className="wrapper">
@@ -32,7 +47,7 @@ class ProductsContainer extends React.Component {
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
-                            <Product _key={index} item={product} />
+                            <Product _key={index} item={product} actionHandler={this.actionHandler} />
                             {(index+1)%2 || items.length-1 == index? null:<ProductRowDivider k={2} />}
                             {(index+1)%3 || items.length-1 == index? null:<ProductRowDivider k={3} />}
                             {(index+1)%4 || items.length-1 == index? null:<ProductRowDivider k={4} />}
