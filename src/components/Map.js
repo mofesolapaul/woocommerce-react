@@ -5,6 +5,7 @@ import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
 
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox")
+const mapStyles = require('../../styles/map.json')
 
 const MapElement = compose(
     withProps({
@@ -16,7 +17,7 @@ const MapElement = compose(
     lifecycle({
         componentWillMount() {
             const refs = {}
-console.log(this.props)
+
             this.setState({
                 bounds: null,
                 center: {
@@ -70,7 +71,8 @@ console.log(this.props)
         ref={props.onMapMounted}
         defaultZoom={15}
         center={props.center}
-        onBoundsChanged={props.onBoundsChanged} >
+        onBoundsChanged={props.onBoundsChanged}
+        defaultOptions={{ styles: mapStyles }} >
         <SearchBox
             ref={props.onSearchBoxMounted}
             bounds={props.bounds}
