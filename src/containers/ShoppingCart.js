@@ -1,5 +1,6 @@
 import React from 'react'
 import {Cart} from '../stores'
+import actions from '../actions'
 import { CartIcon, OrderList, View } from '../components'
 import {bindToThis, kformat} from '../constants'
 
@@ -41,6 +42,9 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'cart.dismiss':
                 this.closeCart()
+                break;
+            case 'order.qty.change':
+                actions.updateQty(data.id, data.value)
                 break;
         }
     }
