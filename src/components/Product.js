@@ -1,35 +1,40 @@
 import React from 'react'
 import css from '../../styles/vars'
-import actions from '../actions'
-import {Cart} from '../stores'
 import {bindToThis} from '../constants'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
     constructor(props) {
         super(props)
-        this.state = { qty: 0 }
+        this.state = { qty: props.item.qty }
 
         // bind
-        bindToThis(this, 'updateState')
-        bindToThis(this, 'buttonAction')
+        bindToThis(this, 'actionHandler')
+        bindToThis(this, 'updateQty')
+
+        // register for qty updates
+        props.registrar && props.registrar(props.item.id, this.updateQty)
     }
-    componentWillMount() {
-        Cart.on('order.*', this.updateState)
-        this.setState({ qty: Cart.getQty(this.props.item.id) })
+    actionHandler(type, data) {
+        let {qty} = this.state
+        switch (type) {
+            case 'cart.button.add':
+                this.setState({ qty: qty+1 })
+                this.props.actionHandler(type, this.props.item)
+                break;
+            case 'cart.button.remove':
+                if (qty != 0) {
+                    this.setState({ qty: qty-1 })
+                    this.props.actionHandler(type, this.props.item)
+                }
+                break;
+            default:
+                this.props.actionHandler(type, data)
+                break;
+        }
     }
-    componentWillUnmount() {
-        Cart.off('order.*', this.updateState)
-    }
-    updateState() {
-        this.setState({
-            qty: Cart.getQty(this.props.item.id),
-        })
-    }
-    buttonAction(sig) {
-        if (sig == 'cart.button.add') actions.addToCart(this.props.item)
-        else if (sig == 'cart.button.remove') actions.removeFromCart(this.props.item)
-        this.setState({ qty: Cart.getQty(this.props.item.id) })
+    updateQty(val) {
+        this.setState({ qty: val })
     }
     render() {
         let {item,_key: key} = this.props
@@ -40,7 +45,7 @@ class Product extends React.Component{
             </div>
             <div className="flex">
                 <h4 className="title slim">{item.name}</h4>
-                <CartButtons handler={this.buttonAction} />
+                <CartButtons handler={this.actionHandler} />
             </div>
             <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 

@@ -3,7 +3,6 @@ import Layout from '../src/layouts/_default'
 import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
-import { ProductsList } from '../src/components'
 import constants, {bindToThis, sleep} from '../src/constants'
 import {Cart} from '../src/stores'
 
@@ -15,7 +14,7 @@ export default class Index extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            per_page: 12,
+            per_page: 22,
             products: [],
             productsOnDisplay: [],
             page: 1,
@@ -67,7 +66,7 @@ export default class Index extends React.Component {
         if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());
     }
     render() {
-        const productListProps = {
+        const productContainerProps = {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts, // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
@@ -81,9 +80,7 @@ export default class Index extends React.Component {
                 <h4 className="slogan">find the perfect blend</h4>
             </div>
             
-            <ProductsContainer>
-                <ProductsList {...productListProps} />
-            </ProductsContainer>
+            <ProductsContainer {...productContainerProps}></ProductsContainer>
 
             <ShoppingCart />
             
