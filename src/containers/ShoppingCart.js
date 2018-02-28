@@ -87,7 +87,7 @@ export default class ShoppingCart extends React.Component {
                     </View>
                 break;
             case PICK_LOCATION:
-                view = <Map />
+                view = <Map actionHandler={this.actionHandler} />
                 break;
             default:
                 view = !this.state.isEmpty?
