@@ -4,7 +4,7 @@ import css from '../../styles/vars'
 import {Cart} from '../stores'
 import actions from '../actions'
 import {bindToThis, moneyFormat} from '../constants'
-import {OrderItem} from '.'
+import {OrderItem, View} from '.'
 
 // show more
 const OkBtn = ({clickHandler, finished}) => <div className="text-center">
@@ -48,6 +48,24 @@ export default class OrderList extends React.Component {
     }
     render() {
         const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />)
+        const view = <View>
+            <div className="summary">
+                <div className="content relative">
+                    <h4 className="summary-heading">Summary</h4>
+                    <ul>
+                        <li>
+                            <strong className="subheading">Subtotal</strong>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                        <li>
+                            <strong className="subheading">Total</strong>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                    </ul>
+                </div>
+                <OkBtn clickHandler={this.actionHandler} />
+            </div>
+            <div className="list">{items}</div>
+        </View>
+
         return <div className="OrderPreview">
             <Head>
                 <title>SmoothieExpress: Order Review</title>
