@@ -13,23 +13,23 @@ export default flux.createStore({
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
         else this.orders[item.id] = { product: item, qty: 1 }
-        this.emit('order.add')
+        this.emit('order.add', item.id)
     },
     removeFromCart: function(item) {
         if (!!this.orders[item.id]) {
             if (this.orders[item.id].qty == 1) delete this.orders[item.id]
             else this.orders[item.id].qty-- 
-            this.emit('order.remove')
+            this.emit('order.remove', item.id)
         }
     },
     deleteOrder: function(id) {
         delete this.orders[id]
-        this.emit('order.delete')
+        this.emit('order.delete', id) // products depend on this is to update their state
     },
     updateQty: function(id, qty) {
         if (this.orders[id]) {
             this.orders[id].qty = qty
-            this.emit('order.qty')
+            this.emit('order.qty', id)
         }
     },
     persist: function() {

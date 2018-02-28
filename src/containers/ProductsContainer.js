@@ -12,7 +12,7 @@ class ProductsContainer extends React.Component {
         this.state = {...this.props}
 
         // bind
-        bindToThis(this, 'updateState')
+        bindToThis(this, 'updateProducts')
         bindToThis(this, 'actionHandler')
         bindToThis(this, 'childSubscriber')
     }
@@ -26,20 +26,19 @@ class ProductsContainer extends React.Component {
         })
     }
     componentWillMount() {
-        Cart.on('order.*', this.updateState)
+        Cart.on('order.*', this.updateProducts)
     }
     componentWillUnmount() {
-        Cart.off('order.*', this.updateState)
+        Cart.off('order.*', this.updateProducts)
     }
-    updateState() {
-        // this.setState({})
+    updateProducts(id) {
+        if (!!id) this.subscribers[id](Cart.getQty(id))
     }
 
     // this method helps the child components - Prosucts - to subscribe to changes this container
     // feels they should know about, via callbacks
     childSubscriber(id, cb) {
         this.subscribers[id] = cb
-        console.log(this.subscribers)
     }
     actionHandler(type, data) {
         switch (type) {
