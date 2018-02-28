@@ -15,7 +15,7 @@ export default class Index extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            per_page: 12,
+            per_page: 22,
             products: [],
             productsOnDisplay: [],
             page: 1,
@@ -36,7 +36,7 @@ export default class Index extends React.Component {
         let {per_page, page, products, productsOnDisplay} = this.state 
         this.setState({ loading: !products.length, loadingFailed: false })
         await sleep(500) // sleep for a half second
-        let f = constants.products || (await _products(per_page, page)).data
+        let f = (await _products(per_page, page)).data
 
         if (!!f) {
             // only pick properties we need
