@@ -119,6 +119,7 @@ export default class OrderList extends React.Component {
             page_title: 'SmoothieExpress: Order Review',
             section_name: 'cart',
             section_header: 'Order Review',
+            actionHandler: this.actionHandler,
         })
 
         return view

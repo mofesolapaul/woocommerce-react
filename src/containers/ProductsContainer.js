@@ -1,14 +1,32 @@
 import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
+import {Cart} from '../stores'
 import { Loading, NotFound, Product, ProductRowDivider, ShowMoreBtn, View } from '../components'
 
 class ProductsContainer extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {...this.props}
+    }
+    componentWillReceiveProps(props) {
+        this.setState({
+            items: props.items,
+            loading: props.loading,
+            notfound: props.notfound,
+        })
+    }
+    componentWillMount() {
+        Cart.on('order.*', this.updateState)
+    }
+    componentWillUnmount() {
+        Cart.off('order.*', this.updateState)
+    }
+    updateState() {
+        // this.setState({})
     }
     render() {
-        let {items, _showMore, canShowMore, loading, notfound} = this.props
+        let {items, _showMore, canShowMore, loading, notfound} = this.state
         return <div className="wrapper">
             <div className="ProductsContainer">
                 <div className="ProductsList clearfix">
