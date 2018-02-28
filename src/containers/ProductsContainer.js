@@ -8,13 +8,17 @@ import { Loading, NotFound, Product, ProductRowDivider, ShowMoreBtn, View } from
 class ProductsContainer extends React.Component {
     constructor(props) {
         super(props)
+        this.subscribers = {}
         this.state = {...this.props}
 
         // bind
         bindToThis(this, 'updateState')
         bindToThis(this, 'actionHandler')
+        bindToThis(this, 'childSubscriber')
     }
     componentWillReceiveProps(props) {
+        const {items} = props
+        items.map(i => i.qty = Cart.getQty(i.id))
         this.setState({
             items: props.items,
             loading: props.loading,
@@ -29,6 +33,13 @@ class ProductsContainer extends React.Component {
     }
     updateState() {
         // this.setState({})
+    }
+
+    // this method helps the child components - Prosucts - to subscribe to changes this container
+    // feels they should know about, via callbacks
+    childSubscriber(id, cb) {
+        this.subscribers[id] = cb
+        console.log(this.subscribers)
     }
     actionHandler(type, data) {
         switch (type) {
@@ -47,7 +58,7 @@ class ProductsContainer extends React.Component {
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
-                            <Product _key={index} item={product} actionHandler={this.actionHandler} />
+                            <Product _key={index} item={product} actionHandler={this.actionHandler} registrar={this.childSubscriber} />
                             {(index+1)%2 || items.length-1 == index? null:<ProductRowDivider k={2} />}
                             {(index+1)%3 || items.length-1 == index? null:<ProductRowDivider k={3} />}
                             {(index+1)%4 || items.length-1 == index? null:<ProductRowDivider k={4} />}

@@ -1,38 +1,40 @@
 import React from 'react'
 import css from '../../styles/vars'
-import actions from '../actions'
-import {Cart} from '../stores'
 import {bindToThis} from '../constants'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
     constructor(props) {
         super(props)
-        this.state = { qty: 0 }
+        this.state = { qty: props.item.qty }
 
         // bind
-        bindToThis(this, 'updateState')
         bindToThis(this, 'actionHandler')
-    }
-    componentWillMount() {
-        Cart.on('order.*', this.updateState)
-        this.setState({ qty: Cart.getQty(this.props.item.id) })
-    }
-    componentWillUnmount() {
-        Cart.off('order.*', this.updateState)
-    }
-    updateState() {
-        this.setState({
-            qty: Cart.getQty(this.props.item.id),
-        })
+        bindToThis(this, 'updateQty')
+
+        // register for qty updates
+        props.registrar && props.registrar(props.item.id, this.updateQty)
     }
     actionHandler(type, data) {
+        let {qty} = this.state
         switch (type) {
-            default:
+            case 'cart.button.add':
+                this.setState({ qty: qty+1 })
                 this.props.actionHandler(type, this.props.item)
                 break;
+            case 'cart.button.remove':
+                if (qty != 0) {
+                    this.setState({ qty: qty-1 })
+                    this.props.actionHandler(type, this.props.item)
+                }
+                break;
+            default:
+                this.props.actionHandler(type, data)
+                break;
         }
-        this.setState({ qty: Cart.getQty(this.props.item.id) })
+    }
+    updateQty(val) {
+        this.setState({ qty: val })
     }
     render() {
         let {item,_key: key} = this.props
