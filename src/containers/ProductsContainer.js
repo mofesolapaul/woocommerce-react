@@ -1,20 +1,7 @@
 import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
-import { Loading, NotFound, Product, ProductRowDivider, View } from '../components'
-
-// show more
-const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
-    <a onClick={finished? null:clickHandler} className={`btn sleek-btn ${finished? 'dead':''}`}>
-        {!finished? 'Show more':"Yup, that's all!"}
-    </a>
-    <style jsx>{`
-        .show-more-pane {
-            margin-top: 2rem;
-            text-align: center;
-        }
-    `}</style>
-</div>
+import { Loading, NotFound, Product, ProductRowDivider, ShowMoreBtn, View } from '../components'
 
 class ProductsContainer extends React.Component {
     constructor(props) {
@@ -40,7 +27,7 @@ class ProductsContainer extends React.Component {
                     <NotFound visible={notfound} retryHandler={_showMore} />
 
                     {/* show more button */}
-                    { !!items.length? <ShowMore clickHandler={_showMore} finished={!canShowMore} />:null }
+                    { !!items.length? <ShowMoreBtn clickHandler={_showMore} finished={!canShowMore} />:null }
                 </div>
             </div>
             <style jsx>{`
