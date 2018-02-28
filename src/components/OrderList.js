@@ -1,7 +1,5 @@
 import React from 'react'
 import css from '../../styles/vars'
-import {Cart} from '../stores'
-import actions from '../actions'
 import {bindToThis, moneyFormat} from '../constants'
 import {OrderItem, View} from '.'
 import {withCheckout} from '../hoc'
@@ -14,23 +12,9 @@ const OkBtn = ({clickHandler, finished}) => <div className="text-center">
 export default class OrderList extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { total: Cart.getTotal() }
         
         // bind
-        bindToThis(this, 'updateState')
         bindToThis(this, 'actionHandler')
-    }
-    componentWillMount() {
-        Cart.on('order.*', this.updateState)
-    }
-    componentWillUnmount() {
-        Cart.off('order.*', this.updateState)
-    }
-    updateState() {
-        this.setState({
-            total: Cart.getTotal(),
-        })
-        if (Cart.isEmpty()) this.actionHandler('cart.dismiss')
     }
     actionHandler(type, data) {
         switch (type) {
@@ -52,10 +36,10 @@ export default class OrderList extends React.Component {
                     <ul>
                         <li>
                             <strong className="subheading">Subtotal</strong>
-                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.props.total)}</span></li>
                         <li>
                             <strong className="subheading">Total</strong>
-                            <span className="price">{`\u20A6`}{moneyFormat(this.state.total)}</span></li>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.props.total)}</span></li>
                     </ul>
                 </div>
                 <OkBtn clickHandler={this.actionHandler} />

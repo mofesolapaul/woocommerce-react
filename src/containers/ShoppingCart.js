@@ -73,7 +73,8 @@ export default class ShoppingCart extends React.Component {
             case ORDER_PREVIEW:
                 view = <View>
                         <OrderList items={Cart.getAllOrders()}
-                            actionHandler={this.actionHandler} />
+                            actionHandler={this.actionHandler}
+                            total={Cart.getTotal()} />
                         <div className="blankette"></div>
 
                         {/* styles */}
