@@ -1,39 +1,7 @@
 import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
-import { Loading, NotFound, Product, View } from '../components'
-
-// clearfixes for proper layout
-const Clear = p => <span className={`product-row-divider clear${p.k}`}>
-    <style jsx>{`
-        .product-row-divider::before {
-            content: '';
-            height: 1px;
-            width: 70%;
-            background: ${css.colors.orchidash};
-            margin: auto;
-            position: relative;
-            display: block;
-        }
-        .product-row-divider {
-            display: none;
-            padding: 1rem 1rem 2.5rem;
-            position: relative;
-        }
-        @media screen and (min-width: 781px) {
-            .clear3 {
-                clear: both;
-                display: block;
-            }
-        }
-        @media screen and (min-width: 500px) and (max-width: 780px) {
-            .clear2 {
-                clear: both;
-                display: block;
-            }
-        }
-    `}</style>
-</span>
+import { Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 // show more
 const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
@@ -60,9 +28,9 @@ class ProductsContainer extends React.Component {
                     <View>
                         { items.map((product, index) => <View key={index}>
                             <Product _key={index} item={product} />
-                            {(index+1)%2 || items.length-1 == index? null:<Clear k={2} />}
-                            {(index+1)%3 || items.length-1 == index? null:<Clear k={3} />}
-                            {(index+1)%4 || items.length-1 == index? null:<Clear k={4} />}
+                            {(index+1)%2 || items.length-1 == index? null:<ProductRowDivider k={2} />}
+                            {(index+1)%3 || items.length-1 == index? null:<ProductRowDivider k={3} />}
+                            {(index+1)%4 || items.length-1 == index? null:<ProductRowDivider k={4} />}
                         </View>) }
                         <div className="clearfix"></div>
                     </View>
