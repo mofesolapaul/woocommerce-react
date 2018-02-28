@@ -16,6 +16,8 @@ export default class ShoppingCart extends React.Component {
             total: Cart.getTotal(),
             state: NEUTRAL,
             mapCenter: null,
+            mapSearchBox: null,
+            userLocation: '',
         }
 
         // bind
@@ -55,6 +57,11 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'map.center':
                 this.setState({mapCenter: data})
+                this.state.mapSearchBox && this.setState({userLocation: this.state.mapSearchBox.value || ''})
+                console.log(this.state.userLocation)
+                break;
+            case 'map.searchbox.update':
+                this.setState({mapSearchBox: data})
                 break;
         }
     }
