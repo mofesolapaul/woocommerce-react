@@ -20,7 +20,8 @@ const MapElement = compose(
             this.setState({
                 bounds: null,
                 center: {
-                    lat: 41.9, lng: -87.624
+                    lat: this.props.center && this.props.center.lat || 41.9,
+                    lng: this.props.center && this.props.center.lng || -87.624
                 },
                 markers: [],
                 onMapMounted: ref => {
@@ -41,20 +42,22 @@ const MapElement = compose(
 
                     places.forEach(place => {
                         if (place.geometry.viewport) {
-                        bounds.union(place.geometry.viewport)
+                            bounds.union(place.geometry.viewport)
                         } else {
-                        bounds.extend(place.geometry.location)
+                            bounds.extend(place.geometry.location)
                         }
                     });
                     const nextMarkers = places.map(place => ({
                         position: place.geometry.location,
                     }));
-                    const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+                    const nextCenter = nextMarkers[0] && nextMarkers[0].position || this.state.center;
 
                     this.setState({
                         center: nextCenter,
                         markers: nextMarkers,
                     });
+
+                    this.props.actionHandler && this.props.actionHandler('map.center', nextCenter)
                     // refs.map.fitBounds(bounds);
                 },
             })
@@ -68,12 +71,35 @@ const MapElement = compose(
         defaultZoom={15}
         center={props.center}
         onBoundsChanged={props.onBoundsChanged} >
-        {/* {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />} */}
+        <SearchBox
+            ref={props.onSearchBoxMounted}
+            bounds={props.bounds}
+            controlPosition={google.maps.ControlPosition.TOP_LEFT}
+            onPlacesChanged={props.onPlacesChanged} >
+            <input
+                type="text"
+                placeholder="Where are you located?"
+                style={{
+                boxSizing: `border-box`,
+                border: `1px solid transparent`,
+                width: `240px`,
+                height: `32px`,
+                marginTop: `27px`,
+                padding: `0 12px`,
+                borderRadius: `3px`,
+                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                fontSize: `14px`,
+                outline: `none`,
+                textOverflow: `ellipses`,
+                }} />
+        </SearchBox>
+        {props.markers.map((marker, index) =>
+            <Marker key={index} position={marker.position} />
+        )}
     </GoogleMap>
 )
 
 export default class Map extends React.PureComponent {
-    state = { isMarkerShown: true }
     constructor(props) {
         super(props)
         
@@ -86,11 +112,11 @@ export default class Map extends React.PureComponent {
     }
     render() {
         return withCheckout(
-            <MapElement isMarkerShown={this.state.isMarkerShown} />,
+            <MapElement />,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'location',
-                section_header: 'Where are you?',
+                section_header: 'Checkout',
                 actionHandler: this.actionHandler,
             }
         )

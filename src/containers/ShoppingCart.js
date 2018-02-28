@@ -15,6 +15,7 @@ export default class ShoppingCart extends React.Component {
             isEmpty: Cart.isEmpty(),
             total: Cart.getTotal(),
             state: NEUTRAL,
+            mapCenter: null,
         }
 
         // bind
@@ -51,6 +52,9 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'location.dismiss':
                 this.openCart()
+                break;
+            case 'map.center':
+                this.setState({mapCenter, data})
                 break;
         }
     }
@@ -90,7 +94,7 @@ export default class ShoppingCart extends React.Component {
                     </View>
                 break;
             case PICK_LOCATION:
-                view = <Map actionHandler={this.actionHandler} />
+                view = <Map actionHandler={this.actionHandler} center={this.state.mapCenter} />
                 break;
             default:
                 view = !this.state.isEmpty?
