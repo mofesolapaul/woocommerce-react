@@ -36,7 +36,7 @@ export default class Index extends React.Component {
         let {per_page, page, products, productsOnDisplay} = this.state 
         this.setState({ loading: !products.length, loadingFailed: false })
         await sleep(500) // sleep for a half second
-        let f = (await _products(per_page, page)).data
+        let f = constants.products || (await _products(per_page, page)).data
 
         if (!!f) {
             // only pick properties we need
@@ -67,7 +67,7 @@ export default class Index extends React.Component {
         if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());
     }
     render() {
-        const productListProps = {
+        const productContainerProps = {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts, // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
@@ -81,9 +81,7 @@ export default class Index extends React.Component {
                 <h4 className="slogan">find the perfect blend</h4>
             </div>
             
-            <ProductsContainer>
-                <ProductsList {...productListProps} />
-            </ProductsContainer>
+            <ProductsContainer {...productContainerProps}></ProductsContainer>
 
             <ShoppingCart />
             

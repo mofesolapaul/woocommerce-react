@@ -1,15 +1,6 @@
 import css from '../../styles/vars'
 import { Loading, NotFound, Product, View } from '.'
 
-// clearfixes for proper layout
-const Clear = p => <span className={`product-row-divider clear${p.k}`}></span>
-
-// show more
-const ShowMore = ({clickHandler, finished}) => <div className="show-more-pane">
-    <a onClick={finished? null:clickHandler} className={`btn sleek-btn ${finished? 'dead':''}`}>
-        {!finished? 'Show more':"Yup, that's all!"}
-    </a>
-</div>
 
 const ProductsList = ({items, _showMore, canShowMore, loading, notfound}) => (
     <div className="ProductsList clearfix">
