@@ -56,7 +56,6 @@ export default class ShoppingCart extends React.Component {
                 this.openCart()
                 break;
             case 'map.center':
-            console.log(data)
                 this.setState({mapCenter: data})
                 this.state.mapSearchBox && this.setState({userLocation: this.state.mapSearchBox.value || ''})
                 break;
@@ -101,7 +100,7 @@ export default class ShoppingCart extends React.Component {
                     </View>
                 break;
             case PICK_LOCATION:
-                view = <Map actionHandler={this.actionHandler} center={this.state.mapCenter} />
+                view = <Map actionHandler={this.actionHandler} center={this.state.mapCenter} lastLocation={this.state.userLocation} />
                 break;
             default:
                 view = !this.state.isEmpty?

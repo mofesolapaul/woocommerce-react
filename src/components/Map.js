@@ -1,11 +1,12 @@
 import React from 'react'
 import { compose, withProps, lifecycle } from 'recompose'
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from 'react-google-maps'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
 
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox")
 const mapStyles = require('../../styles/map.json')
+const defaultCoordinates = {lat: 6.431070800000001, lng: 3.413754899999958}
 
 const MapElement = compose(
     withProps({
@@ -20,9 +21,10 @@ const MapElement = compose(
 
             this.setState({
                 bounds: null,
+                directions: null,
                 center: {
-                    lat: this.props.center && this.props.center.lat || 6.431070800000001,
-                    lng: this.props.center && this.props.center.lng || 3.413754899999958
+                    lat: this.props.center && this.props.center.lat || defaultCoordinates.lat,
+                    lng: this.props.center && this.props.center.lng || defaultCoordinates.lng
                 },
                 markers: [],
                 onMapMounted: ref => {
@@ -35,7 +37,7 @@ const MapElement = compose(
                     })
                 },
                 onSearchBoxMounted: ref => {
-                    refs.searchBox = ref;
+                        refs.searchBox = ref;
                 },
                 onPlacesChanged: () => {
                     const places = refs.searchBox.getPlaces();
@@ -58,6 +60,22 @@ const MapElement = compose(
                         markers: nextMarkers,
                     });
 
+                    const DirectionsService = new google.maps.DirectionsService();
+
+                    DirectionsService.route({
+                        origin: new google.maps.LatLng(defaultCoordinates.lat, defaultCoordinates.lng),
+                        destination: new google.maps.LatLng(nextCenter.lat(), nextCenter.lng()),
+                        travelMode: google.maps.TravelMode.DRIVING,
+                    }, (result, status) => {
+                        if (status === google.maps.DirectionsStatus.OK) {
+                        this.setState({
+                            directions: result,
+                        });
+                        } else {
+                            console.error(`error fetching directions ${result}`);
+                        }
+                    });
+
                     this.props.actionHandler && this.props.actionHandler('map.center', { lat: nextCenter.lat(), lng: nextCenter.lng() })
                     // refs.map.fitBounds(bounds);
                 },
@@ -70,7 +88,7 @@ const MapElement = compose(
     <GoogleMap
         ref={props.onMapMounted}
         defaultZoom={15}
-        center={props.center}
+        defaultCenter={props.center}
         onBoundsChanged={props.onBoundsChanged}
         defaultOptions={{ styles: mapStyles }} >
         <SearchBox
@@ -82,6 +100,7 @@ const MapElement = compose(
                 type="text"
                 placeholder="Where are you located?"
                 onChange={e => props.actionHandler('map.searchbox.update', e.target)}
+                value={props.lastLocation}
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
@@ -96,6 +115,7 @@ const MapElement = compose(
                     textOverflow: `ellipses`,
                 }} />
         </SearchBox>
+        {props.directions && <DirectionsRenderer directions={props.directions} />}
         {props.markers.map((marker, index) =>
             <Marker key={index} position={marker.position} />
         )}
