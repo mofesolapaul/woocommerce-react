@@ -98,9 +98,9 @@ const MapElement = compose(
             onPlacesChanged={props.onPlacesChanged} >
             <input
                 type="text"
-                placeholder="Where are you located?"
+                placeholder={props.lastLocation||"Where are you located?"}
                 onChange={e => props.actionHandler('map.searchbox.update', e.target)}
-                value={props.lastLocation}
+                defaultValue={props.lastLocation}
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
@@ -135,7 +135,7 @@ export default class Map extends React.PureComponent {
     }
     render() {
         return withCheckout(
-            <MapElement center={this.props.center} actionHandler={this.props.actionHandler} />,
+            <MapElement {...this.props} />,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'location',
