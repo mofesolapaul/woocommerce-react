@@ -16,7 +16,7 @@ const MapElement = compose(
     lifecycle({
         componentWillMount() {
             const refs = {}
-
+console.log(this.props)
             this.setState({
                 bounds: null,
                 center: {
@@ -57,7 +57,7 @@ const MapElement = compose(
                         markers: nextMarkers,
                     });
 
-                    this.props.actionHandler && this.props.actionHandler('map.center', nextCenter)
+                    this.props.actionHandler && this.props.actionHandler('map.center', { lat: nextCenter.lat(), lng: nextCenter.lng() })
                     // refs.map.fitBounds(bounds);
                 },
             })
@@ -112,7 +112,7 @@ export default class Map extends React.PureComponent {
     }
     render() {
         return withCheckout(
-            <MapElement />,
+            <MapElement center={this.props.center} actionHandler={this.props.actionHandler} />,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'location',

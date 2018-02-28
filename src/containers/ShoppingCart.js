@@ -54,7 +54,7 @@ export default class ShoppingCart extends React.Component {
                 this.openCart()
                 break;
             case 'map.center':
-                this.setState({mapCenter, data})
+                this.setState({mapCenter: data})
                 break;
         }
     }
