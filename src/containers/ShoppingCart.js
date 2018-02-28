@@ -1,7 +1,7 @@
 import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
-import { CartIcon, OrderList, View } from '../components'
+import { CartIcon, Map, OrderList, View } from '../components'
 import {bindToThis, kformat} from '../constants'
 
 const NEUTRAL = 0
@@ -65,7 +65,6 @@ export default class ShoppingCart extends React.Component {
         this.setState({
             state: PICK_LOCATION
         })
-        console.log('pick location')
     }
     render() {
         let view = null
@@ -86,6 +85,9 @@ export default class ShoppingCart extends React.Component {
                             }
                         `}</style>
                     </View>
+                break;
+            case PICK_LOCATION:
+                view = <Map />
                 break;
             default:
                 view = !this.state.isEmpty?

@@ -1,6 +1,7 @@
 import CartButtons from './CartButtons'
 import CartIcon from './CartIcon'
 import Loading from './Loading'
+import Map from './Map'
 import NotFound from './NotFound'
 import OrderItem from './OrderItem'
 import OrderList from './OrderList'
@@ -15,6 +16,7 @@ export {
     CartButtons,
     CartIcon,
     Loading,
+    Map,
     NotFound,
     OrderItem,
     OrderList,
