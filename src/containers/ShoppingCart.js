@@ -56,9 +56,9 @@ export default class ShoppingCart extends React.Component {
                 this.openCart()
                 break;
             case 'map.center':
+            console.log(data)
                 this.setState({mapCenter: data})
                 this.state.mapSearchBox && this.setState({userLocation: this.state.mapSearchBox.value || ''})
-                console.log(this.state.userLocation)
                 break;
             case 'map.searchbox.update':
                 this.setState({mapSearchBox: data})

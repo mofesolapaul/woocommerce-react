@@ -21,8 +21,8 @@ const MapElement = compose(
             this.setState({
                 bounds: null,
                 center: {
-                    lat: this.props.center && this.props.center.lat || 41.9,
-                    lng: this.props.center && this.props.center.lng || -87.624
+                    lat: this.props.center && this.props.center.lat || 6.431070800000001,
+                    lng: this.props.center && this.props.center.lng || 3.413754899999958
                 },
                 markers: [],
                 onMapMounted: ref => {
