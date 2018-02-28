@@ -62,6 +62,13 @@ export default class ShoppingCart extends React.Component {
             case 'map.searchbox.update':
                 this.setState({mapSearchBox: data})
                 break;
+            case 'map.destination.meta':
+                console.log(data)
+                this.setState({
+                    mapDestinationDistance: data.distance,
+                    mapDestinationDuration: data.duration
+                })
+                break;
         }
     }
     openCart() {

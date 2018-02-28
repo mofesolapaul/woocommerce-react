@@ -26,10 +26,19 @@ const MapElement = compose(
                 travelMode: google.maps.TravelMode.DRIVING,
             }, (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
-                console.log(result);
-                this.setState({
-                    directions: result,
-                });
+                    if (result.routes[0]) {
+                        // all of this nesting ugliness is based on the result object structure
+                        let {legs} = result.routes[0]
+                        if (legs[0]) {
+                            this.props.actionHandler({
+                                mapDestinationDistance: legs[0].distance.text,
+                                mapDestinationDuration: legs[0].duration.text,
+                            })
+                        }
+                    }
+                    this.setState({
+                        directions: result,
+                    });
                 } else {
                     console.error(`error fetching directions ${result}`);
                 }
