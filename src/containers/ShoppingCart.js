@@ -1,7 +1,7 @@
 import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
-import { CartIcon, OrderList, View } from '../components'
+import { CartIcon, Map, OrderList, View } from '../components'
 import {bindToThis, kformat} from '../constants'
 
 const NEUTRAL = 0
@@ -15,6 +15,9 @@ export default class ShoppingCart extends React.Component {
             isEmpty: Cart.isEmpty(),
             total: Cart.getTotal(),
             state: NEUTRAL,
+            mapCenter: null,
+            mapSearchBox: null,
+            userLocation: '',
         }
 
         // bind
@@ -49,6 +52,23 @@ export default class ShoppingCart extends React.Component {
             case 'order.delete':
                 actions.deleteOrder(data.id)
                 break;
+            case 'location.dismiss':
+                this.openCart()
+                break;
+            case 'map.center':
+                this.setState({mapCenter: data})
+                this.state.mapSearchBox && this.setState({userLocation: this.state.mapSearchBox.value || ''})
+                break;
+            case 'map.searchbox.update':
+                this.setState({mapSearchBox: data})
+                break;
+            case 'map.destination.meta':
+                console.log(data)
+                this.setState({
+                    mapDestinationDistance: data.distance,
+                    mapDestinationDuration: data.duration
+                })
+                break;
         }
     }
     openCart() {
@@ -65,7 +85,6 @@ export default class ShoppingCart extends React.Component {
         this.setState({
             state: PICK_LOCATION
         })
-        console.log('pick location')
     }
     render() {
         let view = null
@@ -86,6 +105,9 @@ export default class ShoppingCart extends React.Component {
                             }
                         `}</style>
                     </View>
+                break;
+            case PICK_LOCATION:
+                view = <Map actionHandler={this.actionHandler} center={this.state.mapCenter} lastLocation={this.state.userLocation} />
                 break;
             default:
                 view = !this.state.isEmpty?
