@@ -46,6 +46,9 @@ export default class ShoppingCart extends React.Component {
             case 'order.qty.change':
                 actions.updateQty(data.id, data.value)
                 break;
+            case 'order.delete':
+                actions.deleteOrder(data.id)
+                break;
         }
     }
     openCart() {

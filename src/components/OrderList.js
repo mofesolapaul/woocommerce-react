@@ -38,9 +38,6 @@ export default class OrderList extends React.Component {
                 if (!data.el.value || data.el.value < 1) data.el.value = 1;
                 else this.props.actionHandler(type, {id: data.id, value: data.el.value})
                 break;
-            case 'order.delete':
-                actions.deleteOrder(data.id)
-                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break
