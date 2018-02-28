@@ -49,6 +49,9 @@ export default class ShoppingCart extends React.Component {
             case 'order.delete':
                 actions.deleteOrder(data.id)
                 break;
+            case 'location.dismiss':
+                this.openCart()
+                break;
         }
     }
     openCart() {
