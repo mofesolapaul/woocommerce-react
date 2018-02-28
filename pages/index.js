@@ -3,7 +3,6 @@ import Layout from '../src/layouts/_default'
 import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
-import { ProductsList } from '../src/components'
 import constants, {bindToThis, sleep} from '../src/constants'
 import {Cart} from '../src/stores'
 

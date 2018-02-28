@@ -8,7 +8,6 @@ import PriceDisplay from './PriceDisplay'
 import Product from './Product'
 import ProductImage from './ProductImage'
 import ProductRowDivider from './ProductRowDivider'
-import ProductsList from './ProductsList'
 import ShowMoreBtn from './ShowMoreBtn'
 import View from './View'
 
@@ -23,7 +22,6 @@ export {
     Product,
     ProductImage,
     ProductRowDivider,
-    ProductsList,
     ShowMoreBtn,
     View
 }
