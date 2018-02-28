@@ -16,6 +16,25 @@ const MapElement = compose(
         mapElement: <div style={{ height: `100%`, width: '100%' }} />,
     }),
     lifecycle({
+        loadDirections(lat, lng) {
+            if (lat == defaultCoordinates.lat && lng == defaultCoordinates.lng) return
+            const DirectionsService = new google.maps.DirectionsService();
+
+            DirectionsService.route({
+                origin: new google.maps.LatLng(defaultCoordinates.lat, defaultCoordinates.lng),
+                destination: new google.maps.LatLng(lat, lng),
+                travelMode: google.maps.TravelMode.DRIVING,
+            }, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                console.log(result);
+                this.setState({
+                    directions: result,
+                });
+                } else {
+                    console.error(`error fetching directions ${result}`);
+                }
+            });
+        },
         componentWillMount() {
             const refs = {}
 
@@ -60,27 +79,19 @@ const MapElement = compose(
                         markers: nextMarkers,
                     });
 
-                    const DirectionsService = new google.maps.DirectionsService();
+                    // show directions
+                    this.loadDirections(nextCenter.lat(), nextCenter.lng())
 
-                    DirectionsService.route({
-                        origin: new google.maps.LatLng(defaultCoordinates.lat, defaultCoordinates.lng),
-                        destination: new google.maps.LatLng(nextCenter.lat(), nextCenter.lng()),
-                        travelMode: google.maps.TravelMode.DRIVING,
-                    }, (result, status) => {
-                        if (status === google.maps.DirectionsStatus.OK) {
-                        this.setState({
-                            directions: result,
-                        });
-                        } else {
-                            console.error(`error fetching directions ${result}`);
-                        }
-                    });
-
+                    // save new coordinates
                     this.props.actionHandler && this.props.actionHandler('map.center', { lat: nextCenter.lat(), lng: nextCenter.lng() })
                     // refs.map.fitBounds(bounds);
                 },
             })
         },
+        componentDidMount() {
+            // initial directions drawing
+            this.loadDirections(this.state.center.lat, this.state.center.lng)
+        }
     }),
     withScriptjs,
     withGoogleMap
