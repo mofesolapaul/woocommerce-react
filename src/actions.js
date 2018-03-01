@@ -5,4 +5,5 @@ export default flux.createActions([
     'removeFromCart',
     'deleteOrder',
     'updateQty',
+    'checkout',
 ])

@@ -30,3 +30,5 @@ export const isEmpty = o => {
 export const moneyFormat = amt => amt.toLocaleString('en-US')
 
 export const bindToThis = (dis, prop) => dis[prop] = dis[prop].bind(dis)
+
+export const ORDER_COMPLETE = 'awon omo sèpètérì, omo sèpèté po'

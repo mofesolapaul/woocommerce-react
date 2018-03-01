@@ -68,7 +68,7 @@ const MapElement = compose(
                     })
                 },
                 onSearchBoxMounted: ref => {
-                        refs.searchBox = ref;
+                    refs.searchBox = ref;
                 },
                 onPlacesChanged: () => {
                     const places = refs.searchBox.getPlaces();
@@ -122,7 +122,7 @@ const MapElement = compose(
             <input
                 type="text"
                 placeholder={props.lastLocation||"Where are you located?"}
-                // onChange={e => props.actionHandler('map.searchbox.update', e.target)}
+                onChange={e => props.actionHandler('map.searchbox.update', e.target)}
                 defaultValue={props.lastLocation}
                 style={{
                     boxSizing: `border-box`,
@@ -164,8 +164,8 @@ export default class Map extends React.PureComponent {
         this.props.actionHandler(type, data)
     }
     render() {
-        const {duration, distance, etaAddy} = this.props
-        const ETAProps = {duration, distance, etaAddy}
+        const {duration, distance, etaAddy, actionHandler} = this.props
+        const ETAProps = {duration, distance, etaAddy, actionHandler}
         return withCheckout(
             <View>
                 <MapElement {...this.props} actionHandler={this.actionHandler} />
@@ -174,9 +174,9 @@ export default class Map extends React.PureComponent {
                     {...ETAProps} />
             </View>,
             {
-                page_title: 'SmoothieExpress: Checkout',
+                page_title: 'SmoothieExpress: Checkout - Set Location',
                 section_name: 'location',
-                section_header: 'Checkout',
+                section_header: 'Pick Location',
                 actionHandler: this.actionHandler,
             }
         )

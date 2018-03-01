@@ -1,9 +1,12 @@
 import css from '../../styles/vars'
 
 export default props => (
-    <div className="ETA">
-        <h3 className="title slim font-sourcesans">{props.etaAddy}</h3>
-        <p className="font-sourcesans approx">approx. {props.duration} ({props.distance})</p>
+    <div className="wrapper" onClick={e => props.actionHandler('order.checkout')}>
+        <div className="info">Click this label to proceed, you can edit your location later</div>
+        <div className="ETA">
+            <h3 className="title slim font-sourcesans">{props.etaAddy}</h3>
+            <p className="font-sourcesans approx">approx. {props.duration} ({props.distance})</p>
+        </div>
 
         {/* styles */}
         <style jsx>{`
@@ -13,20 +16,36 @@ export default props => (
             @keyframes drop {
                 to { top: 0 }
             }
-            .ETA {
+            .wrapper {
                 display: ${props.shown? 'block':'none'};
                 position: absolute;
                 left: 0; right: 0;
                 margin: auto;
-                padding: .5rem 1rem 1rem;
                 bottom: -100%;
                 animation: drawUp .5s ease-in both;
                 max-width: 360px;
                 width: 90%;
+                text-align: center;
+                cursor: pointer
+            }
+            .info {
+                display: inline-block;
+                background: ${css.colors.fallleaf};
+                color: white;
+                padding: .5rem;
+                max-width: 98%;
+                filter: drop-shadow(0px -2px 5px rgba(0,0,0,.3));
+                position: relative;
+                top: 100px;
+                animation: drop 1s 1s ease-in both;
+            }
+            .ETA {
+                text-align: left;
+                padding: .5rem 1rem 1rem;
                 background: ${css.colors.fallleaf}; // #461f07;
                 color: #fff;
                 border-radius: 4px 4px 0 0;
-                box-shadow: rgba(0,0,0,.5) 2px 2px 5px;
+                filter: drop-shadow(0px -2px 5px rgba(0,0,0,.3));
                 overflow: hidden;
             }
             .title {

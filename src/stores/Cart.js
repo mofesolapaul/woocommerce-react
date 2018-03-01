@@ -1,14 +1,16 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import {isEmpty} from '../constants'
+import {isEmpty, ORDER_COMPLETE} from '../constants'
 
 export default flux.createStore({
     orders: {},
+    customer: {},
     actions: [
         actions.addToCart,
         actions.removeFromCart,
         actions.deleteOrder,
         actions.updateQty,
+        actions.checkout,
     ],
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
@@ -31,6 +33,11 @@ export default flux.createStore({
             this.orders[id].qty = qty
             this.emit('order.qty', id)
         }
+    },
+    checkout: function(cust_data, isPaid = false) {
+        this.customer = { ...this.customer, ...cust_data }
+        if (isPaid) this.emit('checkout.payment')
+        else this.emit('order.complete', ORDER_COMPLETE)
     },
     persist: function() {
 
