@@ -74,6 +74,12 @@ export default class ShoppingCart extends React.Component {
             case 'order.checkout':
                 this.setState({ state: FILL_CHECKOUT_FORM })
                 break;
+            case 'checkout.pay':
+                console.log('Pay online', data)
+                break;
+            case 'checkout.finish':
+                console.log('Cash on delivery', data)
+                break;
         }
     }
     openCart() {

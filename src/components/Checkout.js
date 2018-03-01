@@ -20,11 +20,13 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.email':
             case 'checkout.phone':
                 let {form} = this.state
-                this.setState({ form: {...form, type: data.value} })
-                console.log(this.state.form)
+                form[type] = data.value
+                this.setState({ form })
+                break;
+            default:
+                this.props.actionHandler(type, data)
                 break;
         }
-        this.props.actionHandler(type, data)
     }
     confirmLocationView() {
         let {props} = this
@@ -38,21 +40,21 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="group">
                             <label className="label">Your name</label>
-                            <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
+                            <input className="field" type="text" defaultValue="" onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
                         </div>
                         <div className="group">
                             <label className="label">Email address</label>
-                            <input className="field" type="email" defaultValue="" onChange={e => props.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
+                            <input className="field" type="email" defaultValue="" onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
                         </div>
                         <div className="group">
                             <label className="label">Phone</label>
-                            <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
+                            <input className="field" type="text" defaultValue="" onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            <Button label="Pay Online" />
+                            <Button label="Pay Online" clickHandler={e => {props.actionHandler('checkout.pay', this.state.form)}} />
                             &emsp;
-                            <Button label="Pay On Delivery" />
+                            <Button label="Pay On Delivery" clickHandler={e => {props.actionHandler('checkout.finish', this.state.form)}} />
                         </ButtonPane>
                     </div>
                 </div>
