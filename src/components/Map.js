@@ -174,9 +174,9 @@ export default class Map extends React.PureComponent {
                     {...ETAProps} />
             </View>,
             {
-                page_title: 'SmoothieExpress: Checkout',
+                page_title: 'SmoothieExpress: Checkout - Set Location',
                 section_name: 'location',
-                section_header: 'Checkout',
+                section_header: 'Pick Location',
                 actionHandler: this.actionHandler,
             }
         )

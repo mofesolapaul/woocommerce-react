@@ -7,6 +7,7 @@ import {bindToThis, kformat} from '../constants'
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
 const PICK_LOCATION = 2
+const FILL_CHECKOUT_FORM = 3
 
 export default class ShoppingCart extends React.Component {
     constructor(props) {
@@ -70,7 +71,7 @@ export default class ShoppingCart extends React.Component {
                 data.end_address && this.setState({userLocation: data.end_address})
                 break;
             case 'order.checkout':
-                console.log('order.checkout')
+                this.setState({ state: FILL_CHECKOUT_FORM })
                 break;
         }
     }
