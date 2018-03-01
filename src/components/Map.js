@@ -122,7 +122,7 @@ const MapElement = compose(
             <input
                 type="text"
                 placeholder={props.lastLocation||"Where are you located?"}
-                // onChange={e => props.actionHandler('map.searchbox.update', e.target)}
+                onChange={e => props.actionHandler('map.searchbox.update', e.target)}
                 defaultValue={props.lastLocation}
                 style={{
                     boxSizing: `border-box`,

@@ -109,7 +109,9 @@ export default class ShoppingCart extends React.Component {
                             etaAddy={this.state.mapDirectionEndAddress} />
                 break;
             case FILL_CHECKOUT_FORM:
-                view = <Checkout actionHandler={this.actionHandler} />
+                view = <Checkout
+                            actionHandler={this.actionHandler}
+                            location={this.state.userLocation} />
                 break;
             default:
                 view = !this.state.isEmpty?

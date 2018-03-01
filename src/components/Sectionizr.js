@@ -7,10 +7,13 @@ export const Section = props =>
         {/* styles */}
         <style jsx>{`
             .Section {
+                display: inline-block;
                 width: 100%;
                 position: relative;
                 overflow: auto;
                 height: 100%;
+                font-size: ${props.fontSize || 12}px;
+                white-space: normal;
             }
         `}</style>
     </div>
@@ -42,7 +45,7 @@ export default class Sectionizr extends React.Component {
     render() {
         return (
             <div className="Sectionizr">
-                <div className="flex">
+                <div className="sectionizr-flex">
                     {this.extractSections()}
                 </div>
 
@@ -54,9 +57,12 @@ export default class Sectionizr extends React.Component {
                         height: 100%;
                         overflow: hidden;
                     }
-                    .flex {
+                    .sectionizr-flex {
                         position: relative;
-                        left: -${(this.state.current-1) * 100}%
+                        height: 100%;
+                        left: -${(this.state.current-1) * 100}%;
+                        font-size: 0;
+                        white-space: nowrap
                     }
                 `}</style>
             </div>
