@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
-import {bindToThis} from '../constants'
+import {bindToThis, ORDER_COMPLETE} from '../constants'
 import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
@@ -32,6 +32,7 @@ class ProductsContainer extends React.Component {
         Cart.off('order.*', this.updateProducts)
     }
     updateProducts(id) {
+        if (id == ORDER_COMPLETE) return // we have no business with this one
         if (!!id) this.subscribers[id](Cart.getQty(id))
     }
 

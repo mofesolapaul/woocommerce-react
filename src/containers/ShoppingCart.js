@@ -2,7 +2,7 @@ import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
 import { CartIcon, Checkout, Map, OrderList, View } from '../components'
-import {bindToThis, kformat} from '../constants'
+import {bindToThis, kformat, ORDER_COMPLETE} from '../constants'
 
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
@@ -35,14 +35,15 @@ export default class ShoppingCart extends React.Component {
         Cart.off('order.*', this.updateState)
         Cart.off('checkout.payment', this.processPayment)
     }
-    updateState() {
+    updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
             total: Cart.getTotal(),
         })
+        if (d == ORDER_COMPLETE) alert("Order complete!")
     }
     processPayment() {
-
+        alert('Will now process payment, next feature')
     }
     actionHandler(type, data) {
         switch (type) {
@@ -81,10 +82,10 @@ export default class ShoppingCart extends React.Component {
                 this.setState({ state: FILL_CHECKOUT_FORM })
                 break;
             case 'checkout.pay':
-                console.log('Pay online', data)
+                actions.checkout(data, true)
                 break;
             case 'checkout.finish':
-                console.log('Cash on delivery', data)
+                actions.checkout(data)
                 break;
         }
     }
