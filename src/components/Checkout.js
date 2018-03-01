@@ -21,59 +21,62 @@ export default class Checkout extends React.PureComponent {
             <Section>
                 <div className="ConfirmLocation">
                     <div className="wrapper">
-                        <h2 className="font-sourcesans slim title">Confirm your Location</h2>
-                        <label className="label">This was the location you selected, confirm that it's alright or edit it manually</label>
-                        <textarea
-                            placeholder={props.location||"Where are you located?"}
-                            onChange={e => props.actionHandler('map.searchbox.update', e.target)}
-                            defaultValue={props.location}
-                            rows="3"
-                            style={{
-                                display: 'block',
-                                boxSizing: `border-box`,
-                                border: `1px solid transparent`,
-                                maxWidth: `480px`,
-                                width: `100%`,
-                                // height: `72px`,
-                                marginTop: `10px`,
-                                padding: `12px`,
-                                borderRadius: `3px`,
-                                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                                fontSize: `14px`,
-                                outline: `none`,
-                            }} />
+                        <div className="group">
+                            <label className="label">Confirm your address</label>
+                            <input className="field" type="text" defaultValue={props.location} onChange={e => props.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
+                        </div>
+                        <div className="group">
+                            <label className="label">Your name</label>
+                            <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
+                        </div>
                     </div>
-                    <div className="proceed"></div>
                 </div>
 
                 {/* styles */}
                 <style jsx>{`
                     .ConfirmLocation {
-                        background: ${css.colors.rogueblue};
+                        // background: ${css.colors.rogueblue};
                         height: 100%;
-                        align-items: center;
                         overflow: auto;
-                        color: ${css.colors.ultrawhite};
-                        padding: 1rem;
+                        // color: ${css.colors.ultrawhite};
+                        padding: 1rem 2px;
                         display: flex;
                     }
                     .wrapper {
-                        // width: 100%;
+                        width: 100%;
                     }
                     .title {
                         font-weight: 100;
                         border-bottom: solid thin #fff
                         max-width: 360px;
                     }
-                    .proceed {
-                        width: 72px;
-                        height: 72px;
-                        border-radius: 100%;
-                        background: ${css.colors.wisteriasnow};
-                        position: absolute;
-                        right: 1rem;
-                        border: ${css.colors.ultrawhite} thick solid;
-                        box-sizing: content-box;
+                    .group {
+                        margin-bottom: 1rem;
+                    }
+                    @media(min-width: 601px) {
+                        .group {
+                            width: calc(50% - 5px);
+                            float: left;
+                        }
+                        .group:nth-child(even) {
+                            float: right;
+                        }
+                    }
+                    .label {
+                        display: block;
+                        margin-bottom: .3rem;
+                    }
+                    .field {
+                        display: block;
+                        box-sizing: border-box;
+                        border: 1px solid ${css.colors.wisteriasnow};
+                        width: 100%;
+                        padding: .5rem 1rem;
+                        border-radius: 3px;
+                        // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                        font-size: 14px;
+                        outline: none;
+                        font-family: 'Playfair Display', sans-serif;
                     }
                 `}</style>
             </Section>
