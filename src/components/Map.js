@@ -33,8 +33,9 @@ const MapElement = compose(
                         let {legs} = result.routes[0]
                         if (legs[0]) {
                             this.props.actionHandler('map.destination.meta', {
-                                mapDestinationDistance: legs[0].distance.text,
-                                mapDestinationDuration: legs[0].duration.text,
+                                distance: legs[0].distance.text,
+                                duration: legs[0].duration.text,
+                                end_address: legs[0].end_address
                             })
                         }
                     }
@@ -120,6 +121,7 @@ const MapElement = compose(
             onPlacesChanged={props.onPlacesChanged} >
             <input
                 type="text"
+                id="map-search"
                 placeholder={props.lastLocation||"Where are you located?"}
                 onChange={e => props.actionHandler('map.searchbox.update', e.target)}
                 defaultValue={props.lastLocation}
@@ -128,13 +130,14 @@ const MapElement = compose(
                     border: `1px solid transparent`,
                     width: `240px`,
                     height: `32px`,
-                    marginTop: `27px`,
+                    marginTop: `10px`,
                     padding: `0 12px`,
                     borderRadius: `3px`,
                     boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                     fontSize: `14px`,
                     outline: `none`,
                     textOverflow: `ellipses`,
+                    left: `10px`,
                 }} />
         </SearchBox>
         {props.directions && <DirectionsRenderer directions={props.directions} />}
@@ -147,19 +150,29 @@ const MapElement = compose(
 export default class Map extends React.PureComponent {
     constructor(props) {
         super(props)
+        this.state = { showETA: false }
         
         // bind
         bindToThis(this, 'actionHandler')
     }
     componentDidMount() {}
     actionHandler(type, data) {
+        switch (type) {
+            case 'map.destination.meta':
+                this.setState({ showETA: !!data })
+                break;
+        }
         this.props.actionHandler(type, data)
     }
     render() {
+        const {duration, distance, etaAddy} = this.props
+        const ETAProps = {duration, distance, etaAddy}
         return withCheckout(
             <View>
-                <MapElement {...this.props} />
-                <ETALabel shown={true} />
+                <MapElement {...this.props} actionHandler={this.actionHandler} />
+                <ETALabel
+                    shown={this.state.showETA}
+                    {...ETAProps} />
             </View>,
             {
                 page_title: 'SmoothieExpress: Checkout',

@@ -65,7 +65,8 @@ export default class ShoppingCart extends React.Component {
             case 'map.destination.meta':
                 this.setState({
                     mapDestinationDistance: data.distance,
-                    mapDestinationDuration: data.duration
+                    mapDestinationDuration: data.duration,
+                    mapDirectionEndAddress: data.end_address,
                 })
                 break;
         }
@@ -106,7 +107,13 @@ export default class ShoppingCart extends React.Component {
                     </View>
                 break;
             case PICK_LOCATION:
-                view = <Map actionHandler={this.actionHandler} center={this.state.mapCenter} lastLocation={this.state.userLocation} />
+                view = <Map
+                            actionHandler={this.actionHandler}
+                            center={this.state.mapCenter}
+                            lastLocation={this.state.userLocation}
+                            distance={this.state.mapDestinationDistance}
+                            duration={this.state.mapDestinationDuration}
+                            etaAddy={this.state.mapDirectionEndAddress} />
                 break;
             default:
                 view = !this.state.isEmpty?
