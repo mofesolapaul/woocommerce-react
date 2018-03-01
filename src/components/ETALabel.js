@@ -2,7 +2,8 @@ import css from '../../styles/vars'
 
 export default props => (
     <div className="ETA">
-        <h5 className="title">ETA</h5>
+        <h4 className="title font-sourcesans">ETA</h4>
+        <p className="font-playfair approx">Approx. {props.duration} ({props.distance})</p>
 
         {/* styles */}
         <style jsx>{`
@@ -17,19 +18,21 @@ export default props => (
                 position: absolute;
                 left: 0; right: 0;
                 margin: auto;
-                padding: .5rem;
+                padding: .5rem .5rem 1rem;
+                bottom: -100%;
+                animation: drawUp .5s ease-in both;
+                max-width: 360px;
+                width: 90%;
+                background: ${css.colors.fallleafdark};
+                color: ${css.colors.ultrawhite};
+                border-radius: 4px 4px 0 0;
             }
-            @media screen and (max-width: 719px) {
-                .ETA {
-                    bottom: -100%;
-                    animation: drawUp .25s ease-in-out;
-                }
+            .title {
+                letter-spacing: 1px;
+                margin: 0
             }
-            @media screen and (min-width: 720px) {
-                .ETA {
-                    top: -100%;
-                    animation: drop .25s ease-in-out;
-                }
+            .approx {
+                margin: 4px 0 0;
             }
         `}</style>
     </div>

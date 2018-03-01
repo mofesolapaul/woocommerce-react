@@ -3,7 +3,7 @@ import { compose, withProps, lifecycle } from 'recompose'
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from 'react-google-maps'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
-import { ETALabel } from '.'
+import { ETALabel, View } from '.'
 
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox")
 const mapStyles = require('../../styles/map.json')
