@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
-import { Section, Sectionizr, View } from '.'
+import { Section, Sectionizr, ShowMoreBtn, View } from '.'
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -37,6 +37,7 @@ export default class Checkout extends React.PureComponent {
                             <label className="label">Phone</label>
                             <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.email', e.target)} placeholder="Phone number goes here" />
                         </div>
+                        <ShowMoreBtn label="Finish" />
                     </div>
                 </div>
 

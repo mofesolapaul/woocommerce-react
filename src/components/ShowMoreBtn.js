@@ -1,7 +1,7 @@
 // show more
-export default ({clickHandler, finished}) => <div className="show-more-pane">
-    <a onClick={finished? null:clickHandler} className={`btn sleek-btn ${finished? 'dead':''}`}>
-        {!finished? 'Show more':"Yup, that's all!"}
+export default (props) => <div className="show-more-pane">
+    <a onClick={!!props.finished? props.clickHandler:null} className={`btn sleek-btn ${!!props.finished? '':'dead'}`}>
+        {!!props.finished? "Yup, that's all!" : (props.label || 'Show more')}
     </a>
     <style jsx>{`
         .show-more-pane {
