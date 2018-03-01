@@ -121,9 +121,8 @@ const MapElement = compose(
             onPlacesChanged={props.onPlacesChanged} >
             <input
                 type="text"
-                id="map-search"
                 placeholder={props.lastLocation||"Where are you located?"}
-                onChange={e => props.actionHandler('map.searchbox.update', e.target)}
+                // onChange={e => props.actionHandler('map.searchbox.update', e.target)}
                 defaultValue={props.lastLocation}
                 style={{
                     boxSizing: `border-box`,
@@ -136,7 +135,7 @@ const MapElement = compose(
                     boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                     fontSize: `14px`,
                     outline: `none`,
-                    textOverflow: `ellipses`,
+                    textOverflow: `ellipsis`,
                     left: `10px`,
                 }} />
         </SearchBox>
