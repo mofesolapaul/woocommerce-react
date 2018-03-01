@@ -1,6 +1,9 @@
 import React from 'react'
+import { withCheckout } from '../hoc'
+import { bindToThis } from '../constants'
+import { View } from '.'
 
-export default class Map extends React.PureComponent {
+export default class Checkout extends React.PureComponent {
     constructor(props) {
         super(props)
         
@@ -14,7 +17,7 @@ export default class Map extends React.PureComponent {
     render() {
         return withCheckout(
             <View>
-                
+                {null}
             </View>,
             {
                 page_title: 'SmoothieExpress: Checkout',

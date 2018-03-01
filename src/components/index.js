@@ -1,5 +1,6 @@
 import CartButtons from './CartButtons'
 import CartIcon from './CartIcon'
+import Checkout from './Checkout'
 import ETALabel from './ETALabel'
 import Loading from './Loading'
 import Map from './Map'
@@ -16,6 +17,7 @@ import View from './View'
 export {
     CartButtons,
     CartIcon,
+    Checkout,
     ETALabel,
     Loading,
     Map,

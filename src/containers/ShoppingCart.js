@@ -1,7 +1,7 @@
 import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
-import { CartIcon, Map, OrderList, View } from '../components'
+import { CartIcon, Checkout, Map, OrderList, View } from '../components'
 import {bindToThis, kformat} from '../constants'
 
 const NEUTRAL = 0
@@ -106,6 +106,9 @@ export default class ShoppingCart extends React.Component {
                             distance={this.state.mapDestinationDistance}
                             duration={this.state.mapDestinationDuration}
                             etaAddy={this.state.mapDirectionEndAddress} />
+                break;
+            case FILL_CHECKOUT_FORM:
+                view = <Checkout actionHandler={this.actionHandler} />
                 break;
             default:
                 view = !this.state.isEmpty?
