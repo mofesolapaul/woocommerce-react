@@ -63,7 +63,6 @@ export default class ShoppingCart extends React.Component {
                 this.setState({mapSearchBox: data})
                 break;
             case 'map.destination.meta':
-                console.log(data)
                 this.setState({
                     mapDestinationDistance: data.distance,
                     mapDestinationDuration: data.duration

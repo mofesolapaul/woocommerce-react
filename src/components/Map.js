@@ -3,9 +3,11 @@ import { compose, withProps, lifecycle } from 'recompose'
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from 'react-google-maps'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
+import { ETALabel } from '.'
 
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox")
 const mapStyles = require('../../styles/map.json')
+
 const defaultCoordinates = {lat: 6.431070800000001, lng: 3.413754899999958}
 
 const MapElement = compose(
@@ -155,7 +157,10 @@ export default class Map extends React.PureComponent {
     }
     render() {
         return withCheckout(
-            <MapElement {...this.props} />,
+            <View>
+                <MapElement {...this.props} />
+                <ETALabel shown={true} />
+            </View>,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'location',

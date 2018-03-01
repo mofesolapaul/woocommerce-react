@@ -1,6 +1,8 @@
+import css from '../../styles/vars'
+
 export default props => (
     <div className="ETA">
-        <h5>ETA</h5>
+        <h5 className="title">ETA</h5>
 
         {/* styles */}
         <style jsx>{`
