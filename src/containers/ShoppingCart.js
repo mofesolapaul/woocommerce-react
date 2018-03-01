@@ -22,7 +22,6 @@ export default class ShoppingCart extends React.Component {
 
         // bind
         bindToThis(this, 'updateState')
-        bindToThis(this, 'closeCart')
         bindToThis(this, 'openCart')
         bindToThis(this, 'actionHandler')
     }
@@ -41,10 +40,10 @@ export default class ShoppingCart extends React.Component {
     actionHandler(type, data) {
         switch (type) {
             case 'order.checkout.pick_location':
-                this.pickLocation()
+                this.setState({ state: PICK_LOCATION })
                 break;
             case 'cart.dismiss':
-                this.closeCart()
+                this.setState({ state: NEUTRAL })
                 break;
             case 'order.qty.change':
                 actions.updateQty(data.id, data.value)
@@ -70,22 +69,13 @@ export default class ShoppingCart extends React.Component {
                 })
                 data.end_address && this.setState({userLocation: data.end_address})
                 break;
+            case 'order.checkout':
+                console.log('order.checkout')
+                break;
         }
     }
     openCart() {
-        this.setState({
-            state: ORDER_PREVIEW
-        })
-    }
-    closeCart() {
-        this.setState({
-            state: NEUTRAL
-        })
-    }
-    pickLocation() {
-        this.setState({
-            state: PICK_LOCATION
-        })
+        this.setState({ state: ORDER_PREVIEW })
     }
     render() {
         let view = null

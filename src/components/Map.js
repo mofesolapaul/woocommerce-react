@@ -164,8 +164,8 @@ export default class Map extends React.PureComponent {
         this.props.actionHandler(type, data)
     }
     render() {
-        const {duration, distance, etaAddy} = this.props
-        const ETAProps = {duration, distance, etaAddy}
+        const {duration, distance, etaAddy, actionHandler} = this.props
+        const ETAProps = {duration, distance, etaAddy, actionHandler}
         return withCheckout(
             <View>
                 <MapElement {...this.props} actionHandler={this.actionHandler} />
