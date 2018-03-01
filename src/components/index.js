@@ -1,5 +1,6 @@
 import CartButtons from './CartButtons'
 import CartIcon from './CartIcon'
+import ETALabel from './ETALabel'
 import Loading from './Loading'
 import Map from './Map'
 import NotFound from './NotFound'
@@ -15,6 +16,7 @@ import View from './View'
 export {
     CartButtons,
     CartIcon,
+    ETALabel,
     Loading,
     Map,
     NotFound,

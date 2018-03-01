@@ -61,6 +61,8 @@ export default (childComponent, options) => (
             }
             .wrapper {
                 flex-grow: 1;
+                // position: relative;
+                overflow: hidden;
             }
             @media screen and (max-width: 719px) {
                 .wrapper {
