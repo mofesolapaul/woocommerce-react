@@ -23,7 +23,7 @@ export default props => (
                 animation: drawUp .5s ease-in both;
                 max-width: 360px;
                 width: 90%;
-                background: #461f07;
+                background: ${css.colors.fallleaf}; // #461f07;
                 color: #fff;
                 border-radius: 4px 4px 0 0;
                 box-shadow: rgba(0,0,0,.5) 2px 2px 5px;
@@ -33,7 +33,7 @@ export default props => (
                 letter-spacing: 1px;
                 margin: 0
                 // text-shadow: rgba(82,89,101,.5) 1px 1px;
-                color: ${css.colors.fallleafdark};
+                color: #5d3224;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
