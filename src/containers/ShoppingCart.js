@@ -41,6 +41,7 @@ export default class ShoppingCart extends React.Component {
     actionHandler(type, data) {
         switch (type) {
             case 'order.checkout.pick_location':
+            case 'checkout.dismiss':
                 this.setState({ state: PICK_LOCATION })
                 break;
             case 'cart.dismiss':

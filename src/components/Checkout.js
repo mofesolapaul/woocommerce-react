@@ -1,4 +1,5 @@
 import React from 'react'
+import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
 import { View } from '.'
@@ -16,9 +17,16 @@ export default class Checkout extends React.PureComponent {
     }
     render() {
         return withCheckout(
-            <View>
-                {null}
-            </View>,
+            <div className="Checkout">
+
+                {/* styles */}
+                <style jsx>{`
+                    .Checkout {
+                        flex: 1;
+                        background: ${css.colors.rogueblue}
+                    }
+                `}</style>
+            </div>,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'checkout',
