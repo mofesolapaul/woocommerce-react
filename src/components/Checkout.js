@@ -37,7 +37,8 @@ export default class Checkout extends React.PureComponent {
                             <label className="label">Phone</label>
                             <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.email', e.target)} placeholder="Phone number goes here" />
                         </div>
-                        <ShowMoreBtn label="Finish" />
+                        <div className="clearfix"></div>
+                        <ShowMoreBtn label="Pay Online" />
                     </div>
                 </div>
 

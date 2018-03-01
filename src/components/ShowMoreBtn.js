@@ -1,8 +1,5 @@
-// show more
-export default (props) => <div className="show-more-pane">
-    <a onClick={!!props.finished? props.clickHandler:null} className={`btn sleek-btn ${!!props.finished? '':'dead'}`}>
-        {!!props.finished? "Yup, that's all!" : (props.label || 'Show more')}
-    </a>
+export const ShowMorePane = props => <div className="show-more-pane">
+    {props.children}
     <style jsx>{`
         .show-more-pane {
             margin-top: 2rem;
@@ -10,3 +7,9 @@ export default (props) => <div className="show-more-pane">
         }
     `}</style>
 </div>
+
+// show more
+export default (props) =>
+    <a onClick={!!props.finished? null:props.clickHandler} className={`btn sleek-btn ${!!props.finished? 'dead':''}`}>
+        {!!props.finished? "Yup, that's all!" : (props.label || 'Show more')}
+    </a>
