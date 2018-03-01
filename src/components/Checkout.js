@@ -2,17 +2,28 @@ import React from 'react'
 import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
-import { Section, Sectionizr, ShowMoreBtn, View } from '.'
+import { Button, ButtonPane, Section, Sectionizr, View } from '.'
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
         super(props)
+        this.state = {
+            form: {}
+        }
         
         // bind
         bindToThis(this, 'actionHandler')
     }
-    componentDidMount() {}
     actionHandler(type, data) {
+        switch (type) {
+            case 'checkout.clientname':
+            case 'checkout.email':
+            case 'checkout.phone':
+                let {form} = this.state
+                this.setState({ form: {...form, type: data.value} })
+                console.log(this.state.form)
+                break;
+        }
         this.props.actionHandler(type, data)
     }
     confirmLocationView() {
@@ -35,10 +46,14 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="group">
                             <label className="label">Phone</label>
-                            <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.email', e.target)} placeholder="Phone number goes here" />
+                            <input className="field" type="text" defaultValue="" onChange={e => props.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
                         <div className="clearfix"></div>
-                        <ShowMoreBtn label="Pay Online" />
+                        <ButtonPane>
+                            <Button label="Pay Online" />
+                            &emsp;
+                            <Button label="Pay On Delivery" />
+                        </ButtonPane>
                     </div>
                 </div>
 

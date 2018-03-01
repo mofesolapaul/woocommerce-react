@@ -1,4 +1,4 @@
-export const ShowMorePane = props => <div className="show-more-pane">
+export const ButtonPane = props => <div className="show-more-pane">
     {props.children}
     <style jsx>{`
         .show-more-pane {

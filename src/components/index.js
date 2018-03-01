@@ -1,3 +1,4 @@
+import Button, { ButtonPane } from './Button'
 import CartButtons from './CartButtons'
 import CartIcon from './CartIcon'
 import Checkout from './Checkout'
@@ -13,10 +14,11 @@ import ProductImage from './ProductImage'
 import ProductRowDivider from './ProductRowDivider'
 import {Section} from './Sectionizr'
 import Sectionizr from './Sectionizr'
-import ShowMoreBtn from './ShowMoreBtn'
 import View from './View'
 
 export {
+    Button,
+    ButtonPane,
     CartButtons,
     CartIcon,
     Checkout,
@@ -32,6 +34,5 @@ export {
     ProductRowDivider,
     Section,
     Sectionizr,
-    ShowMoreBtn,
     View
 }

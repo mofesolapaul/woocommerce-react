@@ -3,7 +3,7 @@ import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
 import {bindToThis} from '../constants'
-import { Loading, NotFound, Product, ProductRowDivider, ShowMoreBtn, View } from '../components'
+import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
     constructor(props) {
@@ -70,7 +70,9 @@ class ProductsContainer extends React.Component {
                     <NotFound visible={notfound} retryHandler={_showMore} />
 
                     {/* show more button */}
-                    { !!items.length? <ShowMoreBtn clickHandler={_showMore} finished={!canShowMore} />:null }
+                    { !!items.length? <ButtonPane>
+                        <Button clickHandler={_showMore} finished={!canShowMore} />
+                    </ButtonPane>:null }
                 </div>
             </div>
             <style jsx>{`
