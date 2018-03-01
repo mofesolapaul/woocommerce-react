@@ -2,8 +2,8 @@ import css from '../../styles/vars'
 
 export default props => (
     <div className="ETA">
-        <h4 className="title font-sourcesans">ETA</h4>
-        <p className="font-playfair approx">Approx. {props.duration} ({props.distance})</p>
+        <h3 className="title slim font-sourcesans">Estimated Time of Arrival</h3>
+        <p className="font-sourcesans approx">approx. {props.duration} ({props.distance})</p>
 
         {/* styles */}
         <style jsx>{`
@@ -23,13 +23,16 @@ export default props => (
                 animation: drawUp .5s ease-in both;
                 max-width: 360px;
                 width: 90%;
-                background: ${css.colors.fallleafdark};
-                color: ${css.colors.ultrawhite};
+                background: #f98f4c;
+                color: #fff;
                 border-radius: 4px 4px 0 0;
+                box-shadow: rgba(0,0,0,.5) 2px 2px 5px;
             }
             .title {
                 letter-spacing: 1px;
                 margin: 0
+                // text-shadow: rgba(82,89,101,.5) 1px 1px;
+                color: ${css.colors.fallleafdark};
             }
             .approx {
                 margin: 4px 0 0;
