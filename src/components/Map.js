@@ -68,7 +68,7 @@ const MapElement = compose(
                     })
                 },
                 onSearchBoxMounted: ref => {
-                        refs.searchBox = ref;
+                    refs.searchBox = ref;
                 },
                 onPlacesChanged: () => {
                     const places = refs.searchBox.getPlaces();
