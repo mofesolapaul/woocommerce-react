@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis } from '../constants'
-import { View } from '.'
+import { Section, Sectionizr, View } from '.'
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -17,16 +17,17 @@ export default class Checkout extends React.PureComponent {
     }
     render() {
         return withCheckout(
-            <div className="Checkout">
+            <Sectionizr className="Checkout">
+                <Section />
+                <Section />
 
                 {/* styles */}
                 <style jsx>{`
                     .Checkout {
-                        flex: 1;
                         background: ${css.colors.rogueblue}
                     }
                 `}</style>
-            </div>,
+            </Sectionizr>,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'checkout',

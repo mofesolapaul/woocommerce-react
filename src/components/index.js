@@ -11,6 +11,8 @@ import PriceDisplay from './PriceDisplay'
 import Product from './Product'
 import ProductImage from './ProductImage'
 import ProductRowDivider from './ProductRowDivider'
+import {Section} from './Sectionizr'
+import Sectionizr from './Sectionizr'
 import ShowMoreBtn from './ShowMoreBtn'
 import View from './View'
 
@@ -28,6 +30,8 @@ export {
     Product,
     ProductImage,
     ProductRowDivider,
+    Section,
+    Sectionizr,
     ShowMoreBtn,
     View
 }
