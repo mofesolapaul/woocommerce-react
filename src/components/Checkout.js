@@ -63,11 +63,17 @@ export default class Checkout extends React.PureComponent {
                     .title {
                         font-weight: 100;
                         border-bottom: solid thin #fff
+                        max-width: 360px;
                     }
                     .proceed {
-                        width: 64px;
-                        height: 64px;
+                        width: 72px;
+                        height: 72px;
                         border-radius: 100%;
+                        background: ${css.colors.wisteriasnow};
+                        position: absolute;
+                        right: 1rem;
+                        border: ${css.colors.ultrawhite} thick solid;
+                        box-sizing: content-box;
                     }
                 `}</style>
             </Section>
