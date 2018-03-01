@@ -25,18 +25,24 @@ export default class ShoppingCart extends React.Component {
         bindToThis(this, 'updateState')
         bindToThis(this, 'openCart')
         bindToThis(this, 'actionHandler')
+        bindToThis(this, 'processPayment')
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
+        Cart.on('checkout.payment', this.processPayment)
     }
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
+        Cart.off('checkout.payment', this.processPayment)
     }
     updateState() {
         this.setState({
             isEmpty: Cart.isEmpty(),
             total: Cart.getTotal(),
         })
+    }
+    processPayment() {
+
     }
     actionHandler(type, data) {
         switch (type) {

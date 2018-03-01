@@ -4,7 +4,6 @@ import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
 import constants, {bindToThis, sleep} from '../src/constants'
-import {Cart} from '../src/stores'
 
 const _products = async(per_page, page) => {
     return await Wc.get('products', { per_page, page })
