@@ -37,7 +37,7 @@ export default class Sectionizr extends React.Component {
     extractSections() {
         let {children} = this.props
         children = [].concat(children) // enforce array
-        children = children.filter(c => c.props.__typeof && c.props.__typeof == 'Sectionizr.Section')
+        return children.filter(c => c.props.__typeof && c.props.__typeof == 'Sectionizr.Section')
     }
     render() {
         return (
