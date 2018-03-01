@@ -142,7 +142,7 @@ const MapElement = compose(
         </SearchBox>
         {props.directions && <DirectionsRenderer directions={props.directions} />}
         {props.markers.map((marker, index) =>
-            <Marker key={index} position={marker.position} />
+            null // <Marker key={index} position={marker.position} />
         )}
     </GoogleMap>
 )

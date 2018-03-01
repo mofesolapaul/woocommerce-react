@@ -68,6 +68,7 @@ export default class ShoppingCart extends React.Component {
                     mapDestinationDuration: data.duration,
                     mapDirectionEndAddress: data.end_address,
                 })
+                data.end_address && this.setState({userLocation: data.end_address})
                 break;
         }
     }
