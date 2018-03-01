@@ -83,21 +83,9 @@ export default class ShoppingCart extends React.Component {
         let view = null
         switch (this.state.state) {
             case ORDER_PREVIEW:
-                view = <View>
-                        <OrderList items={Cart.getAllOrders()}
-                            actionHandler={this.actionHandler}
-                            total={Cart.getTotal()} />
-                        <div className="blankette"></div>
-
-                        {/* styles */}
-                        <style jsx>{`
-                            @media screen and (min-width: 500px) {
-                                .blankette {
-                                    height: 60vh;
-                                }
-                            }
-                        `}</style>
-                    </View>
+                view = <OrderList items={Cart.getAllOrders()}
+                        actionHandler={this.actionHandler}
+                        total={Cart.getTotal()} />
                 break;
             case PICK_LOCATION:
                 view = <Map
@@ -118,6 +106,19 @@ export default class ShoppingCart extends React.Component {
                     <CartIcon clickHandler={this.openCart} total={kformat(this.state.total)} />:null
                 break;
         }
-        return <div className="ShoppingCart">{view}</div>
+        return <View>
+            <div className="ShoppingCart">
+                {view}
+                {this.state.state? <div className="blankette"></div>:null}
+            </div>
+            {/* styles */}
+            <style jsx>{`
+                @media screen and (min-width: 500px) {
+                    .blankette {
+                        height: 60vh;
+                    }
+                }
+            `}</style>
+        </View>
     }
 }
