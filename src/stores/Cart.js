@@ -35,7 +35,6 @@ export default flux.createStore({
         }
     },
     checkout: function(cust_data, isPaid = false) {
-        console.log(cust_data)
         this.customer = { ...this.customer, ...cust_data }
         if (isPaid) {
             let [first_name, last_name] = cust_data['checkout.clientname'].split(' ', 2)

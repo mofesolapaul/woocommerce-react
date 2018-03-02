@@ -82,7 +82,6 @@ export default class ShoppingCart extends React.Component {
                 this.setState({ state: FILL_CHECKOUT_FORM })
                 break;
             case 'checkout.pay':
-                console.log(data)
                 actions.checkout(data, true)
                 break;
             case 'checkout.finish':
