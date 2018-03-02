@@ -8,7 +8,9 @@ export default class Checkout extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            form: {}
+            form: {
+                'map.searchbox.update': props.location
+            }
         }
         
         // bind
@@ -16,12 +18,20 @@ export default class Checkout extends React.PureComponent {
     }
     actionHandler(type, data) {
         switch (type) {
+            case 'map.searchbox.update':
+                this.props.actionHandler(type, data)
             case 'checkout.clientname':
             case 'checkout.email':
             case 'checkout.phone':
                 let {form} = this.state
                 form[type] = data.value
                 this.setState({ form })
+                break;
+            case 'checkout.pay':
+            case 'checkout.finish':
+                if (!data['map.searchbox.update'] ||!data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'])
+                    alert("We need all these details to process your order")
+                else this.props.actionHandler(type, data)
                 break;
             default:
                 this.props.actionHandler(type, data)

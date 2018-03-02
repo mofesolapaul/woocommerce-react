@@ -35,8 +35,21 @@ export default flux.createStore({
         }
     },
     checkout: function(cust_data, isPaid = false) {
+        console.log(cust_data)
         this.customer = { ...this.customer, ...cust_data }
-        if (isPaid) this.emit('checkout.payment')
+        if (isPaid) {
+            let [first_name, last_name] = cust_data['checkout.clientname'].split(' ', 2)
+            let payload = {
+                payment_method_title: 'Paystack Online Payment',
+                set_paid: false,
+                billing: {
+                    first_name,
+                    last_name,
+                }
+            }
+            console.log(payload)
+            this.emit('checkout.payment')
+        }
         else this.emit('order.complete', ORDER_COMPLETE)
     },
     persist: function() {

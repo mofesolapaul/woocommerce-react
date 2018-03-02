@@ -1,4 +1,4 @@
-import Wc from './src/WooCommerce/Wc'
+import Wc from './WooCommerce/Wc'
 
 export default {
     products: [
@@ -38,5 +38,8 @@ export const ORDER_COMPLETE = 'awon omo sèpètérì, omo sèpèté po'
 export const API_CALLS = {
     async fetchProducts(per_page, page) {
         return await Wc.get('products', { per_page, page })
-    }
+    },
+    async createOrder(options) {
+        return await Wc.post('products', options)
+    },
 }
