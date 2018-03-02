@@ -1,3 +1,5 @@
+import Wc from './src/WooCommerce/Wc'
+
 export default {
     products: [
         {id: 1, name: 'Product #1', images: [], price: 100},
@@ -32,3 +34,9 @@ export const moneyFormat = amt => amt.toLocaleString('en-US')
 export const bindToThis = (dis, prop) => dis[prop] = dis[prop].bind(dis)
 
 export const ORDER_COMPLETE = 'awon omo sèpètérì, omo sèpèté po'
+
+export const API_CALLS = {
+    async fetchProducts(per_page, page) {
+        return await Wc.get('products', { per_page, page })
+    }
+}
