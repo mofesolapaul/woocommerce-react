@@ -1,6 +1,6 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE} from '../constants'
+import constants, {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE} from '../constants'
 
 export default flux.createStore({
     orders: {},
@@ -57,15 +57,19 @@ export default flux.createStore({
             city: 'Lagos',
             country: 'NG',
         }
-        const payload = {
-            payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
-            set_paid: false,
-            billing: {...billing},
-            shipping: {...billing},
-            line_items: this.getLineItems()
-        }
+        // const payload = {
+        //     // payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
+        //     payment_method: 'bacs',
+        //     payment_method_title: 'Direct Bank Transfer',
+        //     set_paid: false,
+        //     billing: {...billing},
+        //     shipping: {...billing},
+        //     line_items: this.getLineItems()
+        // }
+        const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = await API_CALLS.createOrder(payload)
+            console.log(response)
             this.emit('order.api-response', {id: ORDER_API_SUCCESS, response, isPaid})
         } catch (ex) {
             this.emit('order.api-error', {id: ORDER_API_ERROR, ex})
