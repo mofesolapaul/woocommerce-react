@@ -47,3 +47,4 @@ yarn-error.log*
 .next
 WooCommerce/Config.js
 out
+*.zip
