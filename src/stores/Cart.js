@@ -1,6 +1,6 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import {isEmpty, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE} from '../constants'
+import {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE} from '../constants'
 
 export default flux.createStore({
     orders: {},
@@ -66,9 +66,9 @@ export default flux.createStore({
         }
         try {
             const response = await API_CALLS.createOrder(payload)
-            this.emit('order.api.response', {id: ORDER_API_SUCCESS, response, isPaid})
+            this.emit('order.api-response', {id: ORDER_API_SUCCESS, response, isPaid})
         } catch (ex) {
-            this.emit('order.api.error', {id: ORDER_API_ERROR, ex})
+            this.emit('order.api-error', {id: ORDER_API_ERROR, ex})
         }
     },
     persist: function() {

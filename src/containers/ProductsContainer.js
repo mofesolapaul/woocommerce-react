@@ -32,7 +32,7 @@ class ProductsContainer extends React.Component {
         Cart.off('order.*', this.updateProducts)
     }
     updateProducts(d) {
-        if (!!d.id) {
+        if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_ITEM_UPDATE:
                     this.subscribers[d.item_id](Cart.getQty(d.item_id))

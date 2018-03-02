@@ -40,7 +40,7 @@ export default class ShoppingCart extends React.Component {
         })
 
         // Order received
-        if (!!d.id) {
+        if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_API_ERROR:
                     console.log(d.ex)
