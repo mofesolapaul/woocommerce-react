@@ -1,0 +1,202 @@
+@import "mixins";
+@import "vendor-prefixes";
+
+@mixin define-anim-fadeInDown {
+  @include keyframes(fadeInDown) {
+    from {
+      transform: translateY(-50%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeInUp {
+  @include keyframes(fadeInUp) {
+    from {
+      transform: translateY(50%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeInLeft {
+  @include keyframes(fadeInLeft) {
+    from {
+      transform: translateX(50%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeInRight {
+  @include keyframes(fadeInRight) {
+    from {
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeOutDown {
+  @include keyframes(fadeOutDown) {
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeOutRight {
+  @include keyframes(fadeOutRight) {
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeOutLeft {
+  @include keyframes(fadeOutLeft) {
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-fadeOut {
+  @include keyframes(fadeOut) {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+@mixin define-anim-scaleBounce {
+  @include keyframes(scaleBounce) {
+    40% {
+      transform: scale(.9);
+    }
+    75% {
+      transform: scale(1);
+    }
+    90% {
+      transform: scale(.9);
+    }
+  }
+}
+
+@mixin define-anim-logoColorFlash {
+  @include keyframes(logoColorFlash) {
+    0%, 100% {
+      color: azure;
+    }
+    50% {
+      color: $color-softgreen;
+    }
+  }
+}
+
+@mixin define-anim-slideInRight {
+  @include keyframes(slideInRight) {
+    from {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@mixin define-anim-slideInDown {
+  @include keyframes(slideInDown) {
+    from {
+      transform: translateY(-100%);
+    }
+  }
+}
+
+@mixin define-anim-drop {
+  @include keyframes(drop) {
+    0% {
+      transform: translateY(-100%);
+    }
+    70% {
+      transform: translateY(0%);
+    }
+    85% {
+      transform: translateY(-5%);
+    }
+    100% {
+      transform: translateY(0%);
+    }
+  }
+}
+
+@mixin define-anim-dropX { // horizontal drop
+  @include keyframes(dropX) {
+    0% {
+      transform: translateX(-100%);
+    }
+    70% {
+      transform: translateX(0%);
+    }
+    85% {
+      transform: translateX(-5%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+}
+
+@mixin define-anim-ripple {
+  @include keyframes(ripple) {
+    from {
+      @include scale(0)
+    }
+    to {
+      opacity: 0.3;
+    }
+  }
+}
+
+@mixin define-anim-loading-ball-1 {
+  @include keyframes(loading-ball-1) {
+    50% {
+      @include transform(translateX(-25px));
+    }
+    100% {
+      @include transform(translateX(25px));
+    }
+  }
+}
+
+@mixin define-anim-loading-ball-2 {
+  @include keyframes(loading-ball-2) {
+    50% {
+      @include transform(translateX(25px));
+    }
+    100% {
+      @include transform(translateX(-25px));
+    }
+  }
+}
+
+@mixin define-anim-color-pulse($id, $startColor: #000, $endColor: #fff) {
+  @include keyframes(color-pulse-#{$id}) {
+    from {
+      background: $startColor
+    }
+    to {
+      background: $endColor
+    }
+  }
+}
+
+@mixin use-anim($anim:fadeInDown, $duration:.25s, $delay:0, $func:ease-in-out, $iteration:1, $direction:normal, $fill: none) {
+  @include animation-name($anim);
+  @include animation-delay($delay);
+  @include animation-duration($duration);
+  @include animation-timing-function($func);
+  @include animation-iteration-count($iteration);
+  @include animation-direction($direction);
+  @include animation-fill-mode($fill);
+}

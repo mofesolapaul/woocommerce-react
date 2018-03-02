@@ -7,14 +7,19 @@ const Wc = {
         _method = 'GET'
         let res = await Api.get(endpoint, options)
         if (!res) return {}
-        let data = await res.json()
+        let data
+        try { data = await res.json() }
+        catch (e) { data = {} }
+        
         return await this.assert(data)
     },
     async post(endpoint, options) {
         _method = 'POST'
         let res = await Api.post(endpoint, options)
         if (!res) return {}
-        let data = await res.json()
+        let data
+        try { let data = await res.json() }
+        catch (e) { let data = {} }
         
         return await this.assert(data)
     },
@@ -32,7 +37,7 @@ const Wc = {
                     xhttp.open(data.fallback.method, data.fallback.url, true)
                     _method == 'POST'? xhttp.setRequestHeader('Content-type', 'application/json'):null
                     _method == 'POST'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
-                }).catch(e => console.log('catching'), data = null)
+                }).catch(e => data = null)
             } catch (e) { data = null }
         }
         return {data}

@@ -1,8 +1,12 @@
 import css from '../../styles/vars'
+import {moneyFormat} from '../constants'
 import {View} from './'
 
-export default ({price}) => <View>
-    <span className="price-display font-playfair">{`\u20A6 ${price}`}</span>
+export default ({price, qty}) => <View>
+    <div className="price-display font-playfair">
+        {!!qty? <span className="qty font-sourcesans">({price} x {qty})</span>:null}
+        {`\u20A6${ moneyFormat(price*(!qty?1:qty)||'0.00') }`}
+    </div>
 
     {/* style */}
     <style jsx>{`
@@ -15,8 +19,13 @@ export default ({price}) => <View>
         font-size: larger;
         padding: .4rem .8rem;
         color: ${css.colors.ultrawhite};
-        background: ${css.colors.rogueblue}
+        background: ${!qty? css.colors.rogueblue:'teal'}
         padding-left: 1.2rem;
+    }
+    .qty {
+        font-size: x-small;
+        display: block;
+        text-align: right;
     }
     `}</style>
 </View>

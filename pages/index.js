@@ -2,9 +2,8 @@ import React from 'react'
 import Layout from '../src/layouts/_default'
 import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
-import {ProductsContainer} from '../src/containers'
-import {ProductsList} from '../src/components'
-import constants from '../src/constants'
+import { ProductsContainer, ShoppingCart } from '../src/containers'
+import constants, {bindToThis, sleep} from '../src/constants'
 
 const _products = async(per_page, page) => {
     return await Wc.get('products', { per_page, page })
@@ -14,30 +13,75 @@ export default class Index extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            per_page: 8,
+            per_page: 22,
             products: [],
+            productsOnDisplay: [],
             page: 1,
+            displayOnFetch: false,
+            noMoreProductsFromServer: false,
+            loading: true,
+            loadingFailed: false,
         }
+
+        // bind
+        bindToThis(this, 'showProducts')
     }
-    componentDidMount() {
-        this.fetchProducts();
+    componentWillMount() {
+        this.showProducts();
     }
+    componentWillUnmount() {}
     async fetchProducts() {
-        let {per_page, page} = this.state
-        const f = (await _products(per_page, page)).data
-        this.setState({ per_page, products: f||constants.products, page: f?page+1:page })
+        let {per_page, page, products, productsOnDisplay} = this.state 
+        this.setState({ loading: !products.length, loadingFailed: false })
+        await sleep(500) // sleep for a half second
+        let f = (await _products(per_page, page)).data
+
+        if (!!f) {
+            // only pick properties we need
+            f = f.map(p =>
+                (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
+            )
+            products = products.concat(f)
+        } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })
+
+        this.setState({
+            per_page,
+            products,
+            page: !!f?page+1:page,
+            noMoreProductsFromServer: !!f&&!f.length,
+            loading: false
+        })
+        if (this.state.displayOnFetch) this.showProducts(true)
+    }
+    showProducts(nofetch) {
+        let {products, productsOnDisplay} = this.state
+        if (products.length) {
+            productsOnDisplay = productsOnDisplay.concat( products.splice(0, 6) )
+            this.setState({products, productsOnDisplay, displayOnFetch: false})
+        } else this.setState({displayOnFetch: true})
+        
+        // load more from server
+        if (nofetch === true) return
+        if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());
     }
     render() {
+        const productContainerProps = {
+            items: this.state.productsOnDisplay, // products to display
+            _showMore: this.showProducts, // handler for show more button
+            canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
+            loading: this.state.loading, // show loader or not
+            notfound: this.state.loadingFailed, // did we fail to load products from server?
+        }
+
         return <Layout>
             <h1 className="title font-sourcesans">Smoothie Express</h1>
             <div className="text-center">
                 <h4 className="slogan">find the perfect blend</h4>
             </div>
             
-            <ProductsContainer>
-                <ProductsList items={this.state.products}>
-                </ProductsList>
-            </ProductsContainer>
+            <ProductsContainer {...productContainerProps}></ProductsContainer>
+
+            <ShoppingCart />
             
             {/* style */}
             <style jsx>{`
