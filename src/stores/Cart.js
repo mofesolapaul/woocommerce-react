@@ -34,17 +34,36 @@ export default flux.createStore({
             this.emit('order.qty', id)
         }
     },
+    getLineItems() {
+        const line_items = []
+        for (let o in this.orders) {
+            line_items.push({
+                product_id: o,
+                quantity: this.orders[o].qty
+            })
+        }
+        return line_items;
+    },
     checkout: function(cust_data, isPaid = false) {
         this.customer = { ...this.customer, ...cust_data }
+        const {customer} = this
         if (isPaid) {
-            let [first_name, last_name] = cust_data['checkout.clientname'].split(' ', 2)
-            let payload = {
+            const [first_name, last_name] = customer['checkout.clientname'].split(' ', 2)
+            const billing = {
+                first_name,
+                last_name: last_name || '',
+                email: customer['checkout.email'],
+                phone: customer['checkout.phone'],
+                state: 'LOS',
+                city: 'Lagos',
+                country: 'NG',
+            }
+            const payload = {
                 payment_method_title: 'Paystack Online Payment',
                 set_paid: false,
-                billing: {
-                    first_name,
-                    last_name,
-                }
+                billing: {...billing},
+                shipping: {...billing},
+                line_items: this.getLineItems()
             }
             console.log(payload)
             this.emit('checkout.payment')
