@@ -18,8 +18,8 @@ const Wc = {
         let res = await Api.post(endpoint, options)
         if (!res) return {}
         let data
-        try { let data = await res.json() }
-        catch (e) { let data = {} }
+        try { data = await res.json() }
+        catch (e) { data = {}; }
         
         return await this.assert(data)
     },

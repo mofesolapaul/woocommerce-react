@@ -43,7 +43,6 @@ export const API_CALLS = {
         return await Wc.get('products', { per_page, page })
     },
     async createOrder(options) {
-        return {statue: 'OK'}
-        // return await Wc.post('products', options)
+        return await Wc.post('orders', options)
     },
 }

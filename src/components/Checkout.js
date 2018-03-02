@@ -51,15 +51,15 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="group">
                             <label className="label">Your name</label>
-                            <input className="field" type="text" defaultValue="" onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
+                            <input className="field" type="text" defaultValue="Test Ignore" onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
                         </div>
                         <div className="group">
                             <label className="label">Email address</label>
-                            <input className="field" type="email" defaultValue="" onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
+                            <input className="field" type="email" defaultValue="test@igno.re" onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
                         </div>
                         <div className="group">
                             <label className="label">Phone</label>
-                            <input className="field" type="text" defaultValue="" onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
+                            <input className="field" type="text" defaultValue="09090909090" onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
