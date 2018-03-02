@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
-import {bindToThis, ORDER_COMPLETE} from '../constants'
+import {bindToThis, ORDER_ITEM_UPDATE} from '../constants'
 import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
@@ -21,8 +21,6 @@ class ProductsContainer extends React.Component {
         items.map(i => i.qty = Cart.getQty(i.id))
         this.setState({
             items: props.items,
-            loading: props.loading,
-            notfound: props.notfound,
         })
     }
     componentWillMount() {
@@ -31,9 +29,14 @@ class ProductsContainer extends React.Component {
     componentWillUnmount() {
         Cart.off('order.*', this.updateProducts)
     }
-    updateProducts(id) {
-        if (id == ORDER_COMPLETE) return // we have no business with this one
-        if (!!id) this.subscribers[id](Cart.getQty(id))
+    updateProducts(d) {
+        if (!!d && !!d.id) {
+            switch (d.id) {
+                case ORDER_ITEM_UPDATE:
+                    this.subscribers[d.item_id](Cart.getQty(d.item_id))
+                    break;
+            }
+        }
     }
 
     // this method helps the child components - Prosucts - to subscribe to changes this container
@@ -52,7 +55,8 @@ class ProductsContainer extends React.Component {
         }
     }
     render() {
-        let {items, _showMore, canShowMore, loading, notfound} = this.state
+        let {items} = this.state
+        let {_showMore, canShowMore, loading, notfound} = this.props
         return <div className="wrapper">
             <div className="ProductsContainer">
                 <div className="ProductsList clearfix">

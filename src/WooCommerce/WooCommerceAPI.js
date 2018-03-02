@@ -128,6 +128,20 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
     method: method,
     encoding: this.encoding,
     timeout: this.timeout,
+
+    /* --------------------------------------------
+     * Let's talk about this one line of code, sorry, config
+     * I spent an unreasonable amount of time debugging and trying to figure
+     * why my innocent POST requests reach the server as 'OPTIONS'...
+     * I actually thought I'd beat it, by makin a tweak you'd notice some lines down,
+     * this tweak was earlier in this project when my GET requests ended up as OPTIONS
+     * too.
+     * Long story short, 'cors' seems to be the default mode for fetch() and disabling
+     * it made my requests arrive safely.
+     * 
+     * Oh, and did I mention that the debugging took reading through WooCommerce's source too?
+     */
+    mode: 'no-cors',
   };
 
   if (this.isSsl) {

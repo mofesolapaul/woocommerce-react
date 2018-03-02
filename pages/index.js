@@ -1,13 +1,8 @@
 import React from 'react'
 import Layout from '../src/layouts/_default'
-import Wc from '../src/WooCommerce/Wc'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
-import constants, {bindToThis, sleep} from '../src/constants'
-
-const _products = async(per_page, page) => {
-    return await Wc.get('products', { per_page, page })
-}
+import constants, {API_CALLS, bindToThis, sleep} from '../src/constants'
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -34,12 +29,12 @@ export default class Index extends React.Component {
         let {per_page, page, products, productsOnDisplay} = this.state 
         this.setState({ loading: !products.length, loadingFailed: false })
         await sleep(500) // sleep for a half second
-        let f = (await _products(per_page, page)).data
+        let f = (await API_CALLS.fetchProducts(per_page, page)).data
 
         if (!!f) {
             // only pick properties we need
-            f = f.map(p =>
-                (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
+            f = f.filter(p =>
+                p.in_stock && (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
             )
             products = products.concat(f)
         } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })

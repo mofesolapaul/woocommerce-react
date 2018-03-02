@@ -2,7 +2,7 @@ import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
 import { CartIcon, Checkout, Map, OrderList, View } from '../components'
-import {bindToThis, kformat, ORDER_COMPLETE} from '../constants'
+import {bindToThis, kformat, ORDER_API_ERROR, ORDER_API_SUCCESS} from '../constants'
 
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
@@ -29,18 +29,29 @@ export default class ShoppingCart extends React.Component {
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
-        Cart.on('checkout.payment', this.processPayment)
     }
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
-        Cart.off('checkout.payment', this.processPayment)
     }
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
             total: Cart.getTotal(),
         })
-        if (d == ORDER_COMPLETE) alert("Order complete!")
+
+        // Order received
+        if (!!d && !!d.id) {
+            switch (d.id) {
+                case ORDER_API_ERROR:
+                    console.log(d.ex)
+                    break;
+                case ORDER_API_SUCCESS:
+                    console.log(d.response)
+                    if (!d.isPaid) alert("Order complete!")
+                    else this.processPayment()
+                    break;
+            }
+        }
     }
     processPayment() {
         alert('Will now process payment, next feature')

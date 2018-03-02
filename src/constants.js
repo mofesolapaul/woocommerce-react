@@ -1,3 +1,5 @@
+import Wc from './WooCommerce/Wc'
+
 export default {
     products: [
         {id: 1, name: 'Product #1', images: [], price: 100},
@@ -8,7 +10,41 @@ export default {
         {id: 6, name: 'Product #6', images: [], price: 800},
         {id: 7, name: 'Product #7', images: [], price: 200},
         {id: 8, name: 'Product #8', images: [], price: 400},
-    ]
+    ],
+    sample_order: {
+        payment_method: 'bacs',
+        payment_method_title: 'Direct Bank Transfer',
+        set_paid: true,
+        billing: {
+          first_name: 'John',
+          last_name: 'Doe',
+          address_1: '969 Market',
+          address_2: '',
+          city: 'San Francisco',
+          state: 'CA',
+          postcode: '94103',
+          country: 'US',
+          email: 'john.doe@example.com',
+          phone: '(555) 555-5555'
+        },
+        shipping: {
+          first_name: 'John',
+          last_name: 'Doe',
+          address_1: '969 Market',
+          address_2: '',
+          city: 'San Francisco',
+          state: 'CA',
+          postcode: '94103',
+          country: 'US'
+        },
+        shipping_lines: [
+          {
+            method_id: 'flat_rate',
+            method_title: 'Flat Rate',
+            total: 10
+          }
+        ]
+      }
 }
 
 export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -31,4 +67,16 @@ export const moneyFormat = amt => amt.toLocaleString('en-US')
 
 export const bindToThis = (dis, prop) => dis[prop] = dis[prop].bind(dis)
 
-export const ORDER_COMPLETE = 'awon omo sèpètérì, omo sèpèté po'
+export const ORDER_API_SUCCESS = 'order.api.success'
+export const ORDER_API_ERROR = 'order.api.error'
+
+export const ORDER_ITEM_UPDATE = 'order.item.update'
+
+export const API_CALLS = {
+    async fetchProducts(per_page, page) {
+        return await Wc.get('products', { per_page, page })
+    },
+    async createOrder(options) {
+        return await Wc.post('orders', options)
+    },
+}
