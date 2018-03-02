@@ -21,8 +21,6 @@ class ProductsContainer extends React.Component {
         items.map(i => i.qty = Cart.getQty(i.id))
         this.setState({
             items: props.items,
-            loading: props.loading,
-            notfound: props.notfound,
         })
     }
     componentWillMount() {
@@ -57,7 +55,8 @@ class ProductsContainer extends React.Component {
         }
     }
     render() {
-        let {items, _showMore, canShowMore, loading, notfound} = this.state
+        let {items} = this.state
+        let {_showMore, canShowMore, loading, notfound} = this.props
         return <div className="wrapper">
             <div className="ProductsContainer">
                 <div className="ProductsList clearfix">
