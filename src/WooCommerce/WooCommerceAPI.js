@@ -141,7 +141,7 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
      * 
      * Oh, and did I mention that the debugging took reading through WooCommerce's source too?
      */
-    mode: 'no-cors',
+    // mode: 'no-cors',
   };
 
   if (this.isSsl) {
