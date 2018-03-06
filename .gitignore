@@ -48,3 +48,5 @@ yarn-error.log*
 WooCommerce/Config.js
 out
 *.zip
+
+src/WooCommerce/Config\.js
