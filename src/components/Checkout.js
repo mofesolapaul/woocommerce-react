@@ -184,7 +184,7 @@ export default class Checkout extends React.PureComponent {
     render() {
         const PriceTag = 
             <div className="PriceTag">
-                <h3 className="price-label">{ this.props.total }</h3>
+                <h3 className="price-label font-sourcesans slim">{`\u20A6`}{this.props.total}</h3>
 
                 {/* styles */}
                 <style jsx>{`
@@ -203,8 +203,10 @@ export default class Checkout extends React.PureComponent {
                     }
                     @media screen and (min-width: 720px) {
                         .PriceTag {
-                            top: -48px;
-                            height: 48px;
+                            top: -42px;
+                            height: 42px;
+                            border-radius: 4px 4px 0 0;
+                            filter: drop-shadow(0px -2px 5px rgba(0,0,0,.3));
                         }
                     }
                     @media screen and (max-width: 719px) {
