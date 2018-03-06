@@ -147,7 +147,8 @@ export default class ShoppingCart extends React.Component {
                 view = <Checkout
                             actionHandler={this.actionHandler}
                             location={this.state.userLocation}
-                            shippingCost={this.state.shippingCost} />
+                            shippingCost={this.state.shippingCost}
+                            total={this.state.total} />
                 break;
             default:
                 view = !this.state.isEmpty?

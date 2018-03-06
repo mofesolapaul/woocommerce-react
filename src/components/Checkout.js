@@ -112,7 +112,6 @@ export default class Checkout extends React.PureComponent {
                                 <option value="flat_rate:16">Yaba - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:51">Store Pick Up (20 Minutes)</option>
                             </select>
-                            
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
@@ -183,24 +182,49 @@ export default class Checkout extends React.PureComponent {
         )
     }
     render() {
-        return withCheckout(
-            <Sectionizr className="Checkout">
-                {this.confirmLocationView()}
-                <Section />
+        const PriceTag = 
+            <div className="PriceTag">
+                <h3 className="price-label">{ this.props.total }</h3>
 
                 {/* styles */}
                 <style jsx>{`
-                    .Checkout {
-                        background: ${css.colors.rogueblue}
+                    .Center {
+                        text-align: center;
+                    }
+                    .PriceTag {
+                        background: teal;
+                        color: ${css.colors.ultrawhite};
+                        position: absolute;
+                        padding: 0 2rem;
+                        display: inline-block;
+                        right: 1rem;
+                        top: 0;
+                        transition: .5s ease-in-out;
+                    }
+                    @media screen and (min-width: 720px) {
+                        .PriceTag {
+                            top: -48px;
+                            height: 48px;
+                        }
+                    }
+                    @media screen and (max-width: 719px) {
+                        .price-label {
+                            margin: .5rem 0
+                        }
                     }
                 `}</style>
-            </Sectionizr>,
+            </div>
+        return withCheckout(
+            <div className="Checkout">
+                {this.confirmLocationView()}
+            </div>,
             {
                 page_title: 'SmoothieExpress: Checkout',
                 section_name: 'checkout',
                 section_header: 'Checkout',
                 actionHandler: this.actionHandler,
-            }
+            },
+            PriceTag
         )
     }
 }

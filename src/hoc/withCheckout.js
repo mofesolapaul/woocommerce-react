@@ -1,11 +1,13 @@
 import css from '../../styles/vars'
 import Head from 'next/head'
 
-export default (childComponent, options) => (
+export default (childComponent, options, detachedViews) => (
     <div className="OrderPreview">
         <Head>
             <title>{options.page_title}</title>
         </Head>
+
+        {detachedViews}
 
         <div className="flex col">
             <h1 className="font-sourcesans">{options.section_header}

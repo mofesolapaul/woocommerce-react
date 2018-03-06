@@ -72,12 +72,11 @@ export default flux.createStore({
             line_items: this.getLineItems(),
             shipping_lines: [
                 {
-                method_id: this.shipping_method.method,
-                method_title: this.shipping_method.desc,
+                    method_id: this.shipping_method.method,
+                    method_title: this.shipping_method.desc,
                 }
             ]
         }
-        console.log(pl)
         const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = true || await API_CALLS.createOrder(payload)
