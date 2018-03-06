@@ -5,12 +5,14 @@ import constants, {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER
 export default flux.createStore({
     orders: {},
     customer: {},
+    shippingMethods: [],
     actions: [
         actions.addToCart,
         actions.removeFromCart,
         actions.deleteOrder,
         actions.updateQty,
         actions.checkout,
+        actions.getShippingMethods,
     ],
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
@@ -75,6 +77,18 @@ export default flux.createStore({
             this.emit('order.api-error', {id: ORDER_API_ERROR, ex})
         }
     },
+    getShippingMethods: async function() {
+        try {
+            const response = await API_CALLS.getShippingMethods()
+            console.log(response)
+            this.shippingMethods = []
+            response.map(method => this.shippingMethods.push({
+                method: method.id,
+                desc: method.description
+            }))
+            this.emit('shipping.methods-arrive')
+        } catch (x) {}
+    },
     persist: function() {
 
     },
@@ -94,6 +108,9 @@ export default flux.createStore({
         },
         getAllOrders: function() {
             return Object.values(this.orders)
+        },
+        getShippingMethods: function() {
+            return this.shippingMethods
         }
     }
 })

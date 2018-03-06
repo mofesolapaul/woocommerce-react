@@ -19,6 +19,7 @@ export default class ShoppingCart extends React.Component {
             mapCenter: null,
             mapSearchBox: null,
             userLocation: '',
+            shippingMethods: Cart.getShippingMethods(),
         }
 
         // bind
@@ -29,9 +30,11 @@ export default class ShoppingCart extends React.Component {
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
+        Cart.on('shipping.methods-arrive', this.updateState)
     }
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
+        Cart.off('shipping.methods-arrive', this.updateState)
     }
     updateState(d) {
         this.setState({
@@ -53,8 +56,10 @@ export default class ShoppingCart extends React.Component {
             }
         }
     }
-    getShippingMethods() {
-        actions.getShippingMethods()
+    updateShippingMethods() {
+        this.updateState({
+            shippingMethods: Cart.getShippingMethods()
+        })
     }
     processPayment() {
         alert('Will now process payment, next feature')
@@ -102,7 +107,7 @@ export default class ShoppingCart extends React.Component {
                 actions.checkout(data)
                 break;
             case 'get.shipping.methods':
-                this.getShippingMethods()
+                actions.getShippingMethods()
                 break;
         }
     }
@@ -129,7 +134,8 @@ export default class ShoppingCart extends React.Component {
             case FILL_CHECKOUT_FORM:
                 view = <Checkout
                             actionHandler={this.actionHandler}
-                            location={this.state.userLocation} />
+                            location={this.state.userLocation}
+                            shippingMethods={this.state.shippingMethods} />
                 break;
             default:
                 view = !this.state.isEmpty?
