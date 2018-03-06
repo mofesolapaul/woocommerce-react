@@ -6,6 +6,7 @@ export default flux.createStore({
     orders: {},
     customer: {},
     shipping_methods: [],
+    shipping_method: {},
     shipping_cost: '0.00',
     actions: [
         actions.addToCart,
@@ -14,7 +15,7 @@ export default flux.createStore({
         actions.updateQty,
         actions.checkout,
         actions.getShippingMethods,
-        actions.setShippingCost,
+        actions.setShippingMethod,
     ],
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
@@ -61,15 +62,22 @@ export default flux.createStore({
             city: 'Lagos',
             country: 'NG',
         }
-        // const payload = {
-        //     // payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
-        //     payment_method: 'bacs',
-        //     payment_method_title: 'Direct Bank Transfer',
-        //     set_paid: false,
-        //     billing: {...billing},
-        //     shipping: {...billing},
-        //     line_items: this.getLineItems()
-        // }
+        const pl = {
+            payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
+            payment_method: 'bacs',
+            // payment_method_title: 'Direct Bank Transfer',
+            set_paid: false,
+            billing: {...billing},
+            shipping: {...billing},
+            line_items: this.getLineItems(),
+            shipping_lines: [
+                {
+                method_id: this.shipping_method.method,
+                method_title: this.shipping_method.desc,
+                }
+            ]
+        }
+        console.log(pl)
         const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = await API_CALLS.createOrder(payload)
@@ -90,9 +98,10 @@ export default flux.createStore({
             // this.emit('shipping.methods-arrive')
         } catch (x) {}
     },
-    setShippingCost: function(cost) {
-        this.shipping_cost = cost
-        this.emit('order.shipping_cost', {id: ORDER_SHIPPING_COST, cost: cost})
+    setShippingMethod: function(data) {
+        this.shipping_method = data
+        this.shipping_cost = data.cost
+        this.emit('order.shipping_cost', {id: ORDER_SHIPPING_COST, cost: data.cost})
     },
     persist: function() {
 

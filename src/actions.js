@@ -7,5 +7,5 @@ export default flux.createActions([
     'updateQty',
     'checkout',
     'getShippingMethods',
-    'setShippingCost',
+    'setShippingMethod',
 ])

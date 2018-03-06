@@ -116,8 +116,8 @@ export default class ShoppingCart extends React.Component {
             case 'get.shipping.methods':
                 actions.getShippingMethods()
                 break;
-            case 'set.shipping.cost':
-                actions.setShippingCost(data)
+            case 'set.shipping.method':
+                actions.setShippingMethod(data)
                 break;
         }
     }

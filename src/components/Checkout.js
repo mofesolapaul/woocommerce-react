@@ -37,8 +37,13 @@ export default class Checkout extends React.PureComponent {
                 else this.props.actionHandler(type, data)
                 break;
             case 'shipping.method':
-                let spl = data.options[data.selectedIndex].text.split(':')
-                this.actionHandler('set.shipping.cost', pullInt(spl[spl.length - 1]))
+                let txt = data.options[data.selectedIndex].text
+                let spl = txt.split(':')
+                this.actionHandler('set.shipping.method', {
+                    method: data.value,
+                    cost: pullInt(spl[spl.length - 1]),
+                    desc: txt,
+                })
                 break;
             default:
                 console.log('Default', type)
