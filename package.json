@@ -4,7 +4,7 @@
   "description": "React implementation of a store, with Woocommerce backend",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 9200",
     "build": "next build && next export",
     "start": "next start",
     "analyze": "ANALYZE=1 next build",

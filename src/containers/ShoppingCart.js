@@ -53,6 +53,9 @@ export default class ShoppingCart extends React.Component {
             }
         }
     }
+    getShippingMethods() {
+        actions.getShippingMethods()
+    }
     processPayment() {
         alert('Will now process payment, next feature')
     }
@@ -97,6 +100,9 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'checkout.finish':
                 actions.checkout(data)
+                break;
+            case 'get.shipping.methods':
+                this.getShippingMethods()
                 break;
         }
     }

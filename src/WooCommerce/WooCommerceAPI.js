@@ -195,7 +195,7 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
   
   try {
     // bad things happen when params follow GET, like turning to OPTIONS midway and ultimately failing
-    data = await fetch(params.url, params);
+    data = method == 'GET'? await fetch(params.url):await fetch(params.url, params);
   } catch (e) {
     // we'll still leave this, fallback things
     if (e.code) return
