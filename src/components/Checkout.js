@@ -3,6 +3,7 @@ import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis, pullInt } from '../constants'
 import { Button, ButtonPane, Section, Sectionizr, View } from '.'
+import PaystackButton from 'react-paystack'
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -26,24 +27,26 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.clientname':
             case 'checkout.email':
             case 'checkout.phone':
+            case 'shipping.method':
                 let {form} = this.state
                 form[type] = data.value
                 this.setState({ form })
+
+                if (type == 'shipping.method') {
+                    let txt = data.options[data.selectedIndex].text
+                    let spl = txt.split(':')
+                    this.actionHandler('set.shipping.method', {
+                        method: data.value,
+                        cost: pullInt(spl[spl.length - 1]),
+                        desc: txt,
+                    })
+                }
                 break;
             case 'checkout.pay':
             case 'checkout.finish':
                 const test = !data['map.searchbox.update'] || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone']
                 if (test) alert("We need all these details to process your order")
                 else this.props.actionHandler(type, data)
-                break;
-            case 'shipping.method':
-                let txt = data.options[data.selectedIndex].text
-                let spl = txt.split(':')
-                this.actionHandler('set.shipping.method', {
-                    method: data.value,
-                    cost: pullInt(spl[spl.length - 1]),
-                    desc: txt,
-                })
                 break;
             default:
                 console.log('Default', type)
@@ -115,6 +118,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
+                            <PaystackButton />
                             <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
                             &emsp;
                             <Button label="Pay On Delivery" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />

@@ -29,6 +29,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-google-maps": "^9.4.5",
+    "react-paystack": "^1.0.1",
     "recompose": "^0.26.0"
   },
   "devDependencies": {
