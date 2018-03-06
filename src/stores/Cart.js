@@ -64,7 +64,7 @@ export default flux.createStore({
         }
         const pl = {
             payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
-            payment_method: 'bacs',
+            payment_method: isPaid? 'paystack':'cod',
             // payment_method_title: 'Direct Bank Transfer',
             set_paid: false,
             billing: {...billing},
@@ -80,7 +80,7 @@ export default flux.createStore({
         console.log(pl)
         const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
-            const response = await API_CALLS.createOrder(payload)
+            const response = true || await API_CALLS.createOrder(payload)
             console.log(response)
             this.emit('order.api-response', {id: ORDER_API_SUCCESS, response, isPaid})
         } catch (ex) {
