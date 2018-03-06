@@ -86,7 +86,7 @@ export default flux.createStore({
                 method: method.id,
                 desc: method.description
             }))
-            this.emit('shipping.methods-arrive')
+            // this.emit('shipping.methods-arrive')
         } catch (x) {}
     },
     persist: function() {

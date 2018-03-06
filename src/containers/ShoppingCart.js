@@ -20,6 +20,7 @@ export default class ShoppingCart extends React.Component {
             mapSearchBox: null,
             userLocation: '',
             shippingMethods: Cart.getShippingMethods(),
+            shippingCost: '0.00',
         }
 
         // bind
@@ -30,11 +31,11 @@ export default class ShoppingCart extends React.Component {
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
-        Cart.on('shipping.methods-arrive', this.updateState)
+        // Cart.on('shipping.methods-arrive', this.updateState)
     }
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
-        Cart.off('shipping.methods-arrive', this.updateState)
+        // Cart.off('shipping.methods-arrive', this.updateState)
     }
     updateState(d) {
         this.setState({
@@ -109,6 +110,11 @@ export default class ShoppingCart extends React.Component {
             case 'get.shipping.methods':
                 actions.getShippingMethods()
                 break;
+            case 'set.shipping.cost':
+                this.setState({
+                    shippingCost: data
+                })
+                break;
         }
     }
     openCart() {
@@ -120,6 +126,7 @@ export default class ShoppingCart extends React.Component {
             case ORDER_PREVIEW:
                 view = <OrderList items={Cart.getAllOrders()}
                         actionHandler={this.actionHandler}
+                        shippingCost={this.state.shippingCost}
                         total={Cart.getTotal()} />
                 break;
             case PICK_LOCATION:
@@ -135,7 +142,7 @@ export default class ShoppingCart extends React.Component {
                 view = <Checkout
                             actionHandler={this.actionHandler}
                             location={this.state.userLocation}
-                            shippingMethods={this.state.shippingMethods} />
+                            shippingCost={this.state.shippingCost} />
                 break;
             default:
                 view = !this.state.isEmpty?

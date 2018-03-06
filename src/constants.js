@@ -11,6 +11,7 @@ export default {
         {id: 7, name: 'Product #7', images: [], price: 200},
         {id: 8, name: 'Product #8', images: [], price: 400},
     ],
+    shipping_methods: [],
     sample_order: {
         payment_method: 'bacs',
         payment_method_title: 'Direct Bank Transfer',
@@ -67,6 +68,9 @@ export const moneyFormat = amt => amt.toLocaleString('en-US')
 
 export const bindToThis = (dis, prop) => dis[prop] = dis[prop].bind(dis)
 
+// works best for cases like 1,200.00, 800.00, 200
+export const pullInt = str => +str.match(/\.?\d+/g).join('');
+
 export const ORDER_API_SUCCESS = 'order.api.success'
 export const ORDER_API_ERROR = 'order.api.error'
 
@@ -78,5 +82,8 @@ export const API_CALLS = {
     },
     async createOrder(options) {
         return await Wc.post('orders', options)
+    },
+    async getShippingMethods() {
+        return await Wc.get('shipping_methods')
     },
 }
