@@ -75,6 +75,7 @@ export const ORDER_API_SUCCESS = 'order.api.success'
 export const ORDER_API_ERROR = 'order.api.error'
 
 export const ORDER_ITEM_UPDATE = 'order.item.update'
+export const ORDER_SHIPPING_COST = 'order.shipping.cost'
 
 export const API_CALLS = {
     async fetchProducts(per_page, page) {

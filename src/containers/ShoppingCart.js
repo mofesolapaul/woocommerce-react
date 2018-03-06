@@ -2,7 +2,7 @@ import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
 import { CartIcon, Checkout, Map, OrderList, View } from '../components'
-import {bindToThis, kformat, ORDER_API_ERROR, ORDER_API_SUCCESS} from '../constants'
+import {bindToThis, kformat, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_SHIPPING_COST} from '../constants'
 
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
@@ -14,6 +14,7 @@ export default class ShoppingCart extends React.Component {
         super(props)
         this.state = {
             isEmpty: Cart.isEmpty(),
+            order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
             state: NEUTRAL,
             mapCenter: null,
@@ -40,6 +41,7 @@ export default class ShoppingCart extends React.Component {
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
+            order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
         })
 
@@ -53,6 +55,10 @@ export default class ShoppingCart extends React.Component {
                     console.log(d.response)
                     if (!d.isPaid) alert("Order complete!")
                     else this.processPayment()
+                    break;
+                case ORDER_SHIPPING_COST:
+                    console.log('ORDER_SHIPPING_COST', d.cost)
+                    this.setState({ shippingCost: d.cost })
                     break;
             }
         }
@@ -111,9 +117,7 @@ export default class ShoppingCart extends React.Component {
                 actions.getShippingMethods()
                 break;
             case 'set.shipping.cost':
-                this.setState({
-                    shippingCost: data
-                })
+                actions.setShippingCost(data)
                 break;
         }
     }
@@ -126,8 +130,9 @@ export default class ShoppingCart extends React.Component {
             case ORDER_PREVIEW:
                 view = <OrderList items={Cart.getAllOrders()}
                         actionHandler={this.actionHandler}
-                        shippingCost={this.state.shippingCost}
-                        total={Cart.getTotal()} />
+                        shipping={this.state.shippingCost}
+                        orderTotal={this.state.order_total}
+                        total={this.state.total} />
                 break;
             case PICK_LOCATION:
                 view = <Map

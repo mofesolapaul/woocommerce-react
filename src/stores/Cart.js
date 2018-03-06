@@ -1,11 +1,12 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import constants, {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE} from '../constants'
+import constants, {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
 
 export default flux.createStore({
     orders: {},
     customer: {},
-    shippingMethods: [],
+    shipping_methods: [],
+    shipping_cost: '0.00',
     actions: [
         actions.addToCart,
         actions.removeFromCart,
@@ -13,6 +14,7 @@ export default flux.createStore({
         actions.updateQty,
         actions.checkout,
         actions.getShippingMethods,
+        actions.setShippingCost,
     ],
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
@@ -80,14 +82,17 @@ export default flux.createStore({
     getShippingMethods: async function() {
         try {
             const response = await API_CALLS.getShippingMethods()
-            console.log(response)
-            this.shippingMethods = []
-            response.map(method => this.shippingMethods.push({
+            this.shipping_methods = []
+            response.map(method => this.shipping_methods.push({
                 method: method.id,
                 desc: method.description
             }))
             // this.emit('shipping.methods-arrive')
         } catch (x) {}
+    },
+    setShippingCost: function(cost) {
+        this.shipping_cost = cost
+        this.emit('order.shipping_cost', {id: ORDER_SHIPPING_COST, cost: cost})
     },
     persist: function() {
 
@@ -99,18 +104,21 @@ export default flux.createStore({
         isEmpty: function() {
             return isEmpty(this.orders)
         },
-        getTotal: function() {
+        getTotal: function(order_total = false) {
             let total = 0
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price)
             })
-            return total;
+            return total + (!order_total? +this.shipping_cost:0);
         },
         getAllOrders: function() {
             return Object.values(this.orders)
         },
         getShippingMethods: function() {
-            return this.shippingMethods
+            return this.shipping_methods
+        },
+        getShippingCost: function() {
+            return this.shipping_cost
         }
     }
 })
