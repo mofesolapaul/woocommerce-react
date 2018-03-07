@@ -126,6 +126,9 @@ export default class ShoppingCart extends React.Component {
             case 'payment.closed':
                 alert('You cancelled the payment, please complete payment to expedite your order')
                 break;
+            default:
+                this.props.actionHandler && this.props.actionHandler(type, data)
+                break;
         }
     }
     openCart() {

@@ -29,7 +29,7 @@ class Product extends React.Component{
                 }
                 break;
             default:
-                this.props.actionHandler(type, data)
+                this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
         }
     }

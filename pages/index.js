@@ -24,7 +24,13 @@ export default class Index extends React.Component {
     componentWillMount() {
         this.showProducts();
     }
-    componentWillUnmount() {}
+    actionHandler(type, data) {
+        switch (type) {
+            case 'checkout.dismiss':
+                this.setState({ state: PICK_LOCATION })
+                break;
+        }
+    }
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay} = this.state 
         this.setState({ loading: !products.length, loadingFailed: false })

@@ -50,7 +50,7 @@ export default class Checkout extends React.PureComponent {
                 else this.props.actionHandler(type, data)
                 break;
             default:
-                this.props.actionHandler(type, data)
+                this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
         }
     }

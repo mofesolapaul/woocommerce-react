@@ -52,6 +52,9 @@ class ProductsContainer extends React.Component {
             case 'cart.button.remove':
                 actions.removeFromCart(data)
                 break;
+            default:
+                this.props.actionHandler && this.props.actionHandler(type, data)
+                break;
         }
     }
     render() {
