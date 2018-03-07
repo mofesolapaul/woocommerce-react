@@ -3,15 +3,15 @@ import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis, pullInt, uid } from '../constants'
 import { Paystack } from '../WooCommerce/Config'
-import { Button, ButtonPane, Section, Sectionizr, View } from '.'
-import PaystackButton from 'react-paystack'
+import { Button, ButtonPane, PaystackButton, Section, Sectionizr, View } from '.'
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
             form: {
-                'map.searchbox.update': props.location
+                'map.searchbox.update': props.location,
+                'checkout.email': '',
             }
         }
         
@@ -50,7 +50,6 @@ export default class Checkout extends React.PureComponent {
                 else this.props.actionHandler(type, data)
                 break;
             default:
-                console.log('Default', type)
                 this.props.actionHandler(type, data)
                 break;
         }
@@ -120,7 +119,7 @@ export default class Checkout extends React.PureComponent {
                         <div className="clearfix"></div>
                         <ButtonPane>
                             <PaystackButton
-                                ref={btn => this.paystackBtn = btn}
+                                ref={btn => this.actionHandler('set.paystack.btn', btn)}
                                 class="btn sleek-btn hidden"
                                 text="Pay Online"
                                 callback={response => this.actionHandler('payment.response', response)}

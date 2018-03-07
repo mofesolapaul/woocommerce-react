@@ -27,7 +27,7 @@ export default (childComponent, options, detachedViews) => (
                 padding: 2rem 5%;
                 box-shadow: rgba(82,89,101,.25) 0px -2px 8px 3px;
                 position: fixed;
-                overflow: auto;
+                // overflow: auto;
                 width: 100%;
                 left: 0;
                 z-index: 999;
@@ -64,7 +64,7 @@ export default (childComponent, options, detachedViews) => (
             .wrapper {
                 flex-grow: 1;
                 position: relative;
-                overflow: hidden;
+                overflow: auto;
             }
             @media screen and (max-width: 719px) {
                 .wrapper {
