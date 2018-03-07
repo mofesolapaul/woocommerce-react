@@ -70,7 +70,7 @@ export default class ShoppingCart extends React.Component {
     }
     processPayment() {
         alert('Will now process payment, next feature')
-        this.paystackBtn.payWithPaystack()
+        this.paystackBtn.pay()
     }
     actionHandler(type, data) {
         switch (type) {
@@ -122,6 +122,9 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'set.paystack.btn':
                 this.paystackBtn = data
+                break;
+            case 'payment.closed':
+                alert('You cancelled the payment, please complete payment to expedite your order')
                 break;
         }
     }
