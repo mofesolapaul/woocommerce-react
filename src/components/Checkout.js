@@ -1,7 +1,8 @@
 import React from 'react'
 import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
-import { bindToThis, pullInt } from '../constants'
+import { bindToThis, pullInt, uid } from '../constants'
+import { Paystack } from '../WooCommerce/Config'
 import { Button, ButtonPane, Section, Sectionizr, View } from '.'
 import PaystackButton from 'react-paystack'
 
@@ -118,7 +119,16 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            <PaystackButton />
+                            <PaystackButton
+                                ref={btn => this.paystackBtn = btn}
+                                class="btn sleek-btn hidden"
+                                text="Pay Online"
+                                callback={response => this.actionHandler('payment.response', response)}
+                                close={() => this.actionHandler('payment.closed')}
+                                reference={uid()}
+                                email={this.state.form['checkout.email']}
+                                amount={this.props.total}
+                                paystackkey={Paystack.TestSecretKey} />
                             <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
                             &emsp;
                             <Button label="Pay On Delivery" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />

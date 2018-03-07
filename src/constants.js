@@ -71,6 +71,11 @@ export const bindToThis = (dis, prop) => dis[prop] = dis[prop].bind(dis)
 // works best for cases like 1,200.00, 800.00, 200
 export const pullInt = str => +str.match(/\.?\d+/g).join('');
 
+export const uid = () =>
+    btoa(
+        Date.now() + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    )
+
 export const ORDER_API_SUCCESS = 'order.api.success'
 export const ORDER_API_ERROR = 'order.api.error'
 

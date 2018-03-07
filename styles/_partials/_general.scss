@@ -46,6 +46,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 2px;
     transition: .25s ease-in-out;
     padding: 5px;
+    font-size: inherit;
     cursor: pointer;
     text-transform: uppercase;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
