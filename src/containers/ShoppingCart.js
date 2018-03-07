@@ -50,14 +50,16 @@ export default class ShoppingCart extends React.Component {
             switch (d.id) {
                 case ORDER_API_ERROR:
                     console.log(d.ex)
+                    this.actionHandler('toast.show', { msg: 'Error creating order, please try again' })
                     break;
                 case ORDER_API_SUCCESS:
                     console.log(d.response)
-                    if (!d.isPaid) alert("Order complete!")
+                    if (!d.isPaid) {
+                        this.actionHandler('toast.show', { msg: 'Order complete!', type: 's' })
+                    }
                     else this.processPayment()
                     break;
                 case ORDER_SHIPPING_COST:
-                    console.log('ORDER_SHIPPING_COST', d.cost)
                     this.setState({ shippingCost: d.cost })
                     break;
             }
@@ -69,7 +71,7 @@ export default class ShoppingCart extends React.Component {
         })
     }
     processPayment() {
-        alert('Will now process payment, next feature')
+        this.actionHandler('toast.show', { msg: 'Order received, processing payment', type: 's' })
         this.paystackBtn.pay()
     }
     actionHandler(type, data) {
@@ -124,7 +126,10 @@ export default class ShoppingCart extends React.Component {
                 this.paystackBtn = data
                 break;
             case 'payment.closed':
-                alert('You cancelled the payment, please complete payment to expedite your order')
+                this.actionHandler('toast.show', {msg: 'You cancelled the payment, please complete payment to expedite your order', type: 'w'})
+                break;
+            case 'payment.response':
+                console.log(e)
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)

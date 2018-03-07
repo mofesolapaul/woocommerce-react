@@ -17,7 +17,6 @@ const Wc = {
         _method = 'POST'
         let res = await Api.post(endpoint, options)
         if (!res) return {}
-        console.log(res)
         let data
         try { data = await res.json() }
         catch (e) { data = {}; }

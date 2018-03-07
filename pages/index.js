@@ -3,6 +3,7 @@ import Layout from '../src/layouts/_default'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
 import constants, {API_CALLS, bindToThis, sleep} from '../src/constants'
+import toastr from 'toastr'
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -20,14 +21,27 @@ export default class Index extends React.Component {
 
         // bind
         bindToThis(this, 'showProducts')
+        bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
         this.showProducts();
     }
     actionHandler(type, data) {
         switch (type) {
-            case 'checkout.dismiss':
-                this.setState({ state: PICK_LOCATION })
+            case 'toast.show':
+                let payload = {...data}
+                payload.title = payload.title || ""
+                data.type == 's'?
+                    toastr.success(payload.msg, payload.title):
+                    (
+                        data.type == 'i'?
+                        toastr.info(payload.msg, payload.title):
+                            (
+                                data.type == 'w'?
+                                    toastr.warning(payload.msg, payload.title):
+                                    toastr.error(payload.msg, payload.title)
+                            )
+                    )
                 break;
         }
     }
@@ -80,9 +94,9 @@ export default class Index extends React.Component {
                 <h4 className="slogan">find the perfect blend</h4>
             </div>
             
-            <ProductsContainer {...productContainerProps}></ProductsContainer>
+            <ProductsContainer {...productContainerProps} actionHandler={this.actionHandler}></ProductsContainer>
 
-            <ShoppingCart />
+            <ShoppingCart actionHandler={this.actionHandler} />
             
             {/* style */}
             <style jsx>{`
