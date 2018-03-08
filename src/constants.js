@@ -93,3 +93,21 @@ export const API_CALLS = {
         return await Wc.get('shipping_methods')
     },
 }
+
+export const db = {
+    put: (key, value) => {
+        new Promise((resolve, reject) => {
+            localStorage.setItem(key, JSON.stringify(data))
+            resolve()
+        }).then(d => null).catch(e => null)
+    },
+    get: (key, value) => {
+        new Promise((resolve, reject) => {
+            resolve(localStorage.getItem(key))
+        }).then(d => null).catch(e => null)
+    },
+}
+
+export const CART = {
+    DB_KEY_ORDERS: `____${0x1234567}`,
+}

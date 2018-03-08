@@ -1,6 +1,6 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import constants, {isEmpty, API_CALLS, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
+import constants, {db, isEmpty, API_CALLS, CART, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
 
 export default flux.createStore({
     orders: {},
@@ -21,6 +21,7 @@ export default flux.createStore({
         if (!!this.orders[item.id]) this.orders[item.id].qty++
         else this.orders[item.id] = { product: item, qty: 1 }
         this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id})
+        db.put(CART.DB_KEY_ORDERS, this.orders)
     },
     removeFromCart: function(item) {
         if (!!this.orders[item.id]) {
