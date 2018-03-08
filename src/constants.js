@@ -115,4 +115,5 @@ export const db = {
 export const CART = {
     DB_KEY_ORDERS: `____${0x1234567}`,
     DB_KEY_NEW_ORDER_ID: `____${0x1234568}`,
+    DB_KEY_CUSTOMER_DATA: `____${0x1234569}`,
 }

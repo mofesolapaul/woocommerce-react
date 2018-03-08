@@ -140,6 +140,7 @@ const Cart = flux.createStore({
     orderCreated: function(id) {
         this.order_created = id
         db.put(CART.DB_KEY_NEW_ORDER_ID, id)
+        db.put(CART.DB_KEY_CUSTOMER_DATA, this.customer)
         this.emit('app.order-created')
     },
     exports: {
@@ -147,6 +148,7 @@ const Cart = flux.createStore({
             this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {}
             this.emit('order.loaded')
             this.order_created = await(db.get(CART.DB_KEY_NEW_ORDER_ID))
+            this.customer = await(db.get(CART.DB_KEY_CUSTOMER_DATA)) || {}
             this.emit('app.order-created')
         },
         getQty: function(id) {

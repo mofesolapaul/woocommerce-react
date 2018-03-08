@@ -72,7 +72,7 @@ export default class ShoppingCart extends React.Component {
         })
     }
     processPayment() {
-        this.actionHandler('toast.show', { msg: 'Order received, processing payment', type: 's' })
+        this.actionHandler('toast.show', { msg: 'Order received, loading payment gateway, please wait', type: 's' })
         this.paystackBtn.pay()
     }
     actionHandler(type, data) {
