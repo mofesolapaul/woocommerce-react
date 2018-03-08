@@ -2,7 +2,7 @@ import React from 'react'
 import toastr from 'toastr'
 import Layout from '../src/layouts/_default'
 import css from '../styles/vars'
-import { ProductsContainer, ShoppingCart } from '../src/containers'
+import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers'
 import constants, {API_CALLS, bindToThis, sleep} from '../src/constants'
 import {Cart} from '../src/stores'
 
@@ -103,6 +103,8 @@ export default class Index extends React.Component {
             <ProductsContainer {...productContainerProps} actionHandler={this.actionHandler}></ProductsContainer>
 
             <ShoppingCart actionHandler={this.actionHandler} />
+
+            <LoadingScreen />
             
             {/* style */}
             <style jsx>{`
