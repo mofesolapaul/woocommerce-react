@@ -95,16 +95,16 @@ export const API_CALLS = {
 }
 
 export const db = {
-    put: (key, value) => {
+    put: (key, data) => {
         new Promise((resolve, reject) => {
-            localStorage.setItem(key, JSON.stringify(data))
+            localStorage.setItem(key, btoa(unescape(encodeURIComponent(JSON.stringify(data)))))
             resolve()
-        }).then(d => null).catch(e => null)
+        }).then(d => null).catch(e => console.log(e))
     },
-    get: (key, value) => {
-        new Promise((resolve, reject) => {
-            resolve(localStorage.getItem(key))
-        }).then(d => null).catch(e => null)
+    get: (key) => {
+        return new Promise((resolve, reject) => {
+            resolve(JSON.parse(decodeURIComponent(escape(window.atob(localStorage.getItem(key))))))
+        })
     },
 }
 

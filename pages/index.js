@@ -53,10 +53,12 @@ export default class Index extends React.Component {
 
         if (!!f) {
             // only pick properties we need
-            f = f.filter(p =>
-                p.in_stock && (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
-            )
-            products = products.concat(f)
+            let c = []
+            f = f.filter(p => {
+                if (p.in_stock)
+                    c.push( (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p) )
+            })
+            products = products.concat(c)
         } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })
 
         this.setState({

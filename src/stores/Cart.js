@@ -20,8 +20,8 @@ export default flux.createStore({
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
         else this.orders[item.id] = { product: item, qty: 1 }
-        this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id})
         db.put(CART.DB_KEY_ORDERS, this.orders)
+        this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id})
     },
     removeFromCart: function(item) {
         if (!!this.orders[item.id]) {
