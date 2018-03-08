@@ -26,17 +26,20 @@ export default flux.createStore({
     removeFromCart: function(item) {
         if (!!this.orders[item.id]) {
             if (this.orders[item.id].qty == 1) delete this.orders[item.id]
-            else this.orders[item.id].qty-- 
+            else this.orders[item.id].qty--
+            db.put(CART.DB_KEY_ORDERS, this.orders)
             this.emit('order.remove', {id: ORDER_ITEM_UPDATE, item_id: item.id})
         }
     },
     deleteOrder: function(id) {
         delete this.orders[id]
+        db.put(CART.DB_KEY_ORDERS, this.orders)
         this.emit('order.delete', {id: ORDER_ITEM_UPDATE, item_id: id}) // products depend on this is to update their state
     },
     updateQty: function(id, qty) {
         if (this.orders[id]) {
             this.orders[id].qty = qty
+            db.put(CART.DB_KEY_ORDERS, this.orders)
             this.emit('order.qty', {id: ORDER_ITEM_UPDATE, item_id: id})
         }
     },
@@ -131,3 +134,5 @@ export default flux.createStore({
         }
     }
 })
+
+console.log('Carter')
