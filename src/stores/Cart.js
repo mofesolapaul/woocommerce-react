@@ -175,6 +175,9 @@ const Cart = flux.createStore({
         },
         isOrderCreated: function() {
             return this.order_created
+        },
+        getCustomer: function() {
+            return this.customer
         }
     }
 })

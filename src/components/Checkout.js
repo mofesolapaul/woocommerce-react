@@ -49,7 +49,7 @@ export default class Checkout extends React.PureComponent {
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'})
                 else {
                     this.actionHandler('app.busy')
-                    this.props.actionHandler(type, data)
+                    this.props.actionHandler && this.props.actionHandler(type, data)
                 }
                 break;
             default:
@@ -59,29 +59,30 @@ export default class Checkout extends React.PureComponent {
     }
     confirmLocationView() {
         let {props} = this
+        let {fieldDefaults: __} = props
         return (
             <Section>
                 <div className="ConfirmLocation">
                     <div className="wrapper">
                         <div className="group">
                             <label className="label">Confirm your address</label>
-                            <input className="field" type="text" defaultValue={props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
+                            <input className="field" type="text" defaultValue={__['map.searchbox.update']} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
                         </div>
                         <div className="group">
                             <label className="label">Your name</label>
-                            <input className="field" type="text" defaultValue="Test Ignore" onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
+                            <input className="field" type="text" defaultValue={__['checkout.clientname']} onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
                         </div>
                         <div className="group">
                             <label className="label">Email address</label>
-                            <input className="field" type="email" defaultValue="test@igno.re" onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
+                            <input className="field" type="email" defaultValue={__['checkout.email']} onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
                         </div>
                         <div className="group">
                             <label className="label">Phone</label>
-                            <input className="field" type="text" defaultValue="09090909090" onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
+                            <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
                         <div className="group">
                             <label className="label">Shipping preference</label>
-                            <select name="shipping_method[0]" data-index="0" id="shipping_method_0" className="field" onChange={e => this.actionHandler('shipping.method', e.target)}>
+                            <select name="shipping_method[0]" data-index="0" id="shipping_method_0" defaultValue={__['shipping.method']} className="field" onChange={e => this.actionHandler('shipping.method', e.target)}>
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
                                 <option value="flat_rate:22">Airport road - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:46">Ajah - 2hrs delivery time: ₦1,200.00</option>

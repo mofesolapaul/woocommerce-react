@@ -22,6 +22,7 @@ export default class ShoppingCart extends React.Component {
             userLocation: '',
             shippingMethods: Cart.getShippingMethods(),
             shippingCost: '0.00',
+            customer: Cart.getCustomer(),
         }
 
         // bind
@@ -32,17 +33,18 @@ export default class ShoppingCart extends React.Component {
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
-        // Cart.on('shipping.methods-arrive', this.updateState)
+        Cart.on('app.order-created', this.updateState)
     }
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
-        // Cart.off('shipping.methods-arrive', this.updateState)
+        Cart.off('app.order-created', this.updateState)
     }
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
             order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
+            customer: Cart.getCustomer(),
         })
 
         // Order received
@@ -168,7 +170,8 @@ export default class ShoppingCart extends React.Component {
                 view = <Checkout actionHandler={this.actionHandler}
                             location={this.state.userLocation}
                             shippingCost={this.state.shippingCost}
-                            total={this.state.total} />
+                            total={this.state.total}
+                            fieldDefaults={this.state.customer} />
                 break;
             default:
                 view = !this.state.isEmpty?
