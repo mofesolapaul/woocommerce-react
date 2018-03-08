@@ -8,6 +8,7 @@ const Cart = flux.createStore({
     shipping_methods: [],
     shipping_method: {},
     shipping_cost: '0.00',
+    order_created: null,
     actions: [
         actions.addToCart,
         actions.removeFromCart,
@@ -18,12 +19,20 @@ const Cart = flux.createStore({
         actions.setShippingMethod,
     ],
     addToCart: function(item) {
+        if (!!this.order_created) {
+            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            return
+        }
         if (!!this.orders[item.id]) this.orders[item.id].qty++
         else this.orders[item.id] = { product: item, qty: 1 }
         this.persist()
         this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id})
     },
     removeFromCart: function(item) {
+        if (!!this.order_created) {
+            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            return
+        }
         if (!!this.orders[item.id]) {
             if (this.orders[item.id].qty == 1) delete this.orders[item.id]
             else this.orders[item.id].qty--
@@ -32,11 +41,19 @@ const Cart = flux.createStore({
         }
     },
     deleteOrder: function(id) {
+        if (!!this.order_created) {
+            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            return
+        }
         delete this.orders[id]
         this.persist()
         this.emit('order.delete', {id: ORDER_ITEM_UPDATE, item_id: id}) // products depend on this is to update their state
     },
     updateQty: function(id, qty) {
+        if (!!this.order_created) {
+            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            return
+        }
         if (this.orders[id]) {
             this.orders[id].qty = qty
             this.persist()
@@ -54,6 +71,12 @@ const Cart = flux.createStore({
         return line_items;
     },
     checkout: async function(cust_data, isPaid = false) {
+        if (!!this.isOrderCreated) {
+            // order already created, so on with it!
+            this.emit('order.api-response', {id: ORDER_API_SUCCESS, response: {id: this.isOrderCreated}, isPaid})
+            return true
+        }
+
         this.customer = { ...this.customer, ...cust_data }
         const {customer} = this
         const [first_name, last_name] = customer['checkout.clientname'].split(' ', 2)
@@ -84,6 +107,7 @@ const Cart = flux.createStore({
         const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = await API_CALLS.createOrder(payload)
+            this.orderCreated(response.data.id)
             console.log(response)
             this.emit('order.api-response', {id: ORDER_API_SUCCESS, response, isPaid})
         } catch (ex) {
@@ -102,6 +126,10 @@ const Cart = flux.createStore({
         } catch (x) {}
     },
     setShippingMethod: function(data) {
+        if (!!this.order_created) {
+            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            return
+        }
         this.shipping_method = data
         this.shipping_cost = data.cost
         this.emit('order.shipping_cost', {id: ORDER_SHIPPING_COST, cost: data.cost})
@@ -109,10 +137,17 @@ const Cart = flux.createStore({
     persist: function(which = 'orders') {
         db.put(CART.DB_KEY_ORDERS, this.orders)
     },
+    orderCreated: function(id) {
+        this.order_created = id
+        db.put(CART.DB_KEY_NEW_ORDER_ID, id)
+        this.emit('app.order-created')
+    },
     exports: {
         load: async function() {
-            this.orders = await(db.get(CART.DB_KEY_ORDERS))
+            this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {}
             this.emit('order.loaded')
+            this.order_created = await(db.get(CART.DB_KEY_NEW_ORDER_ID))
+            this.emit('app.order-created')
         },
         getQty: function(id) {
             return !!this.orders[id]? this.orders[id].qty:0
@@ -135,6 +170,9 @@ const Cart = flux.createStore({
         },
         getShippingCost: function() {
             return this.shipping_cost
+        },
+        isOrderCreated: function() {
+            return this.order_created
         }
     }
 })

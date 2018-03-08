@@ -103,11 +103,14 @@ export const db = {
     },
     get: (key) => {
         return new Promise((resolve, reject) => {
-            resolve(JSON.parse(decodeURIComponent(escape(window.atob(localStorage.getItem(key))))))
+            const data = localStorage.getItem(key)
+            if (!data) resolve(data)
+            else resolve(JSON.parse(decodeURIComponent(escape(window.atob(data)))))
         })
     },
 }
 
 export const CART = {
     DB_KEY_ORDERS: `____${0x1234567}`,
+    DB_KEY_NEW_ORDER_ID: `____${0x1234568}`,
 }

@@ -19,14 +19,25 @@ export default class Index extends React.Component {
             productsLoading: true,
             productsLoadingFailed: false,
             busy: false,
+            orderCreated: false,
         }
 
         // bind
         bindToThis(this, 'showProducts')
+        bindToThis(this, 'updateState')
         bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
+        Cart.on('app.*', this.updateState)
         this.showProducts();
+    }
+    componentWillUnmount() {
+        Cart.off('app.*', this.updateState)
+    }
+    updateState(d) {
+        this.setState({
+            orderCreated: Cart.isOrderCreated()
+        })
     }
     actionHandler(type, data) {
         switch (type) {
@@ -46,7 +57,7 @@ export default class Index extends React.Component {
                     )
                 break;
             case 'app.busy':
-                this.setState({ busy: data===null || data===true? true:false })
+                this.setState({ busy: data===false? false:true })
                 break;
         }
     }

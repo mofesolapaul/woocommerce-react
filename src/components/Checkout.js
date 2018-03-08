@@ -82,7 +82,7 @@ export default class Checkout extends React.PureComponent {
                         <div className="group">
                             <label className="label">Shipping preference</label>
                             <select name="shipping_method[0]" data-index="0" id="shipping_method_0" className="field" onChange={e => this.actionHandler('shipping.method', e.target)}>
-                                <option value="">Select Shipping Method</option>
+                                <option value="" style={{display: 'none'}}>Select Shipping Method</option>
                                 <option value="flat_rate:22">Airport road - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:46">Ajah - 2hrs delivery time: ₦1,200.00</option>
                                 <option value="flat_rate:35">Amuwo-odofin - 3hrs delivery time: ₦1,200.00</option>
