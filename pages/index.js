@@ -3,7 +3,7 @@ import toastr from 'toastr'
 import Layout from '../src/layouts/_default'
 import css from '../styles/vars'
 import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers'
-import constants, {API_CALLS, bindToThis, sleep} from '../src/constants'
+import constants, {API_CALLS, APP_SHOW_TOAST, bindToThis, sleep} from '../src/constants'
 import {Cart} from '../src/stores'
 
 export default class Index extends React.Component {
@@ -38,6 +38,14 @@ export default class Index extends React.Component {
         this.setState({
             orderCreated: Cart.isOrderCreated()
         })
+
+        if (!!d && !!d.id) {
+            switch (d.id) {
+                case APP_SHOW_TOAST:
+                    this.actionHandler('toast.show', d)
+                    break;
+            }
+        }
     }
     actionHandler(type, data) {
         switch (type) {
@@ -107,6 +115,7 @@ export default class Index extends React.Component {
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
             loading: this.state.productsLoading, // show loader or not
             notfound: this.state.productsLoadingFailed, // did we fail to load products from server?
+            readonly: this.state.orderCreated, // order already created, ac accordingly
         }
 
         return <Layout>

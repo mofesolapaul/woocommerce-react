@@ -45,7 +45,7 @@ class Product extends React.Component{
             </div>
             <div className="flex">
                 <h4 className="title slim">{item.name}</h4>
-                <CartButtons handler={this.actionHandler} />
+                {this.props.readonly? null:<CartButtons handler={this.actionHandler} />}
             </div>
             <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
@@ -60,14 +60,6 @@ class Product extends React.Component{
                     float: left;
                     width: 100%;
                 }
-                // @media screen and (min-width: 961px) {
-                //     .Product {
-                //         width: calc(calc(100% / 4) - .75%);
-                //     }
-                //     .Product.shift4 {
-                //         margin-left: 1%;
-                //     }
-                // }
                 @media screen and (min-width: 781px) {
                     .Product {
                         width: calc(calc(100% / 3) - 1%);

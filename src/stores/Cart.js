@@ -1,6 +1,6 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import constants, {db, isEmpty, API_CALLS, CART, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
+import constants, {db, isEmpty, API_CALLS, APP_SHOW_TOAST, CART, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
 
 const Cart = flux.createStore({
     orders: {},
@@ -20,7 +20,7 @@ const Cart = flux.createStore({
     ],
     addToCart: function(item) {
         if (!!this.order_created) {
-            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"})
             return
         }
         if (!!this.orders[item.id]) this.orders[item.id].qty++
@@ -30,7 +30,7 @@ const Cart = flux.createStore({
     },
     removeFromCart: function(item) {
         if (!!this.order_created) {
-            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"})
             return
         }
         if (!!this.orders[item.id]) {
@@ -42,7 +42,7 @@ const Cart = flux.createStore({
     },
     deleteOrder: function(id) {
         if (!!this.order_created) {
-            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"})
             return
         }
         delete this.orders[id]
@@ -51,7 +51,7 @@ const Cart = flux.createStore({
     },
     updateQty: function(id, qty) {
         if (!!this.order_created) {
-            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"})
             return
         }
         if (this.orders[id]) {
@@ -127,7 +127,7 @@ const Cart = flux.createStore({
     },
     setShippingMethod: function(data) {
         if (!!this.order_created) {
-            this.emit('app.toast', {type: 'w', msg: "You have a pending order, please complete it to place another order"})
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"})
             return
         }
         this.shipping_method = data
