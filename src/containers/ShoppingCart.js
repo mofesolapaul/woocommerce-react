@@ -50,11 +50,12 @@ export default class ShoppingCart extends React.Component {
             switch (d.id) {
                 case ORDER_API_ERROR:
                     console.log(d.ex)
+                    this.actionHandler('app.busy', false)
                     this.actionHandler('toast.show', { msg: 'Error creating order, please try again' })
                     break;
                 case ORDER_API_SUCCESS:
-                    console.log(d.response)
                     if (!d.isPaid) {
+                        this.actionHandler('app.busy', false)
                         this.actionHandler('toast.show', { msg: 'Order received!', type: 's' })
                     }
                     else this.processPayment()
@@ -126,9 +127,11 @@ export default class ShoppingCart extends React.Component {
                 this.paystackBtn = data
                 break;
             case 'payment.closed':
+                this.actionHandler('app.busy', false)
                 this.actionHandler('toast.show', {msg: 'You cancelled the payment, please complete payment to expedite your order', type: 'w'})
                 break;
             case 'payment.response':
+                this.actionHandler('app.busy', false)
                 this.actionHandler('toast.show', { msg: 'Payment complete!', type: 's' })
                 break;
             default:

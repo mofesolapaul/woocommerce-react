@@ -16,8 +16,9 @@ export default class Index extends React.Component {
             page: 1,
             displayOnFetch: false,
             noMoreProductsFromServer: false,
-            loading: true,
-            loadingFailed: false,
+            productsLoading: true,
+            productsLoadingFailed: false,
+            busy: false,
         }
 
         // bind
@@ -44,11 +45,14 @@ export default class Index extends React.Component {
                             )
                     )
                 break;
+            case 'app.busy':
+                this.setState({ busy: data===null || data===true? true:false })
+                break;
         }
     }
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay} = this.state 
-        this.setState({ loading: !products.length, loadingFailed: false })
+        this.setState({ productsLoading: !products.length, productsLoadingFailed: false })
         await sleep(500) // sleep for a half second
         let f = (await API_CALLS.fetchProducts(per_page, page)).data
 
@@ -60,14 +64,14 @@ export default class Index extends React.Component {
                     c.push( (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p) )
             })
             products = products.concat(c)
-        } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })
+        } else if (!this.state.productsOnDisplay.length) this.setState({ productsLoadingFailed: true })
 
         this.setState({
             per_page,
             products,
             page: !!f?page+1:page,
             noMoreProductsFromServer: !!f&&!f.length,
-            loading: false
+            productsLoading: false
         })
         if (this.state.displayOnFetch) this.showProducts(true)
     }
@@ -90,8 +94,8 @@ export default class Index extends React.Component {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts, // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
-            loading: this.state.loading, // show loader or not
-            notfound: this.state.loadingFailed, // did we fail to load products from server?
+            loading: this.state.productsLoading, // show loader or not
+            notfound: this.state.productsLoadingFailed, // did we fail to load products from server?
         }
 
         return <Layout>
@@ -104,7 +108,7 @@ export default class Index extends React.Component {
 
             <ShoppingCart actionHandler={this.actionHandler} />
 
-            <LoadingScreen />
+            <LoadingScreen show={this.state.busy} />
             
             {/* style */}
             <style jsx>{`

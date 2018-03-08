@@ -47,7 +47,10 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.finish':
                 const test = !data['map.searchbox.update'] || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone']
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'})
-                else this.props.actionHandler(type, data)
+                else {
+                    this.actionHandler('app.busy')
+                    this.props.actionHandler(type, data)
+                }
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)

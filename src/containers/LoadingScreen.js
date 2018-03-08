@@ -4,7 +4,7 @@ import {Loading} from '../components'
 
 export default class LoadingScreen extends React.Component {
     render() {
-        return <div className="LoadingScreen flex">
+        return !this.props.show? null:<div className="LoadingScreen flex">
             <Loading visible />
 
             {/* styles */}

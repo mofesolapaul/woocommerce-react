@@ -83,7 +83,7 @@ const Cart = flux.createStore({
         }
         const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
-            const response = true || await API_CALLS.createOrder(payload)
+            const response = await API_CALLS.createOrder(payload)
             console.log(response)
             this.emit('order.api-response', {id: ORDER_API_SUCCESS, response, isPaid})
         } catch (ex) {
