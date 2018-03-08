@@ -134,7 +134,7 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'payment.closed':
                 this.actionHandler('app.busy', false)
-                this.actionHandler('toast.show', {msg: 'You cancelled the payment, please complete payment to expedite your order', type: 'w'})
+                this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'w'})
                 break;
             case 'payment.response':
                 this.actionHandler('app.busy', false)
@@ -171,7 +171,9 @@ export default class ShoppingCart extends React.Component {
                             location={this.state.userLocation}
                             shippingCost={this.state.shippingCost}
                             total={this.state.total}
-                            fieldDefaults={this.state.customer} />
+                            fieldDefaults={this.state.customer}
+                            readonly={this.props.readonly}
+                            order_id={Cart.isOrderCreated()} />
                 break;
             default:
                 view = !this.state.isEmpty?

@@ -12,6 +12,7 @@ export default class Checkout extends React.PureComponent {
             form: {
                 'map.searchbox.update': props.location,
                 'checkout.email': '',
+                ...this.props.fieldDefaults,
             }
         }
         
@@ -60,6 +61,14 @@ export default class Checkout extends React.PureComponent {
     confirmLocationView() {
         let {props} = this
         let {fieldDefaults: __} = props
+        const normalButtons = <View>
+            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
+            &emsp; <Button label="Pay On Delivery" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
+        </View>
+        const pendingPaymentButtons = <View>
+            <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
+            &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
+        </View>
         return (
             <Section>
                 <div className="ConfirmLocation">
@@ -131,10 +140,9 @@ export default class Checkout extends React.PureComponent {
                                 reference={uid()}
                                 email={this.state.form['checkout.email']}
                                 amount={this.props.total * 100}
-                                paystackkey={Paystack.TestPublicKey} />
-                            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
-                            &emsp;
-                            <Button label="Pay On Delivery" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
+                                paystackkey={Paystack.TestPublicKey}
+                                metadata={{order_id: this.props.order_id}} />
+                            {this.props.readonly? pendingPaymentButtons:normalButtons}
                         </ButtonPane>
                     </div>
                 </div>

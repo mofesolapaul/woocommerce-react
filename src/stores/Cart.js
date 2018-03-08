@@ -71,9 +71,9 @@ const Cart = flux.createStore({
         return line_items;
     },
     checkout: async function(cust_data, isPaid = false) {
-        if (!!this.isOrderCreated) {
+        if (!!this.order_created) {
             // order already created, so on with it!
-            this.emit('order.api-response', {id: ORDER_API_SUCCESS, response: {id: this.isOrderCreated}, isPaid})
+            this.emit('order.api-response', {id: ORDER_API_SUCCESS, response: {id: this.order_created}, isPaid})
             return true
         }
 
