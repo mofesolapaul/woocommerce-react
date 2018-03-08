@@ -79,6 +79,10 @@ export default class ShoppingCart extends React.Component {
         switch (type) {
             case 'order.checkout.pick_location':
             case 'checkout.dismiss':
+                if (this.props.readonly) {
+                    this.setState({ state: NEUTRAL })
+                    return
+                }
                 this.setState({ state: PICK_LOCATION })
                 break;
             case 'cart.dismiss':
@@ -140,7 +144,7 @@ export default class ShoppingCart extends React.Component {
         }
     }
     openCart() {
-        this.setState({ state: ORDER_PREVIEW })
+        this.setState({ state: this.props.readonly? FILL_CHECKOUT_FORM:ORDER_PREVIEW })
     }
     render() {
         let view = null
@@ -153,8 +157,7 @@ export default class ShoppingCart extends React.Component {
                         total={this.state.total} />
                 break;
             case PICK_LOCATION:
-                view = <Map
-                            actionHandler={this.actionHandler}
+                view = <Map actionHandler={this.actionHandler}
                             center={this.state.mapCenter}
                             lastLocation={this.state.userLocation}
                             distance={this.state.mapDestinationDistance}
@@ -162,8 +165,7 @@ export default class ShoppingCart extends React.Component {
                             etaAddy={this.state.mapDirectionEndAddress} />
                 break;
             case FILL_CHECKOUT_FORM:
-                view = <Checkout
-                            actionHandler={this.actionHandler}
+                view = <Checkout actionHandler={this.actionHandler}
                             location={this.state.userLocation}
                             shippingCost={this.state.shippingCost}
                             total={this.state.total} />

@@ -116,6 +116,7 @@ export default class Index extends React.Component {
             loading: this.state.productsLoading, // show loader or not
             notfound: this.state.productsLoadingFailed, // did we fail to load products from server?
             readonly: this.state.orderCreated, // order already created, ac accordingly
+            actionHandler: this.actionHandler, // action handler
         }
 
         return <Layout>
@@ -124,9 +125,9 @@ export default class Index extends React.Component {
                 <h4 className="slogan">find the perfect blend</h4>
             </div>
             
-            <ProductsContainer {...productContainerProps} actionHandler={this.actionHandler}></ProductsContainer>
+            <ProductsContainer {...productContainerProps}></ProductsContainer>
 
-            <ShoppingCart actionHandler={this.actionHandler} />
+            <ShoppingCart actionHandler={this.actionHandler} readonly={this.state.orderCreated} />
 
             <LoadingScreen show={this.state.busy} />
             
