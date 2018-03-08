@@ -74,7 +74,7 @@ export const pullInt = str => +str.match(/\.?\d+/g).join('');
 export const uid = () =>
     btoa(
         Date.now() + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-    )
+    ).replace('=','')
 
 export const ORDER_API_SUCCESS = 'order.api.success'
 export const ORDER_API_ERROR = 'order.api.error'

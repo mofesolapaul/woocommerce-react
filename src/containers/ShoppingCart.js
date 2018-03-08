@@ -55,7 +55,7 @@ export default class ShoppingCart extends React.Component {
                 case ORDER_API_SUCCESS:
                     console.log(d.response)
                     if (!d.isPaid) {
-                        this.actionHandler('toast.show', { msg: 'Order complete!', type: 's' })
+                        this.actionHandler('toast.show', { msg: 'Order received!', type: 's' })
                     }
                     else this.processPayment()
                     break;
@@ -129,7 +129,7 @@ export default class ShoppingCart extends React.Component {
                 this.actionHandler('toast.show', {msg: 'You cancelled the payment, please complete payment to expedite your order', type: 'w'})
                 break;
             case 'payment.response':
-                console.log(e)
+                this.actionHandler('toast.show', { msg: 'Payment complete!', type: 's' })
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)

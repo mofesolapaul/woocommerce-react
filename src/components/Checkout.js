@@ -126,7 +126,7 @@ export default class Checkout extends React.PureComponent {
                                 close={() => this.actionHandler('payment.closed')}
                                 reference={uid()}
                                 email={this.state.form['checkout.email']}
-                                amount={this.props.total}
+                                amount={this.props.total * 100}
                                 paystackkey={Paystack.TestPublicKey} />
                             <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
                             &emsp;
