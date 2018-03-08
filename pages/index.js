@@ -1,9 +1,10 @@
 import React from 'react'
+import toastr from 'toastr'
 import Layout from '../src/layouts/_default'
 import css from '../styles/vars'
 import { ProductsContainer, ShoppingCart } from '../src/containers'
 import constants, {API_CALLS, bindToThis, sleep} from '../src/constants'
-import toastr from 'toastr'
+import {Cart} from '../src/stores'
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -77,6 +78,9 @@ export default class Index extends React.Component {
             this.setState({products, productsOnDisplay, displayOnFetch: false})
         } else this.setState({displayOnFetch: true})
         
+        // sync storage
+        Cart.load()
+
         // load more from server
         if (nofetch === true) return
         if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());

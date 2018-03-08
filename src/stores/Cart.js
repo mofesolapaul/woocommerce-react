@@ -2,7 +2,7 @@ import flux from 'flux-react'
 import actions from '../actions'
 import constants, {db, isEmpty, API_CALLS, CART, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
 
-export default flux.createStore({
+const Cart = flux.createStore({
     orders: {},
     customer: {},
     shipping_methods: [],
@@ -20,26 +20,26 @@ export default flux.createStore({
     addToCart: function(item) {
         if (!!this.orders[item.id]) this.orders[item.id].qty++
         else this.orders[item.id] = { product: item, qty: 1 }
-        db.put(CART.DB_KEY_ORDERS, this.orders)
+        this.persist()
         this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id})
     },
     removeFromCart: function(item) {
         if (!!this.orders[item.id]) {
             if (this.orders[item.id].qty == 1) delete this.orders[item.id]
             else this.orders[item.id].qty--
-            db.put(CART.DB_KEY_ORDERS, this.orders)
+            this.persist()
             this.emit('order.remove', {id: ORDER_ITEM_UPDATE, item_id: item.id})
         }
     },
     deleteOrder: function(id) {
         delete this.orders[id]
-        db.put(CART.DB_KEY_ORDERS, this.orders)
+        this.persist()
         this.emit('order.delete', {id: ORDER_ITEM_UPDATE, item_id: id}) // products depend on this is to update their state
     },
     updateQty: function(id, qty) {
         if (this.orders[id]) {
             this.orders[id].qty = qty
-            db.put(CART.DB_KEY_ORDERS, this.orders)
+            this.persist()
             this.emit('order.qty', {id: ORDER_ITEM_UPDATE, item_id: id})
         }
     },
@@ -106,10 +106,14 @@ export default flux.createStore({
         this.shipping_cost = data.cost
         this.emit('order.shipping_cost', {id: ORDER_SHIPPING_COST, cost: data.cost})
     },
-    persist: function() {
-
+    persist: function(which = 'orders') {
+        db.put(CART.DB_KEY_ORDERS, this.orders)
     },
     exports: {
+        load: async function() {
+            this.orders = await(db.get(CART.DB_KEY_ORDERS))
+            this.emit('order.loaded')
+        },
         getQty: function(id) {
             return !!this.orders[id]? this.orders[id].qty:0
         },
@@ -135,4 +139,4 @@ export default flux.createStore({
     }
 })
 
-console.log('Carter')
+export default Cart
