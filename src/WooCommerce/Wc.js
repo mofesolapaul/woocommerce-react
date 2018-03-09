@@ -11,7 +11,7 @@ const Wc = {
         try { data = await res.json() }
         catch (e) { data = {} }
 
-        return await this.assert(data)
+        return await this.assert(data, 'GET')
     },
     async post(endpoint, options) {
         _method = 'POST'
@@ -21,9 +21,19 @@ const Wc = {
         try { data = await res.json() }
         catch (e) { data = {}; }
         
-        return await this.assert(data)
+        return await this.assert(data, 'POST')
     },
-    async assert(data) {
+    async put() {
+        _method = 'PUT'
+        let res = await Api.put(endpoint, options)
+        if (!res) return {}
+        let data
+        try { data = await res.json() }
+        catch (e) { data = {}; }
+        
+        return await this.assert(data, 'PUT')
+    },
+    async assert(data, _method) {
         if (data.fallback) {
             try {
                 data = await new Promise((resolve, reject) => {
@@ -35,8 +45,8 @@ const Wc = {
                         }
                     };
                     xhttp.open(data.fallback.method, data.fallback.url, true)
-                    _method == 'POST'? xhttp.setRequestHeader('Content-type', 'application/json'):null
-                    _method == 'POST'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
+                    _method != 'GET'? xhttp.setRequestHeader('Content-type', 'application/json'):null
+                    _method != 'GET'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
                 }).catch(e => data = null)
             } catch (e) { data = null }
         }

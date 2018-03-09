@@ -171,6 +171,7 @@ const Cart = flux.createStore({
     },
     markOrderAsPaid: function() {
         console.log('Marking order as paid')
+        API_CALLS.markOrderAsPaid(this.order_created, {  })
     },
     exports: {
         load: async function() {
