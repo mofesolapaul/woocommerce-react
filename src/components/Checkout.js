@@ -54,7 +54,7 @@ export default class Checkout extends React.PureComponent {
                 }
                 break;
             case 'checkout.cancel':
-                this.actionHandler('app.toast', {type: 'e', msg: "You have cancelled the order"})
+                this.actionHandler('app.toast', { msg: "You have cancelled the order" })
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
             default:

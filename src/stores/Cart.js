@@ -16,6 +16,7 @@ const Cart = flux.createStore({
         actions.getShippingMethods,
         actions.removeFromCart,
         actions.reset,
+        actions.savePaymentDetails,
         actions.setShippingMethod,
         actions.updateQty,
     ],
@@ -159,10 +160,10 @@ const Cart = flux.createStore({
     },
     savePaymentDetails: function(data) {
         db.put(CART.DB_KEY_PAYMENT_DATA, data)
-        markOrderAsPaid()
+        this.markOrderAsPaid()
     },
     markOrderAsPaid: function() {
-        
+
     },
     exports: {
         load: async function() {
