@@ -23,16 +23,22 @@ export default class Index extends React.Component {
         }
 
         // bind
+        bindToThis(this, 'actionHandler')
+        bindToThis(this, 'reload')
         bindToThis(this, 'showProducts')
         bindToThis(this, 'updateState')
-        bindToThis(this, 'actionHandler')
     }
     componentWillMount() {
         Cart.on('app.*', this.updateState)
+        Cart.on('cart.reset', this.reload)
         this.showProducts();
     }
     componentWillUnmount() {
         Cart.off('app.*', this.updateState)
+        Cart.off('cart.reset', this.reload)
+    }
+    reload() {
+        location.reload()
     }
     updateState(d) {
         this.setState({

@@ -143,6 +143,20 @@ const Cart = flux.createStore({
         db.put(CART.DB_KEY_CUSTOMER_DATA, this.customer)
         this.emit('app.order-created')
     },
+    reset: function() {
+        db.clear()
+        
+        this.orders = {}
+        this.customer = {}
+        this.shipping_methods = []
+        this.shipping_method = {}
+        this.shipping_cost = '0.00'
+        this.order_created = null
+
+        this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'e', msg: "You have cancelled the order"})
+        this.emit('order.reset')
+        this.emit('cart.reset')
+    },
     exports: {
         load: async function() {
             this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {}

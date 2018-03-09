@@ -110,6 +110,7 @@ export const db = {
             else resolve(JSON.parse(decodeURIComponent(escape(window.atob(data)))))
         })
     },
+    clear: () => localStorage.clear()
 }
 
 export const CART = {
