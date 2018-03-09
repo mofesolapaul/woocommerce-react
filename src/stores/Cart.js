@@ -88,11 +88,12 @@ const Cart = flux.createStore({
             last_name: last_name || '',
             email: customer['checkout.email'],
             phone: customer['checkout.phone'],
+            address_1: customer['map.searchbox.update'],
             state: 'LOS',
             city: 'Lagos',
             country: 'NG',
         }
-        const pl = {
+        const payload = {
             payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
             payment_method: isPaid? 'paystack':'cod',
             // payment_method_title: 'Direct Bank Transfer',
@@ -107,7 +108,7 @@ const Cart = flux.createStore({
                 }
             ]
         }
-        const payload = {...constants.sample_order, line_items: this.getLineItems()}
+        // const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = await API_CALLS.createOrder(payload)
             this.orderCreated(response.data.id)

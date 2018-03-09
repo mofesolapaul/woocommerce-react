@@ -166,7 +166,7 @@ WooCommerceAPI.prototype._request = async function (method, endpoint, data) {
         data: data
       });
       // console.log(params.qs)
-    } else if (method == 'POST') {
+    } else {
       params.qs = this._getOAuth().authorize({
         url: url,
         method: method,

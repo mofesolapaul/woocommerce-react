@@ -23,7 +23,7 @@ const Wc = {
         
         return await this.assert(data, 'POST')
     },
-    async put() {
+    async put(endpoint, options) {
         _method = 'PUT'
         let res = await Api.put(endpoint, options)
         if (!res) return {}
