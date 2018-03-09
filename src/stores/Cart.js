@@ -157,6 +157,13 @@ const Cart = flux.createStore({
         this.emit('order.reset')
         this.emit('cart.reset')
     },
+    savePaymentDetails: function(data) {
+        db.put(CART.DB_KEY_PAYMENT_DATA, data)
+        markOrderAsPaid()
+    },
+    markOrderAsPaid: function() {
+        
+    },
     exports: {
         load: async function() {
             this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {}
