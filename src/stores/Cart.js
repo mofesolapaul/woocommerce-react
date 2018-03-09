@@ -154,7 +154,6 @@ const Cart = flux.createStore({
         this.shipping_cost = '0.00'
         this.order_created = null
 
-        this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'e', msg: "You have cancelled the order"})
         this.emit('order.reset')
         this.emit('cart.reset')
     },
