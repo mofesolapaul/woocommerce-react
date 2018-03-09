@@ -139,8 +139,8 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'payment.response':
                 // this.actionHandler('app.busy', false)
-                actions.savePaymentDetails(data)
                 this.actionHandler('toast.show', { msg: 'Payment received, completing order...', type: 'i' })
+                setTimeout(() => actions.savePaymentDetails(data), 1000)
                 break;
             case 'checkout.cancel':
                 actions.reset()

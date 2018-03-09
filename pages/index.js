@@ -39,7 +39,7 @@ export default class Index extends React.Component {
         Cart.off('cart.reset', this.reload)
     }
     reload() {
-        setTimeout(() => location.reload(), 1000)
+        setTimeout(() => location.reload(), 3000)
     }
     updateState(d) {
         this.setState({

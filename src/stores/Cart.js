@@ -172,8 +172,8 @@ const Cart = flux.createStore({
         }
     },
     markOrderAsPaid: function() {
-        console.log('Marking order as paid')
-        API_CALLS.markOrderAsPaid(this.order_created, {  })
+        this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."})
+        this.reset()
     },
     exports: {
         load: async function() {
