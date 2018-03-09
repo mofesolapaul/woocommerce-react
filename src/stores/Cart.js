@@ -105,6 +105,7 @@ const Cart = flux.createStore({
                 {
                     method_id: this.shipping_method.method,
                     method_title: this.shipping_method.desc,
+                    total: this.shipping_cost,
                 }
             ]
         }
