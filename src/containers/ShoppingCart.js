@@ -75,7 +75,8 @@ export default class ShoppingCart extends React.Component {
     }
     processPayment() {
         this.actionHandler('toast.show', { msg: 'Order received, loading payment gateway, please wait', type: 's' })
-        this.paystackBtn.pay()
+        if (!this.props.skipPayment) this.paystackBtn.pay()
+        else actions.savePaymentDetails()
     }
     actionHandler(type, data) {
         switch (type) {

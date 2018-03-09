@@ -20,6 +20,7 @@ export default class Index extends React.Component {
             productsLoadingFailed: false,
             busy: false,
             orderCreated: false,
+            pendingOrderIsPaid: false,
         }
 
         // bind
@@ -42,7 +43,8 @@ export default class Index extends React.Component {
     }
     updateState(d) {
         this.setState({
-            orderCreated: Cart.isOrderCreated()
+            orderCreated: Cart.isOrderCreated(),
+            pendingOrderIsPaid: Cart.pendingOrderIsPaid(),
         })
 
         if (!!d && !!d.id) {
@@ -123,6 +125,7 @@ export default class Index extends React.Component {
             notfound: this.state.productsLoadingFailed, // did we fail to load products from server?
             readonly: this.state.orderCreated, // order already created, ac accordingly
             actionHandler: this.actionHandler, // action handler
+            pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
         }
 
         return <Layout>
@@ -133,7 +136,7 @@ export default class Index extends React.Component {
             
             <ProductsContainer {...productContainerProps}></ProductsContainer>
 
-            <ShoppingCart actionHandler={this.actionHandler} readonly={this.state.orderCreated} />
+            <ShoppingCart actionHandler={this.actionHandler} readonly={this.state.orderCreated} skipPayment={this.state.pendingOrderIsPaid} />
 
             <LoadingScreen show={this.state.busy} />
             

@@ -9,6 +9,7 @@ const Cart = flux.createStore({
     shipping_method: {},
     shipping_cost: '0.00',
     order_created: null,
+    pending_order_is_paid: false,
     actions: [
         actions.addToCart,
         actions.checkout,
@@ -158,12 +159,18 @@ const Cart = flux.createStore({
         this.emit('order.reset')
         this.emit('cart.reset')
     },
+    // call this method without data to work with already existing data
     savePaymentDetails: function(data) {
-        db.put(CART.DB_KEY_PAYMENT_DATA, data)
-        this.markOrderAsPaid()
+        if (!!data) {
+            db.put(CART.DB_KEY_PAYMENT_DATA, data)
+            this.pending_order_is_paid = true
+            this.markOrderAsPaid()
+        } else {
+            if (typeof db.get(CART.DB_KEY_PAYMENT_DATA) === 'object') this.markOrderAsPaid()
+        }
     },
     markOrderAsPaid: function() {
-
+        console.log('Marking order as paid')
     },
     exports: {
         load: async function() {

@@ -107,7 +107,14 @@ export const db = {
         return new Promise((resolve, reject) => {
             const data = localStorage.getItem(key)
             if (!data) resolve(data)
-            else resolve(JSON.parse(decodeURIComponent(escape(window.atob(data)))))
+            else {
+                try {
+                    const value = JSON.parse(decodeURIComponent(escape(window.atob(data))))
+                    resolve(value)
+                } catch (e) {
+                    resolve(null)
+                }
+            }
         })
     },
     clear: () => localStorage.clear()
