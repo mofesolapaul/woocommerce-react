@@ -1,8 +1,10 @@
 import React from 'react'
+import toastr from 'toastr'
 import Layout from '../src/layouts/_default'
 import css from '../styles/vars'
-import { ProductsContainer, ShoppingCart } from '../src/containers'
-import constants, {API_CALLS, bindToThis, sleep} from '../src/constants'
+import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers'
+import constants, {API_CALLS, APP_SHOW_TOAST, bindToThis, sleep} from '../src/constants'
+import {Cart} from '../src/stores'
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -14,37 +16,89 @@ export default class Index extends React.Component {
             page: 1,
             displayOnFetch: false,
             noMoreProductsFromServer: false,
-            loading: true,
-            loadingFailed: false,
+            productsLoading: true,
+            productsLoadingFailed: false,
+            busy: false,
+            orderCreated: false,
+            pendingOrderIsPaid: false,
         }
 
         // bind
+        bindToThis(this, 'actionHandler')
+        bindToThis(this, 'reload')
         bindToThis(this, 'showProducts')
+        bindToThis(this, 'updateState')
     }
     componentWillMount() {
+        Cart.on('app.*', this.updateState)
+        Cart.on('cart.reset', this.reload)
         this.showProducts();
     }
-    componentWillUnmount() {}
+    componentWillUnmount() {
+        Cart.off('app.*', this.updateState)
+        Cart.off('cart.reset', this.reload)
+    }
+    reload() {
+        setTimeout(() => location.reload(), 3000)
+    }
+    updateState(d) {
+        this.setState({
+            orderCreated: Cart.isOrderCreated(),
+            pendingOrderIsPaid: Cart.pendingOrderIsPaid(),
+        })
+
+        if (!!d && !!d.id) {
+            switch (d.id) {
+                case APP_SHOW_TOAST:
+                    this.actionHandler('toast.show', d)
+                    break;
+            }
+        }
+    }
+    actionHandler(type, data) {
+        switch (type) {
+            case 'toast.show':
+                let payload = {...data}
+                payload.title = payload.title || ""
+                data.type == 's'?
+                    toastr.success(payload.msg, payload.title):
+                    (
+                        data.type == 'i'?
+                        toastr.info(payload.msg, payload.title):
+                            (
+                                data.type == 'w'?
+                                    toastr.warning(payload.msg, payload.title):
+                                    toastr.error(payload.msg, payload.title)
+                            )
+                    )
+                break;
+            case 'app.busy':
+                this.setState({ busy: data===false? false:true })
+                break;
+        }
+    }
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay} = this.state 
-        this.setState({ loading: !products.length, loadingFailed: false })
+        this.setState({ productsLoading: !products.length, productsLoadingFailed: false })
         await sleep(500) // sleep for a half second
         let f = (await API_CALLS.fetchProducts(per_page, page)).data
 
         if (!!f) {
             // only pick properties we need
-            f = f.filter(p =>
-                p.in_stock && (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p)
-            )
-            products = products.concat(f)
-        } else if (!this.state.productsOnDisplay.length) this.setState({ loadingFailed: true })
+            let c = []
+            f = f.filter(p => {
+                if (p.in_stock)
+                    c.push( (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p) )
+            })
+            products = products.concat(c)
+        } else if (!this.state.productsOnDisplay.length) this.setState({ productsLoadingFailed: true })
 
         this.setState({
             per_page,
             products,
             page: !!f?page+1:page,
             noMoreProductsFromServer: !!f&&!f.length,
-            loading: false
+            productsLoading: false
         })
         if (this.state.displayOnFetch) this.showProducts(true)
     }
@@ -55,6 +109,9 @@ export default class Index extends React.Component {
             this.setState({products, productsOnDisplay, displayOnFetch: false})
         } else this.setState({displayOnFetch: true})
         
+        // sync storage
+        Cart.load()
+
         // load more from server
         if (nofetch === true) return
         if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());
@@ -64,8 +121,11 @@ export default class Index extends React.Component {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts, // handler for show more button
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
-            loading: this.state.loading, // show loader or not
-            notfound: this.state.loadingFailed, // did we fail to load products from server?
+            loading: this.state.productsLoading, // show loader or not
+            notfound: this.state.productsLoadingFailed, // did we fail to load products from server?
+            readonly: this.state.orderCreated, // order already created, ac accordingly
+            actionHandler: this.actionHandler, // action handler
+            pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
         }
 
         return <Layout>
@@ -76,7 +136,9 @@ export default class Index extends React.Component {
             
             <ProductsContainer {...productContainerProps}></ProductsContainer>
 
-            <ShoppingCart />
+            <ShoppingCart actionHandler={this.actionHandler} readonly={this.state.orderCreated} skipPayment={this.state.pendingOrderIsPaid} />
+
+            <LoadingScreen show={this.state.busy} />
             
             {/* style */}
             <style jsx>{`

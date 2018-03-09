@@ -36,7 +36,10 @@ export default class OrderList extends React.Component {
                     <ul>
                         <li>
                             <strong className="subheading">Subtotal</strong>
-                            <span className="price">{`\u20A6`}{moneyFormat(this.props.total)}</span></li>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.props.orderTotal)}</span></li>
+                        <li>
+                            <strong className="subheading">Shipping</strong>
+                            <span className="price">{`\u20A6`}{moneyFormat(this.props.shipping)}</span></li>
                         <li>
                             <strong className="subheading">Total</strong>
                             <span className="price">{`\u20A6`}{moneyFormat(this.props.total)}</span></li>

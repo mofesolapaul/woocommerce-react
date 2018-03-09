@@ -1,11 +1,13 @@
 import css from '../../styles/vars'
 import Head from 'next/head'
 
-export default (childComponent, options) => (
+export default (childComponent, options, detachedViews) => (
     <div className="OrderPreview">
         <Head>
             <title>{options.page_title}</title>
         </Head>
+
+        {detachedViews}
 
         <div className="flex col">
             <h1 className="font-sourcesans">{options.section_header}
@@ -25,7 +27,7 @@ export default (childComponent, options) => (
                 padding: 2rem 5%;
                 box-shadow: rgba(82,89,101,.25) 0px -2px 8px 3px;
                 position: fixed;
-                overflow: auto;
+                // overflow: auto;
                 width: 100%;
                 left: 0;
                 z-index: 999;
@@ -62,7 +64,7 @@ export default (childComponent, options) => (
             .wrapper {
                 flex-grow: 1;
                 position: relative;
-                overflow: hidden;
+                overflow: auto;
             }
             @media screen and (max-width: 719px) {
                 .wrapper {

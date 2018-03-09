@@ -52,17 +52,25 @@ class ProductsContainer extends React.Component {
             case 'cart.button.remove':
                 actions.removeFromCart(data)
                 break;
+            default:
+                this.props.actionHandler && this.props.actionHandler(type, data)
+                break;
         }
     }
     render() {
         let {items} = this.state
-        let {_showMore, canShowMore, loading, notfound} = this.props
+        let {_showMore, canShowMore, loading, notfound, readonly} = this.props
         return <div className="wrapper">
             <div className="ProductsContainer">
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
-                            <Product _key={index} item={product} actionHandler={this.actionHandler} registrar={this.childSubscriber} />
+                            <Product 
+                                _key={index}
+                                item={product}
+                                readonly={readonly}
+                                registrar={this.childSubscriber}
+                                actionHandler={this.actionHandler} />
                             {(index+1)%2 || items.length-1 == index? null:<ProductRowDivider k={2} />}
                             {(index+1)%3 || items.length-1 == index? null:<ProductRowDivider k={3} />}
                             {(index+1)%4 || items.length-1 == index? null:<ProductRowDivider k={4} />}
