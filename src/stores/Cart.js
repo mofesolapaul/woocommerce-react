@@ -11,12 +11,13 @@ const Cart = flux.createStore({
     order_created: null,
     actions: [
         actions.addToCart,
-        actions.removeFromCart,
-        actions.deleteOrder,
-        actions.updateQty,
         actions.checkout,
+        actions.deleteOrder,
         actions.getShippingMethods,
+        actions.removeFromCart,
+        actions.reset,
         actions.setShippingMethod,
+        actions.updateQty,
     ],
     addToCart: function(item) {
         if (!!this.order_created) {
