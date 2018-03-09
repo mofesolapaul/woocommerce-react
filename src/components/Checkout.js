@@ -67,7 +67,7 @@ export default class Checkout extends React.PureComponent {
         </View>
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
-            &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
+            &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.cancel', this.state.form)}} />
         </View>
         return (
             <Section>

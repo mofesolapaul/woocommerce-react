@@ -140,6 +140,9 @@ export default class ShoppingCart extends React.Component {
                 this.actionHandler('app.busy', false)
                 this.actionHandler('toast.show', { msg: 'Payment complete!', type: 's' })
                 break;
+            case 'checkout.cancel':
+                actions.reset()
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
