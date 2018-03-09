@@ -1,6 +1,6 @@
 import flux from 'flux-react'
 import actions from '../actions'
-import constants, {db, isEmpty, API_CALLS, APP_SHOW_TOAST, CART, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
+import constants, {db, isEmpty, poip_valid, API_CALLS, APP_SHOW_TOAST, CART, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST} from '../constants'
 
 const Cart = flux.createStore({
     orders: {},
@@ -160,13 +160,13 @@ const Cart = flux.createStore({
         this.emit('cart.reset')
     },
     // call this method without data to work with already existing data
-    savePaymentDetails: function(data) {
+    savePaymentDetails: async function(data) {
         if (!!data) {
-            db.put(CART.DB_KEY_PAYMENT_DATA, data)
+            await db.put(CART.DB_KEY_PAYMENT_DATA, data)
             this.pending_order_is_paid = true
             this.markOrderAsPaid()
         } else {
-            if (typeof db.get(CART.DB_KEY_PAYMENT_DATA) === 'object') this.markOrderAsPaid()
+            if (poip_valid(await db.get(CART.DB_KEY_PAYMENT_DATA))) this.markOrderAsPaid()
         }
     },
     markOrderAsPaid: function() {
@@ -179,6 +179,7 @@ const Cart = flux.createStore({
             this.order_created = await(db.get(CART.DB_KEY_NEW_ORDER_ID))
             this.customer = await(db.get(CART.DB_KEY_CUSTOMER_DATA)) || {}
             this.emit('app.order-created')
+            this.pending_order_is_paid = poip_valid(await db.get(CART.DB_KEY_PAYMENT_DATA))
         },
         getQty: function(id) {
             return !!this.orders[id]? this.orders[id].qty:0
@@ -207,6 +208,9 @@ const Cart = flux.createStore({
         },
         getCustomer: function() {
             return this.customer
+        },
+        pendingOrderIsPaid: function() {
+            return this.pending_order_is_paid
         }
     }
 })

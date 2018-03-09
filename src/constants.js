@@ -68,6 +68,8 @@ export const moneyFormat = amt => amt.toLocaleString('en-US')
 
 export const bindToThis = (dis, prop) => dis[prop] = dis[prop].bind(dis)
 
+export const poip_valid = (poip) => !!poip && typeof poip === 'object' && poip.hasOwnProperty('reference') && poip.hasOwnProperty('trxref')
+
 // works best for cases like 1,200.00, 800.00, 200
 export const pullInt = str => +str.match(/\.?\d+/g).join('');
 
