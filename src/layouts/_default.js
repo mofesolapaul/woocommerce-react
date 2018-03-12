@@ -9,7 +9,11 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
             <link rel="stylesheet" href="/static/css/style.css" />
             <link async href="/static/css/toastr.min.css" rel="stylesheet" />
             <link async href="https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:100,400,900" rel="stylesheet" />
-            <link rel="icon" type="image/png" href="/static/img/smoothie-express.ico" />
+            
+            <link rel="icon" href="/static/favicon/smallsmoothie3-1.png" type="image/png"/>
+            <link rel="icon" href="/static/favicon/cropped-smoothie_small_transparent_bg-32x32.png" sizes="32x32" />
+            <link rel="icon" href="/static/favicon/cropped-smoothie_small_transparent_bg-192x192.png" sizes="192x192" />
+            <link rel="apple-touch-icon-precomposed" href="/static/favicon/cropped-smoothie_small_transparent_bg-180x180.png" />
         </Head>
         { children }
     <style jsx>{`
