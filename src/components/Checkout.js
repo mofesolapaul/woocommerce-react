@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis, pullInt, uid } from '../constants'
-import { Paystack, DEBUG } from '../WooCommerce/Config'
+import { Paystack, DEBUG } from '../Config'
 import { Button, ButtonPane, PaystackButton, Section, Sectionizr, View } from '.'
 
 export default class Checkout extends React.PureComponent {
