@@ -106,7 +106,7 @@ export const db = {
         new Promise((resolve, reject) => {
             localStorage.setItem(key, btoa(unescape(encodeURIComponent(JSON.stringify(data)))))
             resolve()
-        }).then(d => null).catch(e => console.log(e))
+        }).then(d => null).catch(e => null)
     },
     get: (key) => {
         return new Promise((resolve, reject) => {

@@ -51,7 +51,7 @@ export default class ShoppingCart extends React.Component {
         if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_API_ERROR:
-                    console.log(d.ex)
+                    // console.log(d.ex)
                     this.actionHandler('app.busy', false)
                     this.actionHandler('toast.show', { msg: 'Error creating order, please try again' })
                     break;
