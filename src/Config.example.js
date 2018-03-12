@@ -11,9 +11,7 @@ const Constants = {
     },
     Paystack: {
         TestPublicKey: 'pk_test_blahblah',
-        TestSecretKey: 'sk_test_blahblah',
         LivePublicKey: 'pk_live_blahblah',
-        LiveSecretKey: 'sk_live_blahblah',
     },
 }
 
