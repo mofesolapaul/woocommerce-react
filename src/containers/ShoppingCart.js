@@ -58,7 +58,8 @@ export default class ShoppingCart extends React.Component {
                 case ORDER_API_SUCCESS:
                     if (!d.isPaid) {
                         this.actionHandler('app.busy', false)
-                        this.actionHandler('toast.show', { msg: 'Order received!', type: 's' })
+                        // this.actionHandler('toast.show', { msg: 'Order received!', type: 's' })
+                        actions.markOrderAsPaid()
                     }
                     else this.processPayment()
                     break;
