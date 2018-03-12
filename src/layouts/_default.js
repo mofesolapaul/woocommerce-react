@@ -9,6 +9,7 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
             <link rel="stylesheet" href="/static/css/style.css" />
             <link async href="/static/css/toastr.min.css" rel="stylesheet" />
             <link async href="https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:100,400,900" rel="stylesheet" />
+            <link rel="icon" type="image/png" href="/static/img/smoothie-express.ico" />
         </Head>
         { children }
     <style jsx>{`
