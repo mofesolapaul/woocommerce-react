@@ -115,6 +115,7 @@ const Cart = flux.createStore({
             this.orderCreated(response.data.id)
             // console.log(response)
             this.emit('order.api-response', {id: ORDER_API_SUCCESS, response, isPaid})
+            if (!isPaid) this.markOrderAsPaid()
         } catch (ex) {
             this.emit('order.api-error', {id: ORDER_API_ERROR, ex})
         }
