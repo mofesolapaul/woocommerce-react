@@ -1,6 +1,7 @@
 'use strict';
 
 const Constants = {
+    DEBUG: true,
     URL: {
         root: 'http://woocommerce-domain.com'
     },
