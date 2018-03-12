@@ -1,5 +1,5 @@
 import WooCommerceAPI from "./WooCommerceAPI";
-import Constants from './Config';
+import Constants from '../Config';
 
 var Api = new WooCommerceAPI({
     url: Constants.URL.root,
