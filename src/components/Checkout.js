@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import { withCheckout } from '../hoc'
 import { bindToThis, pullInt, uid } from '../constants'
-import { Paystack } from '../WooCommerce/Config'
+import { Paystack, DEBUG } from '../Config'
 import { Button, ButtonPane, PaystackButton, Section, Sectionizr, View } from '.'
 
 export default class Checkout extends React.PureComponent {
@@ -144,7 +144,7 @@ export default class Checkout extends React.PureComponent {
                                 reference={uid()}
                                 email={this.state.form['checkout.email']}
                                 amount={this.props.total * 100}
-                                paystackkey={Paystack.TestPublicKey}
+                                paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
                                 metadata={{order_id: this.props.order_id}} />
                             {this.props.readonly? pendingPaymentButtons:normalButtons}
                         </ButtonPane>
