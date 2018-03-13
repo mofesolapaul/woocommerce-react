@@ -2,7 +2,7 @@ export const ButtonPane = props => <div className="show-more-pane">
     {props.children}
     <style jsx>{`
         .show-more-pane {
-            margin-top: 2rem;
+            margin: 2rem 0 1rem;
             text-align: center;
         }
     `}</style>

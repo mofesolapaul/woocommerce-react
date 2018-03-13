@@ -4,7 +4,7 @@
   "description": "React implementation of a store, with Woocommerce backend",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 9200",
     "build": "next build && next export",
     "start": "next start",
     "analyze": "ANALYZE=1 next build",
@@ -29,7 +29,9 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-google-maps": "^9.4.5",
-    "recompose": "^0.26.0"
+    "react-paystack": "^1.0.1",
+    "recompose": "^0.26.0",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "jest": "^22.2.2",

@@ -2,8 +2,12 @@ import flux from 'flux-react'
 
 export default flux.createActions([
     'addToCart',
-    'removeFromCart',
-    'deleteOrder',
-    'updateQty',
     'checkout',
+    'deleteOrder',
+    'getShippingMethods',
+    'removeFromCart',
+    'reset',
+    'savePaymentDetails',
+    'setShippingMethod',
+    'updateQty',
 ])

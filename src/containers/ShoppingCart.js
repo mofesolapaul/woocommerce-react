@@ -2,7 +2,7 @@ import React from 'react'
 import {Cart} from '../stores'
 import actions from '../actions'
 import { CartIcon, Checkout, Map, OrderList, View } from '../components'
-import {bindToThis, kformat, ORDER_COMPLETE} from '../constants'
+import {bindToThis, kformat, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_SHIPPING_COST} from '../constants'
 
 const NEUTRAL = 0
 const ORDER_PREVIEW = 1
@@ -14,11 +14,15 @@ export default class ShoppingCart extends React.Component {
         super(props)
         this.state = {
             isEmpty: Cart.isEmpty(),
+            order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
             state: NEUTRAL,
             mapCenter: null,
             mapSearchBox: null,
             userLocation: '',
+            shippingMethods: Cart.getShippingMethods(),
+            shippingCost: '0.00',
+            customer: Cart.getCustomer(),
         }
 
         // bind
@@ -29,26 +33,60 @@ export default class ShoppingCart extends React.Component {
     }
     componentWillMount() {
         Cart.on('order.*', this.updateState)
-        Cart.on('checkout.payment', this.processPayment)
+        Cart.on('app.order-created', this.updateState)
     }
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
-        Cart.off('checkout.payment', this.processPayment)
+        Cart.off('app.order-created', this.updateState)
     }
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
+            order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
+            customer: Cart.getCustomer(),
         })
-        if (d == ORDER_COMPLETE) alert("Order complete!")
+
+        // Order received
+        if (!!d && !!d.id) {
+            switch (d.id) {
+                case ORDER_API_ERROR:
+                    // console.log(d.ex)
+                    this.actionHandler('app.busy', false)
+                    this.actionHandler('toast.show', { msg: 'Error creating order, please try again' })
+                    break;
+                case ORDER_API_SUCCESS:
+                    if (!d.isPaid) {
+                        // this.actionHandler('app.busy', false)
+                        // this.actionHandler('toast.show', { msg: 'Order received!', type: 's' })
+                        // actions.markOrderAsPaid()
+                    }
+                    else this.processPayment()
+                    break;
+                case ORDER_SHIPPING_COST:
+                    this.setState({ shippingCost: d.cost })
+                    break;
+            }
+        }
+    }
+    updateShippingMethods() {
+        this.updateState({
+            shippingMethods: Cart.getShippingMethods()
+        })
     }
     processPayment() {
-        alert('Will now process payment, next feature')
+        this.actionHandler('toast.show', { msg: 'Order received, loading payment gateway, please wait', type: 's' })
+        if (!this.props.skipPayment) this.paystackBtn.pay()
+        else actions.savePaymentDetails()
     }
     actionHandler(type, data) {
         switch (type) {
             case 'order.checkout.pick_location':
             case 'checkout.dismiss':
+                if (this.props.readonly) {
+                    this.setState({ state: NEUTRAL })
+                    return
+                }
                 this.setState({ state: PICK_LOCATION })
                 break;
             case 'cart.dismiss':
@@ -87,10 +125,34 @@ export default class ShoppingCart extends React.Component {
             case 'checkout.finish':
                 actions.checkout(data)
                 break;
+            case 'get.shipping.methods':
+                actions.getShippingMethods()
+                break;
+            case 'set.shipping.method':
+                actions.setShippingMethod(data)
+                break;
+            case 'set.paystack.btn':
+                this.paystackBtn = data
+                break;
+            case 'payment.closed':
+                this.actionHandler('app.busy', false)
+                this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'w'})
+                break;
+            case 'payment.response':
+                // this.actionHandler('app.busy', false)
+                this.actionHandler('toast.show', { msg: 'Payment received, completing order...', type: 'i' })
+                setTimeout(() => actions.savePaymentDetails(data), 1000)
+                break;
+            case 'checkout.cancel':
+                actions.reset()
+                break;
+            default:
+                this.props.actionHandler && this.props.actionHandler(type, data)
+                break;
         }
     }
     openCart() {
-        this.setState({ state: ORDER_PREVIEW })
+        this.setState({ state: this.props.readonly? FILL_CHECKOUT_FORM:ORDER_PREVIEW })
     }
     render() {
         let view = null
@@ -98,11 +160,12 @@ export default class ShoppingCart extends React.Component {
             case ORDER_PREVIEW:
                 view = <OrderList items={Cart.getAllOrders()}
                         actionHandler={this.actionHandler}
-                        total={Cart.getTotal()} />
+                        shipping={this.state.shippingCost}
+                        orderTotal={this.state.order_total}
+                        total={this.state.total} />
                 break;
             case PICK_LOCATION:
-                view = <Map
-                            actionHandler={this.actionHandler}
+                view = <Map actionHandler={this.actionHandler}
                             center={this.state.mapCenter}
                             lastLocation={this.state.userLocation}
                             distance={this.state.mapDestinationDistance}
@@ -110,9 +173,13 @@ export default class ShoppingCart extends React.Component {
                             etaAddy={this.state.mapDirectionEndAddress} />
                 break;
             case FILL_CHECKOUT_FORM:
-                view = <Checkout
-                            actionHandler={this.actionHandler}
-                            location={this.state.userLocation} />
+                view = <Checkout actionHandler={this.actionHandler}
+                            location={this.state.userLocation}
+                            shippingCost={this.state.shippingCost}
+                            total={this.state.total}
+                            fieldDefaults={this.state.customer}
+                            readonly={this.props.readonly}
+                            order_id={Cart.isOrderCreated()} />
                 break;
             default:
                 view = !this.state.isEmpty?

@@ -1,4 +1,5 @@
 import css from '../../styles/vars'
+import {URL} from '../Config'
 
 export default ({clickHandler, visible, total}) => (
     <div className="CartIcon" onClick={clickHandler}>
@@ -44,7 +45,7 @@ export default ({clickHandler, visible, total}) => (
                 background: white;
             }
             .icon {
-                background: url('/static/img/cart.png') center no-repeat;
+                background: url('${URL.base}static/img/cart.png') center no-repeat;
                 background-size: 50%;
                 background-color: ${css.colors.fallleaf};
             }

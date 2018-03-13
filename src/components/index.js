@@ -8,6 +8,7 @@ import Map from './Map'
 import NotFound from './NotFound'
 import OrderItem from './OrderItem'
 import OrderList from './OrderList'
+import PaystackButton from './PaystackButton'
 import PriceDisplay from './PriceDisplay'
 import Product from './Product'
 import ProductImage from './ProductImage'
@@ -28,6 +29,7 @@ export {
     NotFound,
     OrderItem,
     OrderList,
+    PaystackButton,
     PriceDisplay,
     Product,
     ProductImage,

@@ -1,0 +1,41 @@
+CORS is man's basic necessity, I'm crying (figuratively) as I type this little help file that would change your life forever (given that you intend to do something awesome with this codebase).
+The soul of this app is to convey data to the WooCommerce api, and cors is uber-important for making that happen.
+
+But alas!
+
+Browsers hate cors...
+
+It took me a whole day (no kidding) to find my way around this joy-killing, mood-swinging and heart-wrenching cors-y reality.
+But it needn't take you that long.
+
+On with it!
+
+Put this code in your WP theme's functions.php (if the file doesn't already exist, just create it)
+
+# snippet begins
+function let_cors_live_sil_vous_plait() {
+	remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+	add_filter( 'rest_pre_serve_request', function( $value ) {
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: OPTIONS', false );
+		header( 'Access-Control-Allow-Credentials: true' );
+		header( 'Access-Control-Max-Age: 86400' );
+		return $value;
+	} );
+}
+add_action( 'rest_api_init', 'let_cors_live_sil_vous_plait', 15 );
+# end of snippet
+
+When you've done that, go find this file in your woocommerce plugin directory: includes/api/class-wc-rest-authentication.php
+
+You found it, great!
+
+Now find this method in the class: perform_oauth_authentication()
+
+Make the following code the first thing in the method block
+
+#snippet begins
+// in the spirit of enabling cors, let preflights pass
+$http_method  = strtoupper( $_SERVER['REQUEST_METHOD'] );
+if ($http_method == 'OPTIONS') return true;
+//
