@@ -87,12 +87,16 @@ export default class Index extends React.Component {
     async fetchProducts() {
         let {per_page, page, products, productsOnDisplay, productFetchInProgress} = this.state 
         
+        // Ensures that the loading anim is displayed when necessary
+        // i.e: when user clicks on 'Show more' and there's nothing prefetched yet
+        this.setState({ productsLoading: !products.length })
+
         // prevent the case where the same products are loaded multiply
         // when the user clicks 'Show more' too rapidly
-        if (productFetchInProgress) return;
-        this.setState({productFetchInProgress: true});
+        if (productFetchInProgress) return
+        
+        this.setState({productFetchInProgress: true, productsLoadingFailed: false})
 
-        this.setState({ productsLoading: !products.length, productsLoadingFailed: false })
         await sleep(500) // sleep for a half second
         let f = (await API_CALLS.fetchProducts(per_page, page)).data
 
