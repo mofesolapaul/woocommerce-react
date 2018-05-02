@@ -31,14 +31,17 @@ export default class ShoppingCart extends React.Component {
         bindToThis(this, 'actionHandler')
         bindToThis(this, 'processPayment')
     }
+
     componentWillMount() {
         Cart.on('order.*', this.updateState)
         Cart.on('app.order-created', this.updateState)
     }
+
     componentWillUnmount() {
         Cart.off('order.*', this.updateState)
         Cart.off('app.order-created', this.updateState)
     }
+
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
@@ -69,16 +72,19 @@ export default class ShoppingCart extends React.Component {
             }
         }
     }
+
     updateShippingMethods() {
         this.updateState({
             shippingMethods: Cart.getShippingMethods()
         })
     }
+
     processPayment() {
         this.actionHandler('toast.show', { msg: 'Order received, loading payment gateway, please wait', type: 's' })
         if (!this.props.skipPayment) this.paystackBtn.pay()
         else actions.savePaymentDetails()
     }
+
     actionHandler(type, data) {
         switch (type) {
             case 'order.checkout.pick_location':
@@ -151,9 +157,11 @@ export default class ShoppingCart extends React.Component {
                 break;
         }
     }
+
     openCart() {
         this.setState({ state: this.props.readonly? FILL_CHECKOUT_FORM:ORDER_PREVIEW })
     }
+    
     render() {
         let view = null
         switch (this.state.state) {
