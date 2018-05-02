@@ -21,6 +21,7 @@ export default class Index extends React.Component {
             busy: false,
             orderCreated: false,
             pendingOrderIsPaid: false,
+            productFetchInProgress: false,
         }
 
         // bind
@@ -84,8 +85,13 @@ export default class Index extends React.Component {
     }
 
     async fetchProducts() {
-        console.log('fetch...')
-        let {per_page, page, products, productsOnDisplay} = this.state 
+        let {per_page, page, products, productsOnDisplay, productFetchInProgress} = this.state 
+        
+        // prevent the case where the same products are loaded multiply
+        // when the user clicks 'Show more' too rapidly
+        if (productFetchInProgress) return;
+        this.setState({productFetchInProgress: true});
+
         this.setState({ productsLoading: !products.length, productsLoadingFailed: false })
         await sleep(500) // sleep for a half second
         let f = (await API_CALLS.fetchProducts(per_page, page)).data
@@ -95,7 +101,7 @@ export default class Index extends React.Component {
             // only pick properties we need
             let c = []
             f.filter(p => {
-                if (p.in_stock)
+                // if (p.in_stock)
                     c.push( (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p) )
             })
             products = products.concat(c)
@@ -106,7 +112,8 @@ export default class Index extends React.Component {
             products,
             page: !!f?page+1:page,
             noMoreProductsFromServer: !!f&&!f.length,
-            productsLoading: false
+            productsLoading: false,
+            productFetchInProgress: false,
         })
         if (this.state.displayOnFetch) this.showProducts(true)
     }
