@@ -88,7 +88,7 @@ export const APP_SHOW_TOAST = 'app.show.toast'
 
 export const API_CALLS = {
     async fetchProducts(per_page, page) {
-        return await Wc.get('products', { per_page, page })
+        return await Wc.get('products', !!per_page && { per_page, page })
     },
     async createOrder(options) {
         return await Wc.post('orders', options)

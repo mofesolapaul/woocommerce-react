@@ -16,6 +16,7 @@ class ProductsContainer extends React.Component {
         bindToThis(this, 'actionHandler')
         bindToThis(this, 'childSubscriber')
     }
+
     componentWillReceiveProps(props) {
         const {items} = props
         items.map(i => i.qty = Cart.getQty(i.id))
@@ -23,12 +24,15 @@ class ProductsContainer extends React.Component {
             items: props.items,
         })
     }
+
     componentWillMount() {
         Cart.on('order.*', this.updateProducts)
     }
+
     componentWillUnmount() {
         Cart.off('order.*', this.updateProducts)
     }
+
     updateProducts(d) {
         if (!!d && !!d.id) {
             switch (d.id) {
@@ -44,6 +48,7 @@ class ProductsContainer extends React.Component {
     childSubscriber(id, cb) {
         this.subscribers[id] = cb
     }
+
     actionHandler(type, data) {
         switch (type) {
             case 'cart.button.add':
@@ -57,6 +62,7 @@ class ProductsContainer extends React.Component {
                 break;
         }
     }
+    
     render() {
         let {items} = this.state
         let {_showMore, canShowMore, loading, notfound, readonly} = this.props

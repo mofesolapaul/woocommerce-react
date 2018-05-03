@@ -21,6 +21,7 @@ export default class Index extends React.Component {
             busy: false,
             orderCreated: false,
             pendingOrderIsPaid: false,
+            productFetchInProgress: false,
         }
 
         // bind
@@ -29,18 +30,22 @@ export default class Index extends React.Component {
         bindToThis(this, 'showProducts')
         bindToThis(this, 'updateState')
     }
+
     componentWillMount() {
         Cart.on('app.*', this.updateState)
         Cart.on('cart.reset', this.reload)
         this.showProducts();
     }
+
     componentWillUnmount() {
         Cart.off('app.*', this.updateState)
         Cart.off('cart.reset', this.reload)
     }
+
     reload() {
         setTimeout(() => location.reload(), 3000)
     }
+
     updateState(d) {
         this.setState({
             orderCreated: Cart.isOrderCreated(),
@@ -55,6 +60,7 @@ export default class Index extends React.Component {
             }
         }
     }
+
     actionHandler(type, data) {
         switch (type) {
             case 'toast.show':
@@ -77,17 +83,28 @@ export default class Index extends React.Component {
                 break;
         }
     }
+
     async fetchProducts() {
-        let {per_page, page, products, productsOnDisplay} = this.state 
-        this.setState({ productsLoading: !products.length, productsLoadingFailed: false })
+        let {per_page, page, products, productsOnDisplay, productFetchInProgress} = this.state 
+        
+        // Ensures that the loading anim is displayed when necessary
+        // i.e: when user clicks on 'Show more' and there's nothing prefetched yet
+        this.setState({ productsLoading: !products.length })
+
+        // prevent the case where the same products are loaded multiply
+        // when the user clicks 'Show more' too rapidly
+        if (productFetchInProgress) return
+        
+        this.setState({productFetchInProgress: true, productsLoadingFailed: false})
+
         await sleep(500) // sleep for a half second
         let f = (await API_CALLS.fetchProducts(per_page, page)).data
-
+        
         if (!!f) {
             // only pick properties we need
             let c = []
-            f = f.filter(p => {
-                if (p.in_stock)
+            f.filter(p => {
+                // if (p.in_stock)
                     c.push( (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p) )
             })
             products = products.concat(c)
@@ -98,10 +115,12 @@ export default class Index extends React.Component {
             products,
             page: !!f?page+1:page,
             noMoreProductsFromServer: !!f&&!f.length,
-            productsLoading: false
+            productsLoading: false,
+            productFetchInProgress: false,
         })
         if (this.state.displayOnFetch) this.showProducts(true)
     }
+
     showProducts(nofetch) {
         let {products, productsOnDisplay} = this.state
         if (products.length) {
@@ -114,8 +133,9 @@ export default class Index extends React.Component {
 
         // load more from server
         if (nofetch === true) return
-        if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts());
+        if (!this.state.noMoreProductsFromServer) new Promise(() => this.fetchProducts())
     }
+    
     render() {
         const productContainerProps = {
             items: this.state.productsOnDisplay, // products to display
