@@ -198,7 +198,6 @@ export const productCache = {
                 data = false
             }
         }
-        console.log('loaded')
     },
     /**
      * this is how we determine whether to invalidate cache
@@ -206,8 +205,9 @@ export const productCache = {
     signature: function() {
         const dateObject = new Date()
         const month = dateObject.getMonth()
+        const year = dateObject.getFullYear()
         const weekOfMonth = Math.ceil(dateObject.getDate() / 7)
-        return weekOfMonth
+        return btoa(`${weekOfMonth},${month},${year}`)
     },
     test: async function() {
         console.log('CACHEE')
