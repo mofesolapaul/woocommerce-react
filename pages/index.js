@@ -132,6 +132,7 @@ export default class Index extends React.Component {
     }
     
     render() {
+        productCache.test()
         const productContainerProps = {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts, // handler for show more button

@@ -143,24 +143,63 @@ export const apiFetchProducts = async (per_page, page) => {
         let c = []
         f.filter(p => {
             // if (p.in_stock)
-                c.push( (({id, name, price, images, description, categories, short_description: about}) => ({id, name, price, images, description, categories, about}))(p) )
+            c.push( (({id, name, price, images, description, categories, short_description: about}) => ({id, name, price, images, description, categories, about}))(p) )
         })
         return c
     } else false
 }
 
 export const productCache = {
-    load: async function() {
+    fetch: async function() {
         if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
-            // invalidate cache
-            // set the wheels rolling and update signature
-            return []
+            this.load()
+            return false
         } else return await db.get(CACHE.DB_KEY_PRODUCTS)
     },
-    push: async function(data) {
+    /**
+     * Stores provided product data
+     */
+    push: async function(data, process = false) {
+        if (typeof this.__buffer == 'undefined') this.__buffer = []
+        this.__buffer = this.__buffer.concat(data)
+        console.log(this.__buffer.length)
+
+        // wait till we're sure we got em all
+        if (!process) return
+        
+        // store it up
+        console.log('processing...')
+        console.log(this.__buffer)
     },
     clear: function() {
         db.put(CACHE.DB_KEY_PRODUCTS, [])
+    },
+    /**
+     * Loads products from the server
+     */
+    load: async function() {
+        // in case the double-loading ish enters production, enforce strict measures
+        if (!!this.__loading) return
+        this.__loading = true
+
+        // invalidate cache
+        this.clear()
+
+        // set the wheels rolling and update signature
+        let per_page = 30
+        let page = 1
+        let data = await apiFetchProducts(per_page, page)
+        while (!!data) {
+            this.push(data, !data.length)
+            if (!!data.length) {
+                page++
+                data = await apiFetchProducts(per_page, page)
+            } else {
+                // exit loop
+                data = false
+            }
+        }
+        console.log('loaded')
     },
     /**
      * this is how we determine whether to invalidate cache
@@ -172,7 +211,9 @@ export const productCache = {
         return weekOfMonth
     },
     test: async function() {
+        console.log('CACHE')
         console.log('signature', this.signature())
+        console.log('fetch', this.fetch())
     },
 }
 
