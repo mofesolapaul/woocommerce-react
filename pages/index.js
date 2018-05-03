@@ -22,6 +22,7 @@ export default class Index extends React.Component {
             orderCreated: false,
             pendingOrderIsPaid: false,
             productFetchInProgress: false,
+            productCacheExists: false,
         }
 
         // bind
@@ -97,8 +98,13 @@ export default class Index extends React.Component {
         
         this.setState({productFetchInProgress: true, productsLoadingFailed: false})
 
-        await sleep(500) // sleep for a half second
-        let f = await apiFetchProducts(per_page, page)
+        // await sleep(500) // sleep for a half second
+        
+        // load products from cache if entry exists
+        let cached = await productCache.fetch()
+
+        // load em up
+        let f = cached || await apiFetchProducts(per_page, page)
         
         if (!!f) {
             // add to the list
@@ -109,7 +115,7 @@ export default class Index extends React.Component {
             per_page,
             products,
             page: !!f?page+1:page,
-            noMoreProductsFromServer: !!f&&!f.length,
+            noMoreProductsFromServer: !!cached || (!!f&&!f.length),
             productsLoading: false,
             productFetchInProgress: false,
         })
@@ -132,7 +138,6 @@ export default class Index extends React.Component {
     }
     
     render() {
-        productCache.test()
         const productContainerProps = {
             items: this.state.productsOnDisplay, // products to display
             _showMore: this.showProducts, // handler for show more button

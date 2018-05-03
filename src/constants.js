@@ -162,14 +162,13 @@ export const productCache = {
     push: async function(data, process = false) {
         if (typeof this.__buffer == 'undefined') this.__buffer = []
         this.__buffer = this.__buffer.concat(data)
-        console.log(this.__buffer.length)
 
         // wait till we're sure we got em all
         if (!process) return
         
         // store it up
-        console.log('processing...')
-        console.log(this.__buffer)
+        db.put(CACHE.DB_KEY_CACHE_SIGNATURE, this.signature())
+        db.put(CACHE.DB_KEY_PRODUCTS, this.__buffer)
     },
     clear: function() {
         db.put(CACHE.DB_KEY_PRODUCTS, [])
@@ -211,8 +210,7 @@ export const productCache = {
         return weekOfMonth
     },
     test: async function() {
-        console.log('CACHE')
-        console.log('signature', this.signature())
+        console.log('CACHEE')
         console.log('fetch', this.fetch())
     },
 }
