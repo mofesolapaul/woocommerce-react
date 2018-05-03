@@ -3,7 +3,7 @@ import toastr from 'toastr'
 import Layout from '../src/layouts/_default'
 import css from '../styles/vars'
 import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers'
-import constants, {API_CALLS, APP_SHOW_TOAST, bindToThis, sleep} from '../src/constants'
+import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, productCache, sleep, uid} from '../src/constants'
 import {Cart} from '../src/stores'
 
 export default class Index extends React.Component {
@@ -22,6 +22,7 @@ export default class Index extends React.Component {
             orderCreated: false,
             pendingOrderIsPaid: false,
             productFetchInProgress: false,
+            productCacheExists: false,
         }
 
         // bind
@@ -34,7 +35,7 @@ export default class Index extends React.Component {
     componentWillMount() {
         Cart.on('app.*', this.updateState)
         Cart.on('cart.reset', this.reload)
-        this.showProducts();
+        this.showProducts()
     }
 
     componentWillUnmount() {
@@ -97,24 +98,28 @@ export default class Index extends React.Component {
         
         this.setState({productFetchInProgress: true, productsLoadingFailed: false})
 
-        await sleep(500) // sleep for a half second
-        let f = (await API_CALLS.fetchProducts(per_page, page)).data
+        // await sleep(500) // sleep for a half second
+        
+        // load products from cache if entry exists
+        let cached = !!this.skipCache? false:await productCache.fetch()
+        if (!cached) {
+            // if the cache did not hit the first time, skip it for subsequent requests
+            this.skipCache = true
+        }
+
+        // load em up
+        let f = cached || await apiFetchProducts(per_page, page)
         
         if (!!f) {
-            // only pick properties we need
-            let c = []
-            f.filter(p => {
-                // if (p.in_stock)
-                    c.push( (({id, name, price, images, description, short_description: about}) => ({id, name, price, images, description, about}))(p) )
-            })
-            products = products.concat(c)
+            // add to the list
+            products = products.concat(f)
         } else if (!this.state.productsOnDisplay.length) this.setState({ productsLoadingFailed: true })
 
         this.setState({
             per_page,
             products,
             page: !!f?page+1:page,
-            noMoreProductsFromServer: !!f&&!f.length,
+            noMoreProductsFromServer: !!cached || (!!f&&!f.length),
             productsLoading: false,
             productFetchInProgress: false,
         })
