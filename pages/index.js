@@ -99,9 +99,8 @@ export default class Index extends React.Component {
 
         await sleep(500) // sleep for a half second
         let f = (await API_CALLS.fetchProducts(per_page, page)).data
-
+        
         if (!!f) {
-            console.log(f.length)
             // only pick properties we need
             let c = []
             f.filter(p => {
