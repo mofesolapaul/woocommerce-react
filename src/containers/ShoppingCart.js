@@ -42,6 +42,12 @@ export default class ShoppingCart extends React.Component {
         Cart.off('app.order-created', this.updateState)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.showOpened) {
+            this.openCart()
+        }
+    }
+
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),
