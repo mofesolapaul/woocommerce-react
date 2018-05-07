@@ -35,11 +35,14 @@ export default class Checkout extends React.PureComponent {
                 this.setState({ form })
 
                 if (type == 'shipping.method') {
+                    const isStorePickup = data.value == 'flat_rate:51'
+                    
                     let txt = data.options[data.selectedIndex].text
                     let spl = txt.split(':')
+                    
                     this.actionHandler('set.shipping.method', {
                         method: data.value,
-                        cost: pullInt(spl[spl.length - 1]),
+                        cost: !isStorePickup? pullInt(spl[spl.length - 1]):0,
                         desc: txt,
                     })
                 }
@@ -95,8 +98,15 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="group">
                             <label className="label">Shipping preference</label>
-                            <select name="shipping_method[0]" data-index="0" id="shipping_method_0" defaultValue={__['shipping.method']} className="field" onChange={e => this.actionHandler('shipping.method', e.target)}>
+                            <select
+                                name="shipping_method[0]"
+                                data-index="0" id="shipping_method_0"
+                                defaultValue={__['shipping.method']}
+                                className="field"
+                                onChange={e => this.actionHandler('shipping.method', e.target)}>
+
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
+                                <option value="flat_rate:51">Store Pick Up (20 Minutes)</option>
                                 <option value="flat_rate:22">Airport road - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:46">Ajah - 2hrs delivery time: ₦1,200.00</option>
                                 <option value="flat_rate:35">Amuwo-odofin - 3hrs delivery time: ₦1,200.00</option>
@@ -130,7 +140,6 @@ export default class Checkout extends React.PureComponent {
                                 <option value="flat_rate:38">Satellite town - 3hrs delivery: ₦1,200.00</option>
                                 <option value="flat_rate:40">Victoria island - 45mins-1hr delivery time: ₦400.00</option>
                                 <option value="flat_rate:16">Yaba - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:51">Store Pick Up (20 Minutes)</option>
                             </select>
                         </div>
                         <div className="clearfix"></div>
