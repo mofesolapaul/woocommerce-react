@@ -20,6 +20,7 @@ export default class Index extends React.Component {
             productsLoadingFailed: false,
             busy: false,
             orderCreated: false,
+            showCart: false,
             pendingOrderIsPaid: false,
             productFetchInProgress: false,
             productCacheExists: false,
@@ -128,6 +129,12 @@ export default class Index extends React.Component {
 
     showProducts(nofetch) {
         let {products, productsOnDisplay} = this.state
+
+        // show cart on fresh load if it's not empty
+        if (!productsOnDisplay.length && !Cart.isEmpty()) {
+            this.setState({showCart: true})
+        }
+
         if (products.length) {
             productsOnDisplay = productsOnDisplay.concat( products.splice(0, 6) )
             this.setState({products, productsOnDisplay, displayOnFetch: false})
@@ -156,12 +163,16 @@ export default class Index extends React.Component {
         return <Layout>
             <h1 className="title font-sourcesans">Smoothie Express</h1>
             <div className="text-center">
-                <h4 className="slogan">find the perfect blend</h4>
+                <h4 className="slogan">Find your Blend, Find your Passion!</h4>
             </div>
             
             <ProductsContainer {...productContainerProps}></ProductsContainer>
 
-            <ShoppingCart actionHandler={this.actionHandler} readonly={this.state.orderCreated} skipPayment={this.state.pendingOrderIsPaid} />
+            <ShoppingCart
+                actionHandler={this.actionHandler}
+                readonly={this.state.orderCreated}
+                showOpened={this.state.showCart}
+                skipPayment={this.state.pendingOrderIsPaid} />
 
             <LoadingScreen show={this.state.busy} />
             
