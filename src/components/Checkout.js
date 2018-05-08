@@ -99,7 +99,7 @@ export default class Checkout extends React.PureComponent {
                             <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
                         <div className="group">
-                            <label className="label">Shipping preference</label>
+                            <label className="label">Shipping preference (you can come pickup at our store too)</label>
                             <select
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
