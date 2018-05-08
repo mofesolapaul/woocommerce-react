@@ -84,7 +84,7 @@ export default class Checkout extends React.PureComponent {
                     <div className="wrapper">
                         <div className="group">
                             <label className="label">Confirm your address</label>
-                            <input className="field" type="text" defaultValue={__['map.searchbox.update'] || props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
+                            <input className="field" type="text" defaultValue={this.state['map.searchbox.update'] || props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
                         </div>
                         <div className="group">
                             <label className="label">Your name</label>

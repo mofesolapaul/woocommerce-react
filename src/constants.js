@@ -130,6 +130,9 @@ export const db = {
             }
         })
     },
+    delete: (key) => {
+        localStorage.removeItem(key)
+    },
     clear: () => localStorage.clear()
 }
 
@@ -220,6 +223,7 @@ export const CART = {
     DB_KEY_NEW_ORDER_ID: `____${0x1234568}`,
     DB_KEY_CUSTOMER_DATA: `____${0x1234569}`,
     DB_KEY_PAYMENT_DATA: `____${0x1234570}`,
+    DB_KEY_PERSISTED_CUSTOMER_DATA: `____${0x1234573}`,
 }
 
 export const CACHE = {
