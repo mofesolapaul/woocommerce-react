@@ -57,7 +57,7 @@ export default class Checkout extends React.PureComponent {
                 }
                 break;
             case 'checkout.cancel':
-                this.actionHandler('app.toast', { msg: "You have cancelled the order" })
+                this.actionHandler('toast.show', { msg: "You have cancelled the order" })
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
             default:
@@ -144,17 +144,6 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            <PaystackButton
-                                ref={btn => this.actionHandler('set.paystack.btn', btn)}
-                                class="btn sleek-btn hidden"
-                                text="Pay Online"
-                                callback={response => this.actionHandler('payment.response', response)}
-                                close={() => this.actionHandler('payment.closed')}
-                                reference={uid()}
-                                email={this.state.form['checkout.email']}
-                                amount={this.props.total * 100}
-                                paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
-                                metadata={{order_id: this.props.order_id}} />
                             {this.props.readonly? pendingPaymentButtons:normalButtons}
                         </ButtonPane>
                     </div>

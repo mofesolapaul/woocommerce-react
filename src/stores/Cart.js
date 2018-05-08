@@ -91,6 +91,11 @@ const Cart = flux.createStore({
             return true
         }
 
+        if (!this.shipping_method.method) {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "No shipping method has been selected. Please double check your address, or contact us if you need any help."})
+            return false;
+        }
+
         this.customer = { ...this.customer, ...cust_data }
         const {customer} = this
         const [first_name, last_name] = customer['checkout.clientname'].split(' ', 2)
