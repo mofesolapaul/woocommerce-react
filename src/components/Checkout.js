@@ -13,7 +13,8 @@ export default class Checkout extends React.PureComponent {
                 'map.searchbox.update': props.location,
                 'checkout.email': '',
                 ...this.props.fieldDefaults,
-            }
+            },
+            isStorePickup: false,
         }
         
         // bind
@@ -36,6 +37,7 @@ export default class Checkout extends React.PureComponent {
 
                 if (type == 'shipping.method') {
                     const isStorePickup = data.value == 'flat_rate:51'
+                    this.setState({isStorePickup})
                     
                     let txt = data.options[data.selectedIndex].text
                     let spl = txt.split(':')
@@ -69,8 +71,8 @@ export default class Checkout extends React.PureComponent {
         let {props} = this
         let {fieldDefaults: __} = props
         const normalButtons = <View>
-            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
-            &emsp; <Button label="Pay On Delivery" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
+            {!this.state.isStorePickup && <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />}
+            &emsp; <Button label={this.state.isStorePickup? 'Complete Order':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
         </View>
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
