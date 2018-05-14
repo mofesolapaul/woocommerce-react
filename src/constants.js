@@ -249,6 +249,7 @@ export const CACHE = {
 export const EXTRAS = {
     CATEGORIES: ['salads'],
     "salads": {
+        "cat": "Salads",
         "info": "Select Salad Dressing",
         "dressing": ['English Mayo Dressing', 'Greek Olive Dressing', 'Hawaiian Mustard Dressing'],
         "extras": {
@@ -264,6 +265,10 @@ export const EXTRAS = {
     }
 }
 
+/**
+ * Determine if supplied product has extras
+ * @param {object} product 
+ */
 export const hasExtras = (product) => {
     let cats = []
     product.categories.map(c => {
@@ -275,4 +280,12 @@ export const hasExtras = (product) => {
         }
     }
     return false
+}
+
+/**
+ * Returns extras payload for supplied category
+ * @param {string} category 
+ */
+export const getExtrasData = (category) => {
+    return EXTRAS[category] || {}
 }

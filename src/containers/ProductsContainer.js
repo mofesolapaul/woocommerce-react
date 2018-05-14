@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
-import {bindToThis, hasExtras, ORDER_ITEM_UPDATE} from '../constants'
+import {bindToThis, getExtrasData, hasExtras, ORDER_ITEM_UPDATE} from '../constants'
 import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
@@ -11,7 +11,7 @@ class ProductsContainer extends React.Component {
         this.subscribers = {}
         this.state = {
             ...this.props,
-            showExtras: true,
+            showExtras: false,
             extrasCategory: '',
         }
 
@@ -106,7 +106,9 @@ class ProductsContainer extends React.Component {
                 </div>
             </div>
 
-            {!!this.state.showExtras && <ExtrasPopup visible actionHandler={this.actionHandler} />}
+            {!!this.state.showExtras && <ExtrasPopup
+                actionHandler={this.actionHandler}
+                data={getExtrasData(this.state.extrasCategory)} />}
 
             <style jsx>{`
                 .wrapper {

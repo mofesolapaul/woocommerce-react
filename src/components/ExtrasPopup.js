@@ -1,15 +1,15 @@
 import css from '../../styles/vars'
 import {View} from './'
 
-export default ({visible, actionHandler}) => visible? <View>
+export default ({actionHandler, data}) => <View>
     <div className="extras-curtain">
         <div className="extras-modal">
             <h3>
-                <span className="title">Salad Extras</span>
+                <span className="title">Extras ({data.cat})</span>
                 <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
             </h3>
             <div>
-                
+                <h5>{data.info}</h5>
             </div>
         </div>
     </div>
@@ -43,4 +43,4 @@ export default ({visible, actionHandler}) => visible? <View>
         filter: drop-shadow(0px 4px 6px rgba(0,0,0,.25));
     }
     `}</style>
-</View>:null
+</View>
