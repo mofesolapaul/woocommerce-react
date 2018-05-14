@@ -8,7 +8,6 @@ export const ORDER_ITEM_UPDATE = 'order.item.update'
 export const ORDER_SHIPPING_COST = 'order.shipping.cost'
 
 export const APP_SHOW_TOAST = 'app.show.toast'
-export const CATEGORIES_WITH_EXTRAS = ['salads']
 
 export default {
     products: [
@@ -247,13 +246,30 @@ export const CACHE = {
     DB_KEY_CACHE_SIGNATURE: `____${0x1234572}`,
 }
 
+export const EXTRAS = {
+    CATEGORIES: ['salads'],
+    "salads": {
+        "dressing": ['English Mayo Dressing', 'Greek Olive Dressing', 'Hawaiian Mustard Dressing'],
+        "extras": {
+            "Chicken"   : 500,
+            "Beef"      : 500,
+            "Avocado"   : 200,
+            "Egg"       : 100,
+            "Cheese"    : 100,
+            "Raisins"   : 100,
+            "Onions"    : 0,
+            "Tomatoes"  : 0
+        }
+    }
+}
+
 export const hasExtras = (product) => {
     let cats = []
     product.categories.map(c => {
         cats.push(c.name.toLowerCase())
     })
     for (let c of cats) {
-        if (CATEGORIES_WITH_EXTRAS.indexOf(c) !== -1) {
+        if (EXTRAS.CATEGORIES.indexOf(c) !== -1) {
             return true
         }
     }
