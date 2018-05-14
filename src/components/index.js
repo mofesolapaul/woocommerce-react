@@ -3,6 +3,7 @@ import CartButtons from './CartButtons'
 import CartIcon from './CartIcon'
 import Checkout from './Checkout'
 import ETALabel from './ETALabel'
+import ExtrasLabel from './ExtrasLabel'
 import Loading from './Loading'
 import Map from './Map'
 import NotFound from './NotFound'
@@ -24,6 +25,7 @@ export {
     CartIcon,
     Checkout,
     ETALabel,
+    ExtrasLabel,
     Loading,
     Map,
     NotFound,

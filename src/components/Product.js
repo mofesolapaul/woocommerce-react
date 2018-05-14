@@ -6,7 +6,10 @@ import { CartButtons, PriceDisplay, ProductImage } from './'
 class Product extends React.Component{
     constructor(props) {
         super(props)
-        this.state = { qty: props.item.qty }
+        this.state = {
+            qty: props.item.qty,
+            showExtras: false
+        }
 
         // bind
         bindToThis(this, 'actionHandler')
