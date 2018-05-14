@@ -3,13 +3,16 @@ import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
 import {bindToThis, hasExtras, ORDER_ITEM_UPDATE} from '../constants'
-import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
+import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
     constructor(props) {
         super(props)
         this.subscribers = {}
-        this.state = {...this.props}
+        this.state = {
+            ...this.props,
+            showExtras: true
+        }
 
         // bind
         bindToThis(this, 'updateProducts')
@@ -57,6 +60,9 @@ class ProductsContainer extends React.Component {
             case 'cart.button.remove':
                 actions.removeFromCart(data)
                 break;
+            case 'extras.show':
+                this.setState({showExtras: true})
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
@@ -95,6 +101,9 @@ class ProductsContainer extends React.Component {
                     </ButtonPane>:null }
                 </div>
             </div>
+
+            {!!this.state.showExtras && <ExtrasPopup visible />}
+
             <style jsx>{`
                 .wrapper {
                     position: relative

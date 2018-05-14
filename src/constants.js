@@ -249,6 +249,7 @@ export const CACHE = {
 export const EXTRAS = {
     CATEGORIES: ['salads'],
     "salads": {
+        "info": "Select Salad Dressing",
         "dressing": ['English Mayo Dressing', 'Greek Olive Dressing', 'Hawaiian Mustard Dressing'],
         "extras": {
             "Chicken"   : 500,

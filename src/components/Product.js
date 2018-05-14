@@ -8,7 +8,6 @@ class Product extends React.Component{
         super(props)
         this.state = {
             qty: props.item.qty,
-            showExtras: false
         }
 
         // bind
@@ -33,9 +32,6 @@ class Product extends React.Component{
                     this.setState({ qty: qty-1 })
                     this.props.actionHandler(type, this.props.item)
                 }
-                break;
-            case 'extras.show':
-                alert('Showing Extras')
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
