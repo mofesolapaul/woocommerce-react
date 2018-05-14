@@ -107,6 +107,9 @@ export const API_CALLS = {
     async markOrderAsPaid(order_id, data) {
         return await Wc.put(`orders/${order_id}`, data)
     },
+    async fetchOrders(data) {
+        return await Wc.get(`orders`, data)
+    },
 }
 
 export const db = {
@@ -152,6 +155,9 @@ export const apiFetchProducts = async (per_page, page) => {
     } else false
 }
 
+/**
+ * Products cache
+ */
 export const productCache = {
     fetch: async function() {
         if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
