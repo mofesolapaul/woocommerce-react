@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '../../styles/vars'
 import {bindToThis} from '../constants'
-import { CartButtons, PriceDisplay, ProductImage } from './'
+import { CartButtons, ExtrasLabel, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
     constructor(props) {
@@ -35,6 +35,9 @@ class Product extends React.Component{
                     this.props.actionHandler(type, this.props.item)
                 }
                 break;
+            case 'extras.show':
+                alert('Showing Extras')
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
@@ -48,6 +51,7 @@ class Product extends React.Component{
         return <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
             <div className="img-wrapper">
                 <ProductImage src={item.images.length? item.images[0].src:''} />
+                {!!this.state.qty && <ExtrasLabel visible={this.props.hasExtras} actionHandler={this.actionHandler} />}
                 <PriceDisplay qty={this.state.qty} price={item.price} />
             </div>
             <div className="flex">
