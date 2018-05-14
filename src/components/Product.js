@@ -1,6 +1,6 @@
 import React from 'react'
 import css from '../../styles/vars'
-import {bindToThis} from '../constants'
+import {bindToThis, hasExtras} from '../constants'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
