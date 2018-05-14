@@ -1,16 +1,17 @@
 import css from '../../styles/vars'
 import {View} from './'
+import { uid } from '../constants';
 
 export default ({actionHandler, data}) => <View>
     <div className="extras-curtain">
         <div className="extras-modal">
             <h3>
-                <span className="title">Extras ({data.cat})</span>
+                <span className="">Extras ({data.cat})</span>
                 <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
             </h3>
-            <div>
-                <div className="group full-width">
-                    <label className="label decolorized">{data.info}</label>
+            <form>
+                <div className="group padded full-width">
+                    <label className="label">{data.info}</label>
                     <select
                         name="extras_dressing"
                         data-index="0" id="extras_dressing"
@@ -20,19 +21,29 @@ export default ({actionHandler, data}) => <View>
                         {data.dressing.map(x => <option value={x}>{x}</option>)}
                     </select>
                 </div>
-                <div className="group full-width">
-                    <label className="label decolorized">{data.extra_info}</label>
-                    <div className="group">
-                        
+                <div className="group padded full-width">
+                    <label className="label">{data.extra_info}</label>
+                    <div>
+                        {data.extras.map(x => <div className="group" key={btoa(x.name)}>
+                            <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]" />
+                            <label for={btoa(x.name)}>{`${x.name} (N${x.price})`}</label>
+                        </div>)}
                     </div>
                 </div>
-            </div>
+                <div className="group full-width text-center">
+                    <a className="btn sleek-btn">Add extras</a>
+                </div>
+            </form>
         </div>
     </div>
 
     <style jsx>{`
     .title {
         color: ${css.colors.fallleaf}
+    }
+    .padded {
+        padding-top: 1rem;
+        padding-top: 1rem;
     }
     .extras-curtain {
         position: fixed;
