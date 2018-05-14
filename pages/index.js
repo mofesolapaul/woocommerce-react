@@ -103,6 +103,7 @@ export default class Index extends React.Component {
         
         // load products from cache if entry exists
         let cached = !!this.skipCache? false:await productCache.fetch()
+        this.setState({productCacheExists: !!cached})
         if (!cached) {
             // if the cache did not hit the first time, skip it for subsequent requests
             this.skipCache = true
@@ -155,7 +156,7 @@ export default class Index extends React.Component {
             canShowMore: !(this.state.noMoreProductsFromServer && !this.state.products.length), // informs show more button if we're out of more items
             loading: this.state.productsLoading, // show loader or not
             notfound: this.state.productsLoadingFailed, // did we fail to load products from server?
-            readonly: this.state.orderCreated, // order already created, ac accordingly
+            readonly: this.state.orderCreated, // order already created, act accordingly
             actionHandler: this.actionHandler, // action handler
             pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
         }

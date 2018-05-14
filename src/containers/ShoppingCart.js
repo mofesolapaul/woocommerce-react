@@ -43,7 +43,7 @@ export default class ShoppingCart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.showOpened) {
+        if (nextProps.showOpened && this.state.state == NEUTRAL) {
             this.openCart()
         }
     }

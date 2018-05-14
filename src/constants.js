@@ -96,7 +96,7 @@ export const APP_SHOW_TOAST = 'app.show.toast'
 
 export const API_CALLS = {
     async fetchProducts(per_page, page) {
-        return await Wc.get('products', !!per_page && { per_page, page })
+        return await Wc.get('products', !!per_page && { per_page, page, orderby: 'title', order: 'asc' })
     },
     async createOrder(options) {
         return await Wc.post('orders', options)
@@ -106,6 +106,9 @@ export const API_CALLS = {
     },
     async markOrderAsPaid(order_id, data) {
         return await Wc.put(`orders/${order_id}`, data)
+    },
+    async fetchOrders(data) {
+        return await Wc.get(`orders`, data)
     },
 }
 
@@ -130,6 +133,9 @@ export const db = {
             }
         })
     },
+    delete: (key) => {
+        localStorage.removeItem(key)
+    },
     clear: () => localStorage.clear()
 }
 
@@ -138,17 +144,20 @@ export const db = {
  */
 export const apiFetchProducts = async (per_page, page) => {
     let f = (await API_CALLS.fetchProducts(per_page, page)).data
-    if (!!f) {
+    if (!!f && Array.isArray(f)) {
         // only pick properties we need
         let c = []
         f.filter(p => {
             // if (p.in_stock)
-            c.push( (({id, name, price, images, description, categories, short_description: about}) => ({id, name, price, images, description, categories, about}))(p) )
+            c.push( (({id, name, price, images, description, categories, short_description: about, total_sales}) => ({id, name, price, images, description, categories, about, total_sales}))(p) )
         })
         return c
     } else false
 }
 
+/**
+ * Products cache
+ */
 export const productCache = {
     fetch: async function() {
         if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
@@ -165,6 +174,14 @@ export const productCache = {
 
         // wait till we're sure we got em all
         if (!process) return
+
+        // sort products
+        // this changes everything, now we can sort by whatever param we want!
+        this.__buffer.sort((a,b) => {
+            // sort by: in_stock, on_sale, total_sales (desc)
+            // ref: https://coderwall.com/p/ebqhca/javascript-sort-by-two-fields
+            return a.in_stock - b.in_stock || a.on_sale - b.on_sale || b.total_sales - a.total_sales
+        })
         
         // store it up
         db.put(CACHE.DB_KEY_CACHE_SIGNATURE, this.signature())
@@ -220,6 +237,7 @@ export const CART = {
     DB_KEY_NEW_ORDER_ID: `____${0x1234568}`,
     DB_KEY_CUSTOMER_DATA: `____${0x1234569}`,
     DB_KEY_PAYMENT_DATA: `____${0x1234570}`,
+    DB_KEY_PERSISTED_CUSTOMER_DATA: `____${0x1234573}`,
 }
 
 export const CACHE = {

@@ -155,7 +155,14 @@ const Cart = flux.createStore({
     },
 
     persist: function(which = 'orders') {
-        db.put(CART.DB_KEY_ORDERS, this.orders)
+        switch (which) {
+            case 'orders':
+                db.put(CART.DB_KEY_ORDERS, this.orders)
+                break
+            case 'customer':
+                db.put(CART.DB_KEY_PERSISTED_CUSTOMER_DATA, this.customer)
+                break
+        }
     },
 
     orderCreated: function(id) {
@@ -166,8 +173,13 @@ const Cart = flux.createStore({
     },
 
     reset: function() {
-        db.clear()
+        db.delete(CART.DB_KEY_CUSTOMER_DATA)
+        db.delete(CART.DB_KEY_NEW_ORDER_ID)
+        db.delete(CART.DB_KEY_PAYMENT_DATA)
         
+        // persist existing customer data
+        this.persist('customer')
+
         this.orders = {}
         this.customer = {}
         this.shipping_methods = []
@@ -265,7 +277,8 @@ const Cart = flux.createStore({
          * Pretty straightforward
          */
         getCustomer: function() {
-            return this.customer
+            return JSON.stringify(this.customer) != '{}'?
+                this.customer : db.get(CART.DB_KEY_PERSISTED_CUSTOMER_DATA) 
         },
 
         /**

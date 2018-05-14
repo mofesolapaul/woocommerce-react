@@ -13,7 +13,8 @@ export default class Checkout extends React.PureComponent {
                 'map.searchbox.update': props.location,
                 'checkout.email': '',
                 ...this.props.fieldDefaults,
-            }
+            },
+            isStorePickup: false,
         }
         
         // bind
@@ -35,18 +36,22 @@ export default class Checkout extends React.PureComponent {
                 this.setState({ form })
 
                 if (type == 'shipping.method') {
+                    const isStorePickup = data.value == 'flat_rate:51'
+                    this.setState({isStorePickup})
+                    
                     let txt = data.options[data.selectedIndex].text
                     let spl = txt.split(':')
+                    
                     this.actionHandler('set.shipping.method', {
                         method: data.value,
-                        cost: pullInt(spl[spl.length - 1]),
+                        cost: !isStorePickup? pullInt(spl[spl.length - 1]):0,
                         desc: txt,
                     })
                 }
                 break;
             case 'checkout.pay':
             case 'checkout.finish':
-                const test = !data['map.searchbox.update'] || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone']
+                const test = !data['map.searchbox.update'] || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method']
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'})
                 else {
                     this.actionHandler('app.busy')
@@ -54,7 +59,7 @@ export default class Checkout extends React.PureComponent {
                 }
                 break;
             case 'checkout.cancel':
-                this.actionHandler('app.toast', { msg: "You have cancelled the order" })
+                this.actionHandler('toast.show', { msg: "You have cancelled the order" })
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
             default:
@@ -66,8 +71,8 @@ export default class Checkout extends React.PureComponent {
         let {props} = this
         let {fieldDefaults: __} = props
         const normalButtons = <View>
-            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
-            &emsp; <Button label="Pay On Delivery" clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
+            {!this.state.isStorePickup && <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />}
+            &emsp; <Button label={this.state.isStorePickup? 'Complete Order':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form)}} />
         </View>
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form)}} />
@@ -79,7 +84,7 @@ export default class Checkout extends React.PureComponent {
                     <div className="wrapper">
                         <div className="group">
                             <label className="label">Confirm your address</label>
-                            <input className="field" type="text" defaultValue={__['map.searchbox.update'] || props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
+                            <input className="field" type="text" defaultValue={this.state['map.searchbox.update'] || props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
                         </div>
                         <div className="group">
                             <label className="label">Your name</label>
@@ -94,9 +99,16 @@ export default class Checkout extends React.PureComponent {
                             <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
                         <div className="group">
-                            <label className="label">Shipping preference</label>
-                            <select name="shipping_method[0]" data-index="0" id="shipping_method_0" defaultValue={__['shipping.method']} className="field" onChange={e => this.actionHandler('shipping.method', e.target)}>
+                            <label className="label">Shipping preference (you can come pickup at our store too)</label>
+                            <select
+                                name="shipping_method[0]"
+                                data-index="0" id="shipping_method_0"
+                                defaultValue={__['shipping.method']}
+                                className="field"
+                                onChange={e => this.actionHandler('shipping.method', e.target)}>
+
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
+                                <option value="flat_rate:51">Store Pick Up (20 Minutes)</option>
                                 <option value="flat_rate:22">Airport road - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:46">Ajah - 2hrs delivery time: ₦1,200.00</option>
                                 <option value="flat_rate:35">Amuwo-odofin - 3hrs delivery time: ₦1,200.00</option>
@@ -130,22 +142,10 @@ export default class Checkout extends React.PureComponent {
                                 <option value="flat_rate:38">Satellite town - 3hrs delivery: ₦1,200.00</option>
                                 <option value="flat_rate:40">Victoria island - 45mins-1hr delivery time: ₦400.00</option>
                                 <option value="flat_rate:16">Yaba - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:51">Store Pick Up (20 Minutes)</option>
                             </select>
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            <PaystackButton
-                                ref={btn => this.actionHandler('set.paystack.btn', btn)}
-                                class="btn sleek-btn hidden"
-                                text="Pay Online"
-                                callback={response => this.actionHandler('payment.response', response)}
-                                close={() => this.actionHandler('payment.closed')}
-                                reference={uid()}
-                                email={this.state.form['checkout.email']}
-                                amount={this.props.total * 100}
-                                paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
-                                metadata={{order_id: this.props.order_id}} />
                             {this.props.readonly? pendingPaymentButtons:normalButtons}
                         </ButtonPane>
                     </div>
@@ -213,7 +213,7 @@ export default class Checkout extends React.PureComponent {
     render() {
         const PriceTag = 
             <div className="PriceTag">
-                <h3 className="price-label font-sourcesans slim">{`\u20A6`}{this.props.total}</h3>
+                <h3 className="price-label font-sourcesans slim">Total: {`\u20A6`}{this.props.total}</h3>
 
                 {/* styles */}
                 <style jsx>{`
