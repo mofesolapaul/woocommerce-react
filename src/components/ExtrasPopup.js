@@ -9,7 +9,23 @@ export default ({actionHandler, data}) => <View>
                 <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
             </h3>
             <div>
-                <h5>{data.info}</h5>
+                <div className="group full-width">
+                    <label className="label decolorized">{data.info}</label>
+                    <select
+                        name="extras_dressing"
+                        data-index="0" id="extras_dressing"
+                        defaultValue={data.dressing[0]}
+                        className="field"
+                        onChange={e => this.actionHandler('extras.dressing', e.target)}>
+                        {data.dressing.map(x => <option value={x}>{x}</option>)}
+                    </select>
+                </div>
+                <div className="group full-width">
+                    <label className="label decolorized">{data.extra_info}</label>
+                    <div className="group">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

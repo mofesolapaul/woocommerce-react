@@ -251,17 +251,18 @@ export const EXTRAS = {
     "salads": {
         "cat": "Salads",
         "info": "Select Salad Dressing",
+        "extra_info": "Select Salad Extra(s)",
         "dressing": ['English Mayo Dressing', 'Greek Olive Dressing', 'Hawaiian Mustard Dressing'],
-        "extras": {
-            "Chicken"   : 500,
-            "Beef"      : 500,
-            "Avocado"   : 200,
-            "Egg"       : 100,
-            "Cheese"    : 100,
-            "Raisins"   : 100,
-            "Onions"    : 0,
-            "Tomatoes"  : 0
-        }
+        "extras": [
+            {"name": "Chicken", "price"  : 500, },
+            {"name": "Beef", "price"     : 500, },
+            {"name": "Avocado", "price"  : 200, },
+            {"name": "Egg", "price"      : 100, },
+            {"name": "Cheese", "price"   : 100, },
+            {"name": "Raisins", "price"  : 100, },
+            {"name": "Onions", "price"   : 0, },
+            {"name": "Tomatoes", "price" : 0 },
+        ]
     }
 }
 

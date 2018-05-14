@@ -94,3 +94,38 @@ ul {
 .close:hover {
     opacity: .8;
 }
+.group {
+    margin-bottom: 1rem;
+    &:not(.full-width) {
+        @media(min-width: 601px) {
+            width: calc(50% - 5px);
+            float: left;
+            &:nth-child(even) {
+                float: right;
+            }
+        }
+    }
+    .label {
+        display: block;
+        margin-bottom: .3rem;
+        &:not(.decolorized) {
+            color: $fallleaf;
+        }
+    }
+    .field {
+        display: block;
+        box-sizing: border-box;
+        border: 1px solid $wisteriasnow;
+        width: 100%;
+        padding: .5rem 1rem;
+        border-radius: 3px;
+        // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-size: 14px;
+        outline: none;
+        font-family: 'Playfair Display', sans-serif;
+        background-color: white;
+    }
+    select.field {
+        appearance: none;
+    }
+}

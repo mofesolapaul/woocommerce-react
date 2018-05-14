@@ -169,39 +169,6 @@ export default class Checkout extends React.PureComponent {
                         border-bottom: solid thin #fff
                         max-width: 360px;
                     }
-                    .group {
-                        margin-bottom: 1rem;
-                    }
-                    @media(min-width: 601px) {
-                        .group {
-                            width: calc(50% - 5px);
-                            float: left;
-                        }
-                        .group:nth-child(even) {
-                            float: right;
-                        }
-                    }
-                    .label {
-                        display: block;
-                        margin-bottom: .3rem;
-                        color: ${css.colors.fallleaf};
-                    }
-                    .field {
-                        display: block;
-                        box-sizing: border-box;
-                        border: 1px solid ${css.colors.wisteriasnow};
-                        width: 100%;
-                        padding: .5rem 1rem;
-                        border-radius: 3px;
-                        // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-                        font-size: 14px;
-                        outline: none;
-                        font-family: 'Playfair Display', sans-serif;
-                        background-color: white;
-                    }
-                    select.field {
-                        appearance: none;
-                    }
                     ::placeholder {
                         color: rgba(0, 0, 0, 0.3);
                         font-family: 'Source Sans Pro', sans-serif;
