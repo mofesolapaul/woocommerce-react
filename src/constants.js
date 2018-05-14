@@ -271,7 +271,7 @@ export const hasExtras = (product) => {
     })
     for (let c of cats) {
         if (EXTRAS.CATEGORIES.indexOf(c) !== -1) {
-            return true
+            return c
         }
     }
     return false

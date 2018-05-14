@@ -11,7 +11,8 @@ class ProductsContainer extends React.Component {
         this.subscribers = {}
         this.state = {
             ...this.props,
-            showExtras: true
+            showExtras: true,
+            extrasCategory: '',
         }
 
         // bind
@@ -61,7 +62,10 @@ class ProductsContainer extends React.Component {
                 actions.removeFromCart(data)
                 break;
             case 'extras.show':
-                this.setState({showExtras: true})
+                this.setState({extrasCategory: data, showExtras: true})
+                break;
+            case 'extras.dismiss':
+                this.setState({extrasCategory: '', showExtras: false})
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
@@ -102,7 +106,7 @@ class ProductsContainer extends React.Component {
                 </div>
             </div>
 
-            {!!this.state.showExtras && <ExtrasPopup visible />}
+            {!!this.state.showExtras && <ExtrasPopup visible actionHandler={this.actionHandler} />}
 
             <style jsx>{`
                 .wrapper {

@@ -5,13 +5,19 @@ export default ({visible, actionHandler}) => visible? <View>
     <div className="extras-curtain">
         <div className="extras-modal">
             <h3>
-                Select Salad Dressing
+                <span className="title">Salad Extras</span>
                 <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
             </h3>
+            <div>
+                
+            </div>
         </div>
     </div>
 
     <style jsx>{`
+    .title {
+        color: ${css.colors.fallleaf}
+    }
     .extras-curtain {
         position: fixed;
         top: 0;
