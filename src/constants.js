@@ -96,7 +96,7 @@ export const APP_SHOW_TOAST = 'app.show.toast'
 
 export const API_CALLS = {
     async fetchProducts(per_page, page) {
-        return await Wc.get('products', !!per_page && { per_page, page })
+        return await Wc.get('products', !!per_page && { per_page, page, orderby: 'title', order: 'asc' })
     },
     async createOrder(options) {
         return await Wc.post('orders', options)
@@ -141,7 +141,7 @@ export const db = {
  */
 export const apiFetchProducts = async (per_page, page) => {
     let f = (await API_CALLS.fetchProducts(per_page, page)).data
-    if (!!f) {
+    if (!!f && Array.isArray(f)) {
         // only pick properties we need
         let c = []
         f.filter(p => {

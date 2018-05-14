@@ -102,7 +102,7 @@ export default class Index extends React.Component {
         // await sleep(500) // sleep for a half second
         
         // load products from cache if entry exists
-        let cached = !!this.skipCache? false:await productCache.fetch()
+        let cached = false //!!this.skipCache? false:await productCache.fetch()
         if (!cached) {
             // if the cache did not hit the first time, skip it for subsequent requests
             this.skipCache = true
