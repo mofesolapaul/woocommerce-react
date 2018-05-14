@@ -4,7 +4,10 @@ import {View} from './'
 export default ({visible, actionHandler}) => visible? <View>
     <div className="extras-curtain">
         <div className="extras-modal">
-            <h3>Select Salad Dressing</h3>
+            <h3>
+                Select Salad Dressing
+                <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
+            </h3>
         </div>
     </div>
 
