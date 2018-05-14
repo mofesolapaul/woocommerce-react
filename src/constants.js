@@ -146,7 +146,7 @@ export const apiFetchProducts = async (per_page, page) => {
         let c = []
         f.filter(p => {
             // if (p.in_stock)
-            c.push( (({id, name, price, images, description, categories, short_description: about}) => ({id, name, price, images, description, categories, about}))(p) )
+            c.push( (({id, name, price, images, description, categories, short_description: about, total_sales}) => ({id, name, price, images, description, categories, about, total_sales}))(p) )
         })
         return c
     } else false
@@ -168,6 +168,14 @@ export const productCache = {
 
         // wait till we're sure we got em all
         if (!process) return
+
+        // sort by popularity
+        // this changes everything, now we can sort by whatever param we want!
+        this.__buffer.sort((a,b) => {
+            const x = a.total_sales
+            const y = b.total_sales
+            return ((x > y) ? -1 : ((x > y) ? 1 : 0))
+        })
         
         // store it up
         db.put(CACHE.DB_KEY_CACHE_SIGNATURE, this.signature())
