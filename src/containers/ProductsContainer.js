@@ -2,14 +2,18 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
-import {bindToThis, ORDER_ITEM_UPDATE} from '../constants'
-import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
+import {bindToThis, getExtrasData, hasExtras, ORDER_ITEM_UPDATE} from '../constants'
+import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
     constructor(props) {
         super(props)
         this.subscribers = {}
-        this.state = {...this.props}
+        this.state = {
+            ...this.props,
+            showExtras: false,
+            extrasCategory: '',
+        }
 
         // bind
         bindToThis(this, 'updateProducts')
@@ -57,6 +61,12 @@ class ProductsContainer extends React.Component {
             case 'cart.button.remove':
                 actions.removeFromCart(data)
                 break;
+            case 'extras.show':
+                this.setState({extrasCategory: data, showExtras: true})
+                break;
+            case 'extras.dismiss':
+                this.setState({extrasCategory: '', showExtras: false})
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data)
                 break;
@@ -74,6 +84,7 @@ class ProductsContainer extends React.Component {
                             <Product 
                                 _key={index}
                                 item={product}
+                                hasExtras={hasExtras(product)}
                                 readonly={readonly}
                                 registrar={this.childSubscriber}
                                 actionHandler={this.actionHandler} />
@@ -94,6 +105,11 @@ class ProductsContainer extends React.Component {
                     </ButtonPane>:null }
                 </div>
             </div>
+
+            {!!this.state.showExtras && <ExtrasPopup
+                actionHandler={this.actionHandler}
+                data={getExtrasData(this.state.extrasCategory)} />}
+
             <style jsx>{`
                 .wrapper {
                     position: relative

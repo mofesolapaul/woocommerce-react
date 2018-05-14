@@ -46,18 +46,6 @@ export default (childComponent, options, detachedViews) => (
                     flex-direction: row-reverse;
                 }
             }
-            .close {
-                font-weight: 100;
-                border: none;
-                opacity: .4;
-                float: right;
-                padding: 0 .5rem;
-                cursor: pointer;
-            }
-            .close:hover {
-                opacity: .8;
-            }
-
             .flex {
                 height: 100%;
             }

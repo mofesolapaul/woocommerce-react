@@ -1,5 +1,14 @@
 import Wc from './WooCommerce/Wc'
 
+// literals
+export const ORDER_API_SUCCESS = 'order.api.success'
+export const ORDER_API_ERROR = 'order.api.error'
+
+export const ORDER_ITEM_UPDATE = 'order.item.update'
+export const ORDER_SHIPPING_COST = 'order.shipping.cost'
+
+export const APP_SHOW_TOAST = 'app.show.toast'
+
 export default {
     products: [
         {id: 1, name: 'Product #1', images: [], price: 100},
@@ -85,14 +94,6 @@ export const uid = () =>
     btoa(
         Date.now() + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     ).replace('=','')
-
-export const ORDER_API_SUCCESS = 'order.api.success'
-export const ORDER_API_ERROR = 'order.api.error'
-
-export const ORDER_ITEM_UPDATE = 'order.item.update'
-export const ORDER_SHIPPING_COST = 'order.shipping.cost'
-
-export const APP_SHOW_TOAST = 'app.show.toast'
 
 export const API_CALLS = {
     async fetchProducts(per_page, page) {
@@ -243,4 +244,49 @@ export const CART = {
 export const CACHE = {
     DB_KEY_PRODUCTS: `____${0x1234571}`,
     DB_KEY_CACHE_SIGNATURE: `____${0x1234572}`,
+}
+
+export const EXTRAS = {
+    CATEGORIES: ['salads'],
+    "salads": {
+        "cat": "Salads",
+        "info": "Select Salad Dressing",
+        "extra_info": "Select Salad Extra(s)",
+        "dressing": ['English Mayo Dressing', 'Greek Olive Dressing', 'Hawaiian Mustard Dressing'],
+        "extras": [
+            {"name": "Chicken", "price"  : 500, },
+            {"name": "Beef", "price"     : 500, },
+            {"name": "Avocado", "price"  : 200, },
+            {"name": "Egg", "price"      : 100, },
+            {"name": "Cheese", "price"   : 100, },
+            {"name": "Raisins", "price"  : 100, },
+            {"name": "Onions", "price"   : 0, },
+            {"name": "Tomatoes", "price" : 0 },
+        ]
+    }
+}
+
+/**
+ * Determine if supplied product has extras
+ * @param {object} product 
+ */
+export const hasExtras = (product) => {
+    let cats = []
+    product.categories.map(c => {
+        cats.push(c.name.toLowerCase())
+    })
+    for (let c of cats) {
+        if (EXTRAS.CATEGORIES.indexOf(c) !== -1) {
+            return c
+        }
+    }
+    return false
+}
+
+/**
+ * Returns extras payload for supplied category
+ * @param {string} category 
+ */
+export const getExtrasData = (category) => {
+    return EXTRAS[category] || {}
 }
