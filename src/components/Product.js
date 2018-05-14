@@ -23,9 +23,8 @@ class Product extends React.Component{
         switch (type) {
             case 'cart.button.add':
                 // show the extras popup
-                if (this.props.hasExtras && !this.state.qty) {
-                    console.log('showing modal now')
-                }
+                if (this.props.hasExtras && !this.state.qty);
+                
                 this.setState({ qty: qty+1 })
                 this.props.actionHandler(type, this.props.item)
                 break;
