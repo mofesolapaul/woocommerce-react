@@ -169,12 +169,12 @@ export const productCache = {
         // wait till we're sure we got em all
         if (!process) return
 
-        // sort by popularity
+        // sort products
         // this changes everything, now we can sort by whatever param we want!
         this.__buffer.sort((a,b) => {
-            const x = a.total_sales
-            const y = b.total_sales
-            return ((x > y) ? -1 : ((x > y) ? 1 : 0))
+            // sort by: in_stock, on_sale, total_sales (desc)
+            // ref: https://coderwall.com/p/ebqhca/javascript-sort-by-two-fields
+            return a.in_stock - b.in_stock || a.on_sale - b.on_sale || b.total_sales - a.total_sales
         })
         
         // store it up
