@@ -2,7 +2,7 @@ import React from 'react'
 import css from '../../styles/vars'
 import actions from '../actions'
 import {Cart} from '../stores'
-import {bindToThis, ORDER_ITEM_UPDATE} from '../constants'
+import {bindToThis, hasExtras, ORDER_ITEM_UPDATE} from '../constants'
 import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
 
 class ProductsContainer extends React.Component {
@@ -74,6 +74,7 @@ class ProductsContainer extends React.Component {
                             <Product 
                                 _key={index}
                                 item={product}
+                                hasExtras={hasExtras(product)}
                                 readonly={readonly}
                                 registrar={this.childSubscriber}
                                 actionHandler={this.actionHandler} />

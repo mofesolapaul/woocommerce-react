@@ -1,6 +1,6 @@
 import React from 'react'
 import css from '../../styles/vars'
-import {bindToThis, hasExtras} from '../constants'
+import {bindToThis} from '../constants'
 import { CartButtons, PriceDisplay, ProductImage } from './'
 
 class Product extends React.Component{
@@ -19,6 +19,10 @@ class Product extends React.Component{
         let {qty} = this.state
         switch (type) {
             case 'cart.button.add':
+                // show the extras popup
+                if (this.props.hasExtras && !this.state.qty) {
+                    console.log('showing modal now')
+                }
                 this.setState({ qty: qty+1 })
                 this.props.actionHandler(type, this.props.item)
                 break;
