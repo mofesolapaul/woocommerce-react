@@ -10,7 +10,8 @@ export default ({actionHandler, data}) => <View>
                 <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
             </h3>
             <form>
-                <div className="group padded full-width">
+                {/* For extras with dressing (dressing is free) */}
+                {!!data.info && <div className="group padded full-width">
                     <label className="label">{data.info}</label>
                     <select
                         name="extras_dressing"
@@ -20,7 +21,7 @@ export default ({actionHandler, data}) => <View>
                         onChange={e => this.actionHandler('extras.dressing', e.target)}>
                         {data.dressing.map(x => <option value={x}>{x}</option>)}
                     </select>
-                </div>
+                </div>}
                 <div className="group padded full-width">
                     <label className="label">{data.extra_info}</label>
                     <div>
