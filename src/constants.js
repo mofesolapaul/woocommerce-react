@@ -247,7 +247,7 @@ export const CACHE = {
 };
 
 export const EXTRAS = {
-    CATEGORIES: ['salads'],
+    CATEGORIES: ['salads','parfaits'],
     "salads": {
         "cat": "Salads",
         "info": "Select Salad Dressing",
@@ -262,6 +262,15 @@ export const EXTRAS = {
             {"name": "Raisins", "price"  : 100, },
             {"name": "Onions", "price"   : 0, },
             {"name": "Tomatoes", "price" : 0 },
+        ]
+    },
+    "parfaits": {
+        "cat": "Parfaits",
+        "extra_info": "Select Parfait Extra(s)",
+        "extras": [
+            {"name": "Granola", "price"             : 200, },
+            {"name": "Dried Coconut Flakes", "price": 100, },
+            {"name": "Raisins", "price": 100, },
         ]
     }
 };
