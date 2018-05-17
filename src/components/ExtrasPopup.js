@@ -1,5 +1,5 @@
-import css from '../../styles/vars'
-import {View} from './'
+import css from '../../styles/vars';
+import {View} from './';
 import { uid } from '../constants';
 
 export default ({actionHandler, data}) => <View>

@@ -1,57 +1,57 @@
-import Api from './Api'
+import Api from './Api';
 
-let _method = 'GET'
+let _method = 'GET';
 
 const Wc = {
     async get(endpoint, options) {
-        _method = 'GET'
-        let res = await Api.get(endpoint, options)
-        if (!res) return {}
-        let data
-        try { data = await res.json() }
-        catch (e) { data = {} }
+        _method = 'GET';
+        let res = await Api.get(endpoint, options);
+        if (!res) return {};
+        let data;
+        try { data = await res.json(); }
+        catch (e) { data = {}; }
 
-        return await this.assert(data, 'GET')
+        return await this.assert(data, 'GET');
     },
     async post(endpoint, options) {
-        _method = 'POST'
-        let res = await Api.post(endpoint, options)
-        if (!res) return {}
-        let data
-        try { data = await res.json() }
+        _method = 'POST';
+        let res = await Api.post(endpoint, options);
+        if (!res) return {};
+        let data;
+        try { data = await res.json(); }
         catch (e) { data = {}; }
         
-        return await this.assert(data, 'POST')
+        return await this.assert(data, 'POST');
     },
     async put(endpoint, options) {
-        _method = 'PUT'
-        let res = await Api.put(endpoint, options)
-        if (!res) return {}
-        let data
-        try { data = await res.json() }
+        _method = 'PUT';
+        let res = await Api.put(endpoint, options);
+        if (!res) return {};
+        let data;
+        try { data = await res.json(); }
         catch (e) { data = {}; }
         
-        return await this.assert(data, 'PUT')
+        return await this.assert(data, 'PUT');
     },
     async assert(data, _method) {
         if (data.fallback) {
             try {
                 data = await new Promise((resolve, reject) => {
-                    var xhttp = new XMLHttpRequest()
+                    var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
-                        if (this.readyState == 4 && this.status != 200) resolve(null)
+                        if (this.readyState == 4 && this.status != 200) resolve(null);
                         if (this.readyState == 4 && this.status == 200) {
-                            resolve(JSON.parse(this.responseText))
+                            resolve(JSON.parse(this.responseText));
                         }
                     };
-                    xhttp.open(data.fallback.method, data.fallback.url, true)
-                    _method != 'GET'? xhttp.setRequestHeader('Content-type', 'application/json'):null
-                    _method != 'GET'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send()
-                }).catch(e => data = null)
-            } catch (e) { data = null }
+                    xhttp.open(data.fallback.method, data.fallback.url, true);
+                    _method != 'GET'? xhttp.setRequestHeader('Content-type', 'application/json'):null;
+                    _method != 'GET'? xhttp.send(JSON.stringify(data.fallback)):xhttp.send();
+                }).catch(e => data = null);
+            } catch (e) { data = null; }
         }
-        return {data}
+        return {data};
     }
-}
+};
 
 export default Wc

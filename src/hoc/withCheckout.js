@@ -1,5 +1,5 @@
-import css from '../../styles/vars'
-import Head from 'next/head'
+import css from '../../styles/vars';
+import Head from 'next/head';
 
 export default (childComponent, options, detachedViews) => (
     <div className="OrderPreview">

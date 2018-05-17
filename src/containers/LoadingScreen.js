@@ -1,6 +1,6 @@
-import React from 'react'
-import css from '../../styles/vars'
-import {Loading} from '../components'
+import React from 'react';
+import css from '../../styles/vars';
+import {Loading} from '../components';
 
 export default class LoadingScreen extends React.Component {
     render() {
@@ -18,6 +18,6 @@ export default class LoadingScreen extends React.Component {
                     background: rgba(210,216,225,.5);
                 }
             `}</style>
-        </div>
+        </div>;
     }
 }

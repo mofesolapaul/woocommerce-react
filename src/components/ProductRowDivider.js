@@ -1,4 +1,4 @@
-import css from '../../styles/vars'
+import css from '../../styles/vars';
 
 // clearfixes for proper layout
 export default p => <span className={`product-row-divider clear${p.k}`}>

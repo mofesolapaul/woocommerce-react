@@ -1,5 +1,5 @@
-import css from '../../styles/vars'
-import {moneyFormat} from '../constants'
+import css from '../../styles/vars';
+import {moneyFormat} from '../constants';
 
 export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />

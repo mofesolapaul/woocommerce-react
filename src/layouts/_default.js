@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import {URL} from '../Config'
+import Head from 'next/head';
+import {URL} from '../Config';
 
 const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) => (
     <div className="layout">
@@ -26,6 +26,6 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
     }
     `}</style>
     </div>
-)
+);
 
 export default Layout

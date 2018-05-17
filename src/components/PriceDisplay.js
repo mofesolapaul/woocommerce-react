@@ -1,6 +1,6 @@
-import css from '../../styles/vars'
-import {moneyFormat} from '../constants'
-import {View} from './'
+import css from '../../styles/vars';
+import {moneyFormat} from '../constants';
+import {View} from './';
 
 export default ({price, qty}) => <View>
     <div className="price-display font-playfair">

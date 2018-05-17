@@ -1,48 +1,48 @@
-import React from 'react'
-import css from '../../styles/vars'
-import {bindToThis} from '../constants'
-import { CartButtons, ExtrasLabel, PriceDisplay, ProductImage } from './'
+import React from 'react';
+import css from '../../styles/vars';
+import {bindToThis} from '../constants';
+import { CartButtons, ExtrasLabel, PriceDisplay, ProductImage } from './';
 
 class Product extends React.Component{
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             qty: props.item.qty,
-        }
+        };
 
         // bind
-        bindToThis(this, 'actionHandler')
-        bindToThis(this, 'updateQty')
+        bindToThis(this, 'actionHandler');
+        bindToThis(this, 'updateQty');
 
         // register for qty updates
-        props.registrar && props.registrar(props.item.id, this.updateQty)
+        props.registrar && props.registrar(props.item.id, this.updateQty);
     }
     actionHandler(type, data) {
-        let {qty} = this.state
+        let {qty} = this.state;
         switch (type) {
             case 'cart.button.add':
                 // show the extras popup
                 if (this.props.hasExtras && !this.state.qty);
                 
-                this.setState({ qty: qty+1 })
-                this.props.actionHandler(type, this.props.item)
+                this.setState({ qty: qty+1 });
+                this.props.actionHandler(type, this.props.item);
                 break;
             case 'cart.button.remove':
                 if (qty != 0) {
-                    this.setState({ qty: qty-1 })
-                    this.props.actionHandler(type, this.props.item)
+                    this.setState({ qty: qty-1 });
+                    this.props.actionHandler(type, this.props.item);
                 }
                 break;
             default:
-                this.props.actionHandler && this.props.actionHandler(type, data)
+                this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
         }
     }
     updateQty(val) {
-        this.setState({ qty: val })
+        this.setState({ qty: val });
     }
     render() {
-        let {item,_key: key} = this.props
+        let {item,_key: key} = this.props;
         return <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
             <div className="img-wrapper">
                 <ProductImage src={item.images.length? item.images[0].src:''} />
@@ -123,7 +123,7 @@ class Product extends React.Component{
                     color: ${css.colors.bluetwilight};
                 }
             `}</style>
-        </div>
+        </div>;
     }
 }
 

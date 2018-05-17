@@ -1,22 +1,22 @@
-import React from 'react'
+import React from 'react';
 
 export default class ProductImage extends React.Component {
     constructor(props) {
-        super(props)
-        this.state = { image: '' }
+        super(props);
+        this.state = { image: '' };
     }
     componentWillMount() {
-        this.fetchImage()
+        this.fetchImage();
     }
     fetchImage() {
-        if (!this.props.src) return
+        if (!this.props.src) return;
         new Promise((resolve, reject) => {
-            let img = new Image()
+            let img = new Image();
             img.onload = function() {
-                resolve(this.src)
-            }
-            img.src = this.props.src
-        }).then(data => this.setState({ image: data }))
+                resolve(this.src);
+            };
+            img.src = this.props.src;
+        }).then(data => this.setState({ image: data }));
     }
     render() {
         return <div className="img">
@@ -31,6 +31,6 @@ export default class ProductImage extends React.Component {
                     transition: 4s ease-in;
                 }
             `}</style>
-        </div>
+        </div>;
     }
 }

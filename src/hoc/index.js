@@ -1,4 +1,4 @@
-import withCheckout from './withCheckout'
+import withCheckout from './withCheckout';
 
 export {
     withCheckout,
