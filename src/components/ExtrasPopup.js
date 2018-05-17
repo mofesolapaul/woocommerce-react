@@ -25,7 +25,7 @@ export default ({actionHandler, data}) => <View>
                 <div className="group padded full-width">
                     <label className="label">{data.extra_info}</label>
                     <div>
-                        {data.extras.map(x => <div className="group" key={btoa(x.name)}>
+                        {data.extras.map(x => <div className={`group ${x.long && 'full-width'}`} key={btoa(x.name)}>
                             <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]" />
                             <label htmlFor={btoa(x.name)}>{`${x.name} (N${x.price})`}</label>
                         </div>)}

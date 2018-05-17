@@ -269,8 +269,8 @@ export const EXTRAS = {
         "extra_info": "Select Parfait Extra(s)",
         "extras": [
             {"name": "Granola", "price"             : 200, },
-            {"name": "Dried Coconut Flakes", "price": 100, },
-            {"name": "Raisins", "price": 100, },
+            {"name": "Raisins", "price"             : 100, },
+            {"name": "Dried Coconut Flakes", "price": 100, "long": true },
         ]
     }
 };
