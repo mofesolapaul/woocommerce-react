@@ -19,7 +19,7 @@ export default ({actionHandler, data}) => <View>
                         defaultValue={data.dressing[0]}
                         className="field"
                         onChange={e => this.actionHandler('extras.dressing', e.target)}>
-                        {data.dressing.map(x => <option value={x}>{x}</option>)}
+                        {data.dressing.map((x,i) => <option key={i} value={x}>{x}</option>)}
                     </select>
                 </div>}
                 <div className="group padded full-width">
@@ -27,7 +27,7 @@ export default ({actionHandler, data}) => <View>
                     <div>
                         {data.extras.map(x => <div className="group" key={btoa(x.name)}>
                             <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]" />
-                            <label for={btoa(x.name)}>{`${x.name} (N${x.price})`}</label>
+                            <label htmlFor={btoa(x.name)}>{`${x.name} (N${x.price})`}</label>
                         </div>)}
                     </div>
                 </div>
