@@ -134,6 +134,9 @@ export default class Index extends React.Component {
         // show cart on fresh load if it's not empty
         if (!productsOnDisplay.length && !Cart.isEmpty()) {
             this.setState({showCart: true});
+        } else {
+            // if we don't do this, cart pops out every time we 'show more'
+            this.setState({showCart: false});
         }
 
         if (products.length) {
