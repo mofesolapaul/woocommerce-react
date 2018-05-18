@@ -19,6 +19,9 @@ class ProductsContainer extends React.Component {
         bindToThis(this, 'updateProducts');
         bindToThis(this, 'actionHandler');
         bindToThis(this, 'childSubscriber');
+
+        // expose showExtras()
+        props.registrar && props.registrar('showExtras', data=>this.setState({productExtras: data, showExtras: true}));
     }
 
     componentWillReceiveProps(props) {
@@ -47,7 +50,7 @@ class ProductsContainer extends React.Component {
         }
     }
 
-    // this method helps the child components - Prosucts - to subscribe to changes this container
+    // this method helps the child components - Products - to subscribe to changes this container
     // feels they should know about, via callbacks
     childSubscriber(id, cb) {
         this.subscribers[id] = cb;
