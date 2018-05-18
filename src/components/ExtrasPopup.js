@@ -10,28 +10,37 @@ export default ({actionHandler, data}) => <View>
                 <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
             </h3>
             <form>
-                <div className="group padded full-width">
+                {/* For extras with dressing (dressing is free) */}
+                {!!data.info && <div className="group padded full-width">
                     <label className="label">{data.info}</label>
                     <select
                         name="extras_dressing"
                         data-index="0" id="extras_dressing"
                         defaultValue={data.dressing[0]}
                         className="field"
-                        onChange={e => this.actionHandler('extras.dressing', e.target)}>
-                        {data.dressing.map(x => <option value={x}>{x}</option>)}
+                        onChange={e => actionHandler('extras.set.dressing', e.target.value)}>
+                        {data.dressing.map((x,i) => <option key={i} value={x}>{x}</option>)}
                     </select>
-                </div>
+                </div>}
                 <div className="group padded full-width">
                     <label className="label">{data.extra_info}</label>
                     <div>
-                        {data.extras.map(x => <div className="group" key={btoa(x.name)}>
-                            <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]" />
-                            <label for={btoa(x.name)}>{`${x.name} (N${x.price})`}</label>
+                        {data.extras.map(x => <div className={`group ${x.long && 'full-width'}`} key={btoa(x.name)}>
+                            <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]"
+                                onChange={e => actionHandler(
+                                    'extras.set.extras',
+                                    {
+                                        checked: e.target.checked,
+                                        xtra: x,
+                                        label: x.name,
+                                    }
+                                )} />
+                            <label htmlFor={btoa(x.name)}>{`${x.name} (N${x.price})`}</label>
                         </div>)}
                     </div>
                 </div>
                 <div className="group full-width text-center">
-                    <a className="btn sleek-btn">Add extras</a>
+                    <a className="btn sleek-btn" onClick={e => actionHandler('extras.update', {category: data.cat})}>Add extras</a>
                 </div>
             </form>
         </div>
