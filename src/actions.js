@@ -9,5 +9,6 @@ export default flux.createActions([
     'reset',
     'savePaymentDetails',
     'setShippingMethod',
+    'updateOrderItem',
     'updateQty',
 ]);

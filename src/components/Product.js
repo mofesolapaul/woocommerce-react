@@ -51,12 +51,14 @@ class Product extends React.Component{
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
             case 'extras.update':
+                // build payload
                 this.props.item.extras = {
                     category: data.category,
                     dressing: this.state.extra_dressing,
                     extras: this.state.extra_extras
                 }
-                console.log('ITEM EXTRAS', this.props.item);
+                // pass it up, cos only containers should interact with the store directly
+                this.props.actionHandler && this.props.actionHandler(type, this.props.item);
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);

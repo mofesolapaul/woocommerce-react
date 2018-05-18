@@ -24,6 +24,7 @@ const Cart = flux.createStore({
         actions.reset,
         actions.savePaymentDetails,
         actions.setShippingMethod,
+        actions.updateOrderItem,
         actions.updateQty,
     ],
 
@@ -36,6 +37,15 @@ const Cart = flux.createStore({
         else this.orders[item.id] = { product: item, qty: 1 };
         this.persist();
         this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id});
+    },
+
+    updateOrderItem: function(item) {
+        console.log("UPDATING ORDER ITEM");
+        if (!!this.orders[item.id]) {
+            this.orders[item.id].product = item;
+            this.persist();
+            this.emit('order.update', {id: ORDER_ITEM_UPDATE, item_id: item.id});
+        }
     },
 
     removeFromCart: function(item) {

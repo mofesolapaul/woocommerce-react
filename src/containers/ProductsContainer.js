@@ -67,6 +67,9 @@ class ProductsContainer extends React.Component {
             case 'extras.dismiss':
                 this.setState({productExtras: {}, showExtras: false});
                 break;
+            case 'extras.update':
+                actions.updateOrderItem(data);
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
