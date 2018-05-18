@@ -2,10 +2,56 @@ import React from 'react';
 import css from '../../styles/vars';
 import {View} from './';
 import { uid } from '../constants';
+import {bindToThis} from '../constants';
 
 class ExtrasPopup extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            dressing: '',
+            extras: {}
+        };
+
+        // bind
+        bindToThis(this, 'actionHandler');
+        bindToThis(this, 'setDressing');
+        bindToThis(this, 'setExtras');
+        bindToThis(this, 'updateExtras');
+        bindToThis(this, 'dismiss');
+    }
+
+    actionHandler(type, data) {
+        switch (type) {
+            default:
+                this.props.actionHandler && this.props.actionHandler(type, this.props.product);
+                break;
+        }
+    }
+
+    setDressing(dressing) {
+        this.setState({dressing});
+    }
+
+    setExtras(data) {
+        const _xtras = this.state.extras;
+        if (!!_xtras[data.label]) delete _xtras[data.label];
+        else _xtras[data.label] = data.xtra;
+    }
+
+    updateExtras(data) {
+        // build payload
+        this.props.product.extras = {
+            category: data.category,
+            dressing: this.state.dressing,
+            extras: this.state.extras
+        }
+        // pass it up, cos only containers should interact with the store directly
+        this.actionHandler("extras.update", this.props.product);
+    }
+
+    dismiss() {
+        this.setState({dressing: '', extras: {}});
+        this.actionHandler("extras.dismiss");
     }
 
     render() {
@@ -15,7 +61,7 @@ class ExtrasPopup extends React.Component {
                 <div className="extras-modal">
                     <h3>
                         <span className="">Extras ({data.cat})</span>
-                        <a className="close" onClick={() => actionHandler(`extras.dismiss`)}>{`\u00d7`}</a>
+                        <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
                     </h3>
                     <form>
                         {/* For extras with dressing (dressing is free) */}
@@ -26,7 +72,7 @@ class ExtrasPopup extends React.Component {
                                 data-index="0" id="extras_dressing"
                                 defaultValue={data.dressing[0]}
                                 className="field"
-                                onChange={e => actionHandler('extras.set.dressing', e.target.value)}>
+                                onChange={e => this.setDressing(e.target.value)}>
                                 {data.dressing.map((x,i) => <option key={i} value={x}>{x}</option>)}
                             </select>
                         </div>}
@@ -35,8 +81,7 @@ class ExtrasPopup extends React.Component {
                             <div>
                                 {data.extras.map(x => <div className={`group ${x.long && 'full-width'}`} key={btoa(x.name)}>
                                     <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]"
-                                        onChange={e => actionHandler(
-                                            'extras.set.extras',
+                                        onChange={e => this.setExtras(
                                             {
                                                 checked: e.target.checked,
                                                 xtra: x,
@@ -48,7 +93,7 @@ class ExtrasPopup extends React.Component {
                             </div>
                         </div>
                         <div className="group full-width text-center">
-                            <a className="btn sleek-btn" onClick={e => actionHandler('extras.update', {category: data.cat})}>Add extras</a>
+                            <a className="btn sleek-btn" onClick={e => this.updateExtras({category: data.cat})}>Add extras</a>
                         </div>
                     </form>
                 </div>

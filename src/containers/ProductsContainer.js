@@ -68,6 +68,7 @@ class ProductsContainer extends React.Component {
                 this.setState({productExtras: {}, showExtras: false});
                 break;
             case 'extras.update':
+                console.log("EXTRAS UPDATE", data);
                 actions.updateOrderItem(data);
                 break;
             default:
@@ -110,8 +111,8 @@ class ProductsContainer extends React.Component {
             </div>
 
             {!!this.state.showExtras && <ExtrasPopup
-                actionHandler={this.state.productExtras.actionHandler}
-                productId={this.state.productExtras.productId}
+                actionHandler={this.actionHandler}
+                product={this.state.productExtras.product}
                 data={getExtrasData(this.state.productExtras.category)} />}
 
             <style jsx>{`
