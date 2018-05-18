@@ -3,7 +3,7 @@ import {View} from './';
 
 export default ({category, actionHandler, product}) => category? <View>
     <span className="btn sleek-btn extras-label font-sourcesans"
-        onClick={e => actionHandler('extras.show', {category, product, actionHandler})}>
+        onClick={e => actionHandler('extras.show', {category, product})}>
         Manage Extras
     </span>
 
