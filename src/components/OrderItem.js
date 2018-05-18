@@ -8,7 +8,12 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
         <a className="btn"
             onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
-        &nbsp;{!!item.product.extras && <a className="btn green">Manage Extras</a>}
+        &nbsp;{!!item.product.extras &&
+                <a className="btn green"
+                    onClick={e => actionHandler('extras.show', {
+                        category: item.product.extras.category.toLowerCase(),
+                        product: item.product
+                    })}>Manage Extras</a>}
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>

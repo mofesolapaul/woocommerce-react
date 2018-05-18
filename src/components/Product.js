@@ -36,30 +36,6 @@ class Product extends React.Component{
                     this.props.actionHandler(type, this.props.item);
                 }
                 break;
-            case 'extras.set.dressing':
-                this.setState({extra_dressing: data});
-                break;
-            case 'extras.set.extras':
-                const _xtras = this.state.extra_extras;
-                if (!!_xtras[data.label]) delete _xtras[data.label];
-                else _xtras[data.label] = data.xtra;
-                break;
-            case 'extras.dismiss':
-                // product needs to know
-                this.setState({extra_dressing: '', extra_extras: {}})
-                // bubble it up
-                this.props.actionHandler && this.props.actionHandler(type, data);
-                break;
-            case 'extras.update':
-                // build payload
-                this.props.item.extras = {
-                    category: data.category,
-                    dressing: this.state.extra_dressing,
-                    extras: this.state.extra_extras
-                }
-                // pass it up, cos only containers should interact with the store directly
-                this.props.actionHandler && this.props.actionHandler(type, this.props.item);
-                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
@@ -75,7 +51,7 @@ class Product extends React.Component{
                 <ProductImage src={item.images.length? item.images[0].src:''} />
                 {!!this.state.qty && <ExtrasLabel
                     category={this.props.hasExtras}
-                    productId={item.id}
+                    product={item}
                     actionHandler={this.actionHandler} />}
                 <PriceDisplay qty={this.state.qty} price={item.price} />
             </div>

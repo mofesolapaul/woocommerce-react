@@ -9,6 +9,7 @@ import {Cart} from '../src/stores';
 export default class Index extends React.Component {
     constructor(props) {
         super(props);
+        this.subscribers = {};
         this.state = {
             per_page: 22,
             products: [],
@@ -31,6 +32,7 @@ export default class Index extends React.Component {
         bindToThis(this, 'reload');
         bindToThis(this, 'showProducts');
         bindToThis(this, 'updateState');
+        bindToThis(this, 'subscribeChild');
     }
 
     componentWillMount() {
@@ -63,6 +65,19 @@ export default class Index extends React.Component {
         }
     }
 
+    /**
+     * Initial use-case: this method helps this page trigger an action (method) in any child of its that subscribes
+     * @param {string} name 
+     * @param {function} callback 
+     */
+    subscribeChild(name, callback) {
+        this.subscribers[name] = callback;
+    }
+
+    notifySubscriber(id, data) {
+        this.subscribers[id](data);
+    }
+
     actionHandler(type, data) {
         switch (type) {
             case 'toast.show':
@@ -82,6 +97,11 @@ export default class Index extends React.Component {
                 break;
             case 'app.busy':
                 this.setState({ busy: data===false? false:true });
+                break;
+            case 'extras.show':
+                // because this event facilitates comms between two containers
+                // - ProductsContainer & ShoppingCart
+                this.notifySubscriber('showExtras', data);
                 break;
         }
     }
@@ -162,6 +182,7 @@ export default class Index extends React.Component {
             readonly: this.state.orderCreated, // order already created, act accordingly
             actionHandler: this.actionHandler, // action handler
             pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
+            registrar: this.subscribeChild,
         };
 
         return <Layout>
