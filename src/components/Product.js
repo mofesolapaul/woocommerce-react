@@ -42,6 +42,13 @@ class Product extends React.Component{
             case 'extras.set.extras':
                 console.log('SET EXTRAS', data);
                 break;
+                break;
+            case 'extras.dismiss':
+                // product needs to know
+                console.log('DISMISS EXTRAS');
+                // bubble it up
+                this.props.actionHandler && this.props.actionHandler(type, data);
+                break;
             case 'extras.update':
                 // this.setState({productExtras: {}, showExtras: false});
                 break;
