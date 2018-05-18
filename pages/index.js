@@ -101,7 +101,6 @@ export default class Index extends React.Component {
             case 'extras.show':
                 // because this event facilitates comms between two containers
                 // - ProductsContainer & ShoppingCart
-                console.log(data);
                 this.notifySubscriber('showExtras', data);
                 break;
         }

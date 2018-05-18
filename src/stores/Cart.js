@@ -40,7 +40,6 @@ const Cart = flux.createStore({
     },
 
     updateOrderItem: function(item) {
-        console.log("UPDATING ORDER ITEM");
         if (!!this.orders[item.id]) {
             this.orders[item.id].product = item;
             this.persist();

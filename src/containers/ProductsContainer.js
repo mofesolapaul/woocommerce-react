@@ -71,7 +71,6 @@ class ProductsContainer extends React.Component {
                 this.setState({productExtras: {}, showExtras: false});
                 break;
             case 'extras.update':
-                console.log("EXTRAS UPDATE", data);
                 actions.updateOrderItem(data);
                 break;
             default:
