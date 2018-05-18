@@ -8,6 +8,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
         <a className="btn"
             onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
+        &nbsp;{!!item.product.extras && <a className="btn green">Manage Extras</a>}
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
@@ -63,6 +64,10 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
             border: none;
             font-weight: lighter;
             letter-spacing: .5px;
+        }
+        .btn.green {
+            background: rgba(0, 128, 128, .3);
+            color: teal;
         }
     `}</style>
 </div>
