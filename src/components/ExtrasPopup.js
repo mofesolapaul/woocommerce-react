@@ -40,7 +40,7 @@ export default ({actionHandler, data}) => <View>
                     </div>
                 </div>
                 <div className="group full-width text-center">
-                    <a className="btn sleek-btn">Add extras</a>
+                    <a className="btn sleek-btn" onClick={e => actionHandler('extras.update', {category: data.cat})}>Add extras</a>
                 </div>
             </form>
         </div>
