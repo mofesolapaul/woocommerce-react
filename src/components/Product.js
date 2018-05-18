@@ -2,6 +2,7 @@ import React from 'react';
 import css from '../../styles/vars';
 import {bindToThis} from '../constants';
 import { CartButtons, ExtrasLabel, PriceDisplay, ProductImage } from './';
+import { __esModule } from 'babel-runtime/helpers/possibleConstructorReturn';
 
 class Product extends React.Component{
     constructor(props) {
@@ -9,7 +10,7 @@ class Product extends React.Component{
         this.state = {
             qty: props.item.qty,
             extra_dressing: '',
-            extra_extras: new Set(),
+            extra_extras: {},
         };
 
         // bind
@@ -36,16 +37,17 @@ class Product extends React.Component{
                 }
                 break;
             case 'extras.set.dressing':
-                console.log('SET DRESSING', data);
                 this.setState({extra_dressing: data});
                 break;
             case 'extras.set.extras':
-                console.log('SET EXTRAS', data);
-                break;
+                const _xtras = this.state.extra_extras;
+                if (!!_xtras[data.label]) delete _xtras[data.label];
+                else _xtras[data.label] = data.xtra;
+                console.log('SET EXTRAS', _xtras);
                 break;
             case 'extras.dismiss':
                 // product needs to know
-                console.log('DISMISS EXTRAS');
+                this.setState({extra_dressing: '', extra_extras: {}})
                 // bubble it up
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
