@@ -247,7 +247,7 @@ export const CACHE = {
 };
 
 export const EXTRAS = {
-    CATEGORIES: ['salads','parfaits'],
+    CATEGORIES: ['salads','parfaits','sandwiches'],
     "salads": {
         "cat": "Salads",
         "info": "Select Salad Dressing",
@@ -272,7 +272,24 @@ export const EXTRAS = {
             {"name": "Raisins", "price"             : 100, },
             {"name": "Dried Coconut Flakes", "price": 100, "long": true },
         ]
-    }
+    },
+    "sandwiches": {
+        "cat": "Sandwiches",
+        "info": "Select Sandwich Spread",
+        "extra_info": "Select Sandwich Extra(s)",
+        "dressing": ['Light Mayo Spread', 'Mustard Spread', 'Light Mayo And Mustard Spread'],
+        "extras": [
+            {"name": "Beef", "price"     : 500, },
+            {"name": "Chicken", "price"  : 500, },
+            {"name": "Avocado", "price"  : 200, },
+            {"name": "Egg", "price"      : 100, },
+            {"name": "Cheese", "price"   : 100, },
+            {"name": "Olives", "price"   : 100, },
+            {"name": "Raisins", "price"  : 100, },
+            {"name": "Onions", "price"   : 0, },
+            {"name": "Tomatoes", "price" : 0, "long": true },
+        ]
+    },
 };
 
 /**
