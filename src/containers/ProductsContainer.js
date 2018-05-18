@@ -107,7 +107,8 @@ class ProductsContainer extends React.Component {
             </div>
 
             {!!this.state.showExtras && <ExtrasPopup
-                actionHandler={this.actionHandler}
+                actionHandler={this.state.productExtras.actionHandler}
+                productId={this.state.productExtras.productId}
                 data={getExtrasData(this.state.productExtras.category)} />}
 
             <style jsx>{`

@@ -8,6 +8,8 @@ class Product extends React.Component{
         super(props);
         this.state = {
             qty: props.item.qty,
+            extra_dressing: '',
+            extra_extras: new Set(),
         };
 
         // bind
@@ -33,6 +35,16 @@ class Product extends React.Component{
                     this.props.actionHandler(type, this.props.item);
                 }
                 break;
+            case 'extras.set.dressing':
+                console.log('SET DRESSING', data);
+                this.setState({extra_dressing: data});
+                break;
+            case 'extras.set.extras':
+                console.log('SET EXTRAS', data);
+                break;
+            case 'extras.update':
+                // this.setState({productExtras: {}, showExtras: false});
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
@@ -46,7 +58,10 @@ class Product extends React.Component{
         return <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
             <div className="img-wrapper">
                 <ProductImage src={item.images.length? item.images[0].src:''} />
-                {!!this.state.qty && <ExtrasLabel category={this.props.hasExtras} productId={item.id} actionHandler={this.actionHandler} />}
+                {!!this.state.qty && <ExtrasLabel
+                    category={this.props.hasExtras}
+                    productId={item.id}
+                    actionHandler={this.actionHandler} />}
                 <PriceDisplay qty={this.state.qty} price={item.price} />
             </div>
             <div className="flex">
