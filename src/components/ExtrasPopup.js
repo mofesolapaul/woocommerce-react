@@ -18,6 +18,8 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'setExtras');
         bindToThis(this, 'updateExtras');
         bindToThis(this, 'dismiss');
+        bindToThis(this, 'extrasTotal');
+        bindToThis(this, 'extrasList');
     }
 
     actionHandler(type, data) {
@@ -33,9 +35,10 @@ class ExtrasPopup extends React.Component {
     }
 
     setExtras(data) {
-        const _xtras = this.state.extras;
+        const _xtras = {...this.state.extras};
         if (!!_xtras[data.label]) delete _xtras[data.label];
         else _xtras[data.label] = data.xtra;
+        this.setState({extras: _xtras});
     }
 
     updateExtras(data) {
@@ -54,8 +57,25 @@ class ExtrasPopup extends React.Component {
         this.actionHandler("extras.dismiss");
     }
 
+    extrasTotal() {
+        const {product} = this.props;
+        const x = product.extras.extras;
+        let sum = 0;
+        Object.keys(x).forEach(function (k) {
+            sum += x[k].price;
+        });
+        return sum;
+    }
+
+    extrasList() {
+        const {product} = this.props;
+        const dressing = (this.state.dressing || product.extras.dressing || '');
+        const extras = !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
+        return (dressing? dressing+', ':'') + Object.keys(extras).join(', ');
+    }
+
     render() {
-        const {data, actionHandler} = this.props;
+        const {data, actionHandler, product} = this.props;
         return <View>
             <div className="extras-curtain">
                 <div className="extras-modal">
@@ -63,6 +83,10 @@ class ExtrasPopup extends React.Component {
                         <span className="">Extras ({data.cat})</span>
                         <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
                     </h3>
+                    {!!product.extras && <div className="well">
+                        <h4 className="ttl">Your selection (N{this.extrasTotal()}):</h4>
+                        &nbsp;{this.extrasList()}
+                    </div>}
                     <form>
                         {/* For extras with dressing (dressing is free) */}
                         {!!data.info && <div className="group padded full-width">
@@ -130,6 +154,15 @@ class ExtrasPopup extends React.Component {
                 padding: 1rem;
                 border-radius: 4px;
                 filter: drop-shadow(0px 4px 6px rgba(0,0,0,.25));
+            }
+            .well {
+                padding: .5rem;
+                background: rgba(0,0,0,.1);
+                border-radius: 4px;
+            }
+            .ttl {
+                margin: 0;
+                display: inline-block;
             }
             `}</style>
         </View>
