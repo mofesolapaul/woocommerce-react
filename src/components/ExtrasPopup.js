@@ -22,6 +22,7 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'extrasTotal');
         bindToThis(this, 'extrasList');
         bindToThis(this, 'isExtraSelected');
+        bindToThis(this, 'hasExtras');
     }
 
     actionHandler(type, data) {
@@ -82,6 +83,14 @@ class ExtrasPopup extends React.Component {
         return !!extras[name];
     }
 
+    /**
+     * Determine if the product has extras added already
+     */
+    hasExtras() {
+        const {product} = this.props;
+        return !!product.extras && !!Object.keys(product.extras.extras).length;
+    }
+
     render() {
         const {data, actionHandler, product} = this.props;
         return <View>
@@ -126,7 +135,7 @@ class ExtrasPopup extends React.Component {
                             </div>
                         </div>
                         <div className="group full-width text-center">
-                            <a className="btn sleek-btn" onClick={e => this.updateExtras({category: data.cat})}>Add extras</a>
+                            <a className="btn sleek-btn" onClick={e => this.updateExtras({category: data.cat})}>{this.hasExtras()? 'Save':'Add'} extras</a>
                         </div>
                     </form>
                 </div>
