@@ -59,7 +59,7 @@ class ExtrasPopup extends React.Component {
 
     extrasTotal() {
         const {product} = this.props;
-        const x = product.extras.extras;
+        const x = !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
         let sum = 0;
         Object.keys(x).forEach(function (k) {
             sum += x[k].price;
