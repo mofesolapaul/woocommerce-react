@@ -9,7 +9,8 @@ class ExtrasPopup extends React.Component {
         super(props);
         this.state = {
             dressing: '',
-            extras: {}
+            extras: {},
+            hasChanged: false
         };
 
         // bind
@@ -20,6 +21,7 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'dismiss');
         bindToThis(this, 'extrasTotal');
         bindToThis(this, 'extrasList');
+        bindToThis(this, 'isExtraSelected');
     }
 
     actionHandler(type, data) {
@@ -31,14 +33,15 @@ class ExtrasPopup extends React.Component {
     }
 
     setDressing(dressing) {
-        this.setState({dressing});
+        this.setState({hasChanged: true, dressing});
     }
 
     setExtras(data) {
         const _xtras = {...this.state.extras};
-        if (!!_xtras[data.label]) delete _xtras[data.label];
+        if (!data.checked) delete _xtras[data.label];
         else _xtras[data.label] = data.xtra;
-        this.setState({extras: _xtras});
+        const hasChanged = !!Object.keys(_xtras).length;
+        this.setState({hasChanged, extras: _xtras});
     }
 
     updateExtras(data) {
@@ -70,8 +73,13 @@ class ExtrasPopup extends React.Component {
     extrasList() {
         const {product} = this.props;
         const dressing = (this.state.dressing || product.extras.dressing || '');
-        const extras = !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
+        const extras = this.state.hasChanged || !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
         return (dressing? dressing+', ':'') + Object.keys(extras).join(', ');
+    }
+
+    isExtraSelected(name) {
+        const extras = !!Object.keys(this.state.extras).length? this.state.extras : this.props.product.extras.extras;
+        return !!extras[name];
     }
 
     render() {
@@ -105,6 +113,7 @@ class ExtrasPopup extends React.Component {
                             <div>
                                 {data.extras.map(x => <div className={`group ${x.long && 'full-width'}`} key={btoa(x.name)}>
                                     <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]"
+                                        defaultChecked={this.isExtraSelected(x.name)}
                                         onChange={e => this.setExtras(
                                             {
                                                 checked: e.target.checked,
