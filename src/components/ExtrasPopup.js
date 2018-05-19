@@ -123,7 +123,7 @@ class ExtrasPopup extends React.Component {
                             <select
                                 name="extras_dressing"
                                 data-index="0" id="extras_dressing"
-                                defaultValue={data.dressing[0]}
+                                defaultValue={this.state.dressing || data.dressing[0]}
                                 className="field"
                                 onChange={e => this.setDressing(e.target.value)}>
                                 {data.dressing.map((x,i) => <option key={i} value={x}>{x}</option>)}
