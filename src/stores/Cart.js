@@ -1,7 +1,7 @@
 import flux from 'flux-react';
 import actions from '../actions';
 import constants, {
-    db, isEmpty, poip_valid, API_CALLS, 
+    db, getExtrasTotal, isEmpty, poip_valid, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
     ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, 
     ORDER_SHIPPING_COST} from '../constants';
@@ -251,7 +251,7 @@ const Cart = flux.createStore({
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price);
                 if (!!this.orders[o].product.extras) {
-                    total += (this.orders[o].qty * this.orders[o].product.price);
+                    total += (this.orders[o].qty *  getExtrasTotal(this.orders[o].product.extras.extras));
                 }
             });
             return total + (!order_total? +this.shipping_cost:0);
@@ -262,6 +262,10 @@ const Cart = flux.createStore({
          */
         getAllOrders: function() {
             return Object.values(this.orders);
+        },
+
+        getAnOrder: function(id) {
+            return this.orders[id].product;
         },
 
         /**

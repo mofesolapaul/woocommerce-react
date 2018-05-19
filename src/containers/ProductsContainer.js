@@ -93,7 +93,8 @@ class ProductsContainer extends React.Component {
                                 hasExtras={hasExtras(product)}
                                 readonly={readonly}
                                 registrar={this.childSubscriber}
-                                actionHandler={this.actionHandler} />
+                                actionHandler={this.actionHandler}
+                                orderDelegate={Cart.getAnOrder} />
                             {(index+1)%2 || items.length-1 == index? null:<ProductRowDivider k={2} />}
                             {(index+1)%3 || items.length-1 == index? null:<ProductRowDivider k={3} />}
                             {(index+1)%4 || items.length-1 == index? null:<ProductRowDivider k={4} />}

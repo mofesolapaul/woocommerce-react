@@ -52,6 +52,7 @@ class Product extends React.Component{
                 {!!this.state.qty && <ExtrasLabel
                     category={this.props.hasExtras}
                     product={item}
+                    orderItem={this.props.orderDelegate(item.id)}
                     actionHandler={this.actionHandler} />}
                 <PriceDisplay qty={this.state.qty} price={item.price} />
             </div>
