@@ -9,7 +9,7 @@ class ExtrasPopup extends React.Component {
         super(props);
         this.state = {
             dressing: '',
-            extras: {}
+            extras: {},
         };
 
         // bind
@@ -20,6 +20,9 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'dismiss');
         bindToThis(this, 'extrasTotal');
         bindToThis(this, 'extrasList');
+        bindToThis(this, 'isExtraSelected');
+        bindToThis(this, 'hasExtras');
+        bindToThis(this, 'hasDressing');
     }
 
     actionHandler(type, data) {
@@ -30,13 +33,18 @@ class ExtrasPopup extends React.Component {
         }
     }
 
+    componentWillMount() {
+        if (this.hasExtras()) this.setState({extras: this.props.product.extras.extras});
+        if (this.hasDressing()) this.setState({dressing: this.props.product.extras.dressing});
+    }
+
     setDressing(dressing) {
         this.setState({dressing});
     }
 
     setExtras(data) {
         const _xtras = {...this.state.extras};
-        if (!!_xtras[data.label]) delete _xtras[data.label];
+        if (!data.checked) delete _xtras[data.label];
         else _xtras[data.label] = data.xtra;
         this.setState({extras: _xtras});
     }
@@ -59,7 +67,7 @@ class ExtrasPopup extends React.Component {
 
     extrasTotal() {
         const {product} = this.props;
-        const x = !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
+        const x = this.state.extras;
         let sum = 0;
         Object.keys(x).forEach(function (k) {
             sum += x[k].price;
@@ -69,9 +77,30 @@ class ExtrasPopup extends React.Component {
 
     extrasList() {
         const {product} = this.props;
-        const dressing = (this.state.dressing || product.extras.dressing || '');
-        const extras = !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
+        const dressing = this.state.dressing;
+        const extras = this.state.extras;
         return (dressing? dressing+', ':'') + Object.keys(extras).join(', ');
+    }
+
+    isExtraSelected(name) {
+        const extras = !!Object.keys(this.state.extras).length? this.state.extras : this.props.product.extras.extras;
+        return !!extras[name];
+    }
+
+    /**
+     * Determine if the product has extras added already
+     */
+    hasExtras() {
+        const {product} = this.props;
+        return !!product.extras && !!Object.keys(product.extras.extras).length;
+    }
+
+    /**
+     * Determine if the product has dressing added already
+     */
+    hasDressing() {
+        const {product} = this.props;
+        return !!product.extras && !!product.extras.dressing;
     }
 
     render() {
@@ -84,7 +113,7 @@ class ExtrasPopup extends React.Component {
                         <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
                     </h3>
                     {!!product.extras && <div className="well">
-                        <h4 className="ttl">Your selection (N{this.extrasTotal()}):</h4>
+                        Your selection (N{this.extrasTotal()}):
                         &nbsp;{this.extrasList()}
                     </div>}
                     <form>
@@ -94,7 +123,7 @@ class ExtrasPopup extends React.Component {
                             <select
                                 name="extras_dressing"
                                 data-index="0" id="extras_dressing"
-                                defaultValue={data.dressing[0]}
+                                defaultValue={this.state.dressing || data.dressing[0]}
                                 className="field"
                                 onChange={e => this.setDressing(e.target.value)}>
                                 {data.dressing.map((x,i) => <option key={i} value={x}>{x}</option>)}
@@ -105,6 +134,7 @@ class ExtrasPopup extends React.Component {
                             <div>
                                 {data.extras.map(x => <div className={`group ${x.long && 'full-width'}`} key={btoa(x.name)}>
                                     <input id={btoa(x.name)} type="checkbox" value={x.name} name="extras[]"
+                                        defaultChecked={this.isExtraSelected(x.name)}
                                         onChange={e => this.setExtras(
                                             {
                                                 checked: e.target.checked,
@@ -117,7 +147,7 @@ class ExtrasPopup extends React.Component {
                             </div>
                         </div>
                         <div className="group full-width text-center">
-                            <a className="btn sleek-btn" onClick={e => this.updateExtras({category: data.cat})}>Add extras</a>
+                            <a className="btn sleek-btn" onClick={e => this.updateExtras({category: data.cat})}>{this.hasExtras()? 'Save':'Add'} extras</a>
                         </div>
                     </form>
                 </div>
