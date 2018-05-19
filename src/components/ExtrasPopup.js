@@ -10,7 +10,6 @@ class ExtrasPopup extends React.Component {
         this.state = {
             dressing: '',
             extras: {},
-            hasChanged: false
         };
 
         // bind
@@ -23,6 +22,7 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'extrasList');
         bindToThis(this, 'isExtraSelected');
         bindToThis(this, 'hasExtras');
+        bindToThis(this, 'hasDressing');
     }
 
     actionHandler(type, data) {
@@ -33,16 +33,20 @@ class ExtrasPopup extends React.Component {
         }
     }
 
+    componentWillMount() {
+        if (this.hasExtras()) this.setState({extras: this.props.product.extras.extras});
+        if (this.hasDressing()) this.setState({dressing: this.props.product.extras.dressing});
+    }
+
     setDressing(dressing) {
-        this.setState({hasChanged: true, dressing});
+        this.setState({dressing});
     }
 
     setExtras(data) {
         const _xtras = {...this.state.extras};
         if (!data.checked) delete _xtras[data.label];
         else _xtras[data.label] = data.xtra;
-        const hasChanged = !!Object.keys(_xtras).length;
-        this.setState({hasChanged, extras: _xtras});
+        this.setState({extras: _xtras});
     }
 
     updateExtras(data) {
@@ -63,7 +67,7 @@ class ExtrasPopup extends React.Component {
 
     extrasTotal() {
         const {product} = this.props;
-        const x = !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
+        const x = this.state.extras;
         let sum = 0;
         Object.keys(x).forEach(function (k) {
             sum += x[k].price;
@@ -73,8 +77,8 @@ class ExtrasPopup extends React.Component {
 
     extrasList() {
         const {product} = this.props;
-        const dressing = (this.state.dressing || product.extras.dressing || '');
-        const extras = this.state.hasChanged || !!Object.keys(this.state.extras).length? this.state.extras : product.extras.extras;
+        const dressing = this.state.dressing;
+        const extras = this.state.extras;
         return (dressing? dressing+', ':'') + Object.keys(extras).join(', ');
     }
 
@@ -89,6 +93,14 @@ class ExtrasPopup extends React.Component {
     hasExtras() {
         const {product} = this.props;
         return !!product.extras && !!Object.keys(product.extras.extras).length;
+    }
+
+    /**
+     * Determine if the product has dressing added already
+     */
+    hasDressing() {
+        const {product} = this.props;
+        return !!product.extras && !!product.extras.dressing;
     }
 
     render() {
