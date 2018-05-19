@@ -84,7 +84,7 @@ class ExtrasPopup extends React.Component {
                         <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
                     </h3>
                     {!!product.extras && <div className="well">
-                        <h4 className="ttl">Your selection (N{this.extrasTotal()}):</h4>
+                        Your selection (N{this.extrasTotal()}):
                         &nbsp;{this.extrasList()}
                     </div>}
                     <form>
