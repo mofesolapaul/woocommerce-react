@@ -316,3 +316,11 @@ export const hasExtras = (product) => {
 export const getExtrasData = (category) => {
     return EXTRAS[category] || {};
 };
+
+export const getExtrasTotal = (extras) => {
+    let sum = 0;
+    Object.keys(extras).forEach(function (k) {
+        sum += extras[k].price;
+    });
+    return sum;
+}

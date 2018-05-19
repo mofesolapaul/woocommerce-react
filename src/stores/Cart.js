@@ -250,6 +250,9 @@ const Cart = flux.createStore({
             let total = 0;
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price);
+                if (!!this.orders[o].product.extras) {
+                    total += (this.orders[o].qty * this.orders[o].product.price);
+                }
             });
             return total + (!order_total? +this.shipping_cost:0);
         },

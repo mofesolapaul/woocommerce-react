@@ -2,7 +2,7 @@ import React from 'react';
 import css from '../../styles/vars';
 import {View} from './';
 import { uid } from '../constants';
-import {bindToThis} from '../constants';
+import {bindToThis, getExtrasTotal} from '../constants';
 
 class ExtrasPopup extends React.Component {
     constructor(props) {
@@ -18,7 +18,6 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'setExtras');
         bindToThis(this, 'updateExtras');
         bindToThis(this, 'dismiss');
-        bindToThis(this, 'extrasTotal');
         bindToThis(this, 'extrasList');
         bindToThis(this, 'isExtraSelected');
         bindToThis(this, 'hasExtras');
@@ -65,16 +64,6 @@ class ExtrasPopup extends React.Component {
         this.actionHandler("extras.dismiss");
     }
 
-    extrasTotal() {
-        const {product} = this.props;
-        const x = this.state.extras;
-        let sum = 0;
-        Object.keys(x).forEach(function (k) {
-            sum += x[k].price;
-        });
-        return sum;
-    }
-
     extrasList() {
         const {product} = this.props;
         const dressing = this.state.dressing;
@@ -112,7 +101,7 @@ class ExtrasPopup extends React.Component {
                         <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
                     </h3>
                     {!!product.extras && <div className="well">
-                        Your selection (N{this.extrasTotal()}):
+                        Your selection (N{getExtrasTotal(this.state.extras)}):
                         &nbsp;{this.extrasList()}
                     </div>}
                     <form>
