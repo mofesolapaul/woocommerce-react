@@ -1,5 +1,5 @@
 import css from '../../styles/vars';
-import {moneyFormat} from '../constants';
+import {moneyFormat, hasExtras} from '../constants';
 
 export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />
@@ -8,10 +8,10 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
         <a className="btn"
             onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
-        &nbsp;{!!item.product.extras &&
+        &nbsp;{hasExtras(item.product) &&
                 <a className="btn green"
                     onClick={e => actionHandler('extras.show', {
-                        category: item.product.extras.category.toLowerCase(),
+                        category: hasExtras(item.product),
                         product: item.product
                     })}>Manage Extras</a>}
     </div>
