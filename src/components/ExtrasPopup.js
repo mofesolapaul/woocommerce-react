@@ -83,8 +83,7 @@ class ExtrasPopup extends React.Component {
     }
 
     isExtraSelected(name) {
-        const extras = !!Object.keys(this.state.extras).length? this.state.extras : this.props.product.extras.extras;
-        return !!extras[name];
+        return !!this.state.extras[name];
     }
 
     /**
