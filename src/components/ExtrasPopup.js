@@ -157,6 +157,7 @@ class ExtrasPopup extends React.Component {
                 height: 100%;
                 background: rgba(255,255,255,.3);
                 z-index: 1000;
+                overflow-y: auto;
             }
             .extras-modal {
                 background: ${css.colors.desertbone};
@@ -164,11 +165,10 @@ class ExtrasPopup extends React.Component {
                 overflow-y: auto;
                 width: 90%;
                 max-width: 360px;
-                margin: auto;
+                margin: 5% auto;
                 left: 0;
                 right: 0;
-                top: 50%;
-                transform: translateY(-50%);
+                top: 0;
                 padding: 1rem;
                 border-radius: 4px;
                 filter: drop-shadow(0px 4px 6px rgba(0,0,0,.25));
