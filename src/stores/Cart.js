@@ -99,7 +99,12 @@ const Cart = flux.createStore({
                 quantity: this.orders[o].qty
             }
             if (!!product.extras) {
-                item.meta_data = [];
+                item.meta_data = [{
+                    key: "_tmcartepo_data",
+                    value: [
+                        { value: " Hawaiian Mustard Dressing ", price: "" }
+                    ]
+                }];
             }
             line_items.push(item);
         }

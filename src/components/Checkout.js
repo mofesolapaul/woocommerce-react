@@ -10,9 +10,9 @@ export default class Checkout extends React.PureComponent {
         super(props);
         // form
         const form = {
-            'map.searchbox.update': props.location,
             'checkout.email': '',
             ...this.props.fieldDefaults,
+            'map.searchbox.update': props.location,
         };
         
         // don't remember shipping method
