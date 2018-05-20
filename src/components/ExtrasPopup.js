@@ -57,6 +57,7 @@ class ExtrasPopup extends React.Component {
         }
         // pass it up, cos only containers should interact with the store directly
         this.actionHandler("extras.update", this.props.product);
+        this.dismiss();
     }
 
     dismiss() {
