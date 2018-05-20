@@ -1,7 +1,7 @@
 import flux from 'flux-react';
 import actions from '../actions';
 import constants, {
-    db, getExtrasTotal, isEmpty, poip_valid, API_CALLS, 
+    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
     ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, 
     ORDER_SHIPPING_COST} from '../constants';
@@ -35,6 +35,14 @@ const Cart = flux.createStore({
         }
         if (!!this.orders[item.id]) this.orders[item.id].qty++;
         else this.orders[item.id] = { product: item, qty: 1 };
+
+        // extras?
+        if (hasExtras(item)) {
+            item.extras = {extras: {}};
+            const dressing = getDefaultDressing(item);
+            if (!!dressing) item.extras.dressing = dressing;
+        }
+
         this.persist();
         this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id});
     },
