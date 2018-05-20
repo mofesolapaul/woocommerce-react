@@ -36,18 +36,18 @@ export default class ShoppingCart extends React.Component {
         Cart.on('order.*', this.updateState);
         Cart.on('app.order-created', this.updateState);
     }
-
+    
     componentWillUnmount() {
         Cart.off('order.*', this.updateState);
         Cart.off('app.order-created', this.updateState);
     }
-
+    
     componentWillReceiveProps(nextProps) {
         if (nextProps.showOpened && this.state.state == NEUTRAL) {
             this.openCart();
         }
     }
-
+    
     updateState(d) {
         this.setState({
             isEmpty: Cart.isEmpty(),

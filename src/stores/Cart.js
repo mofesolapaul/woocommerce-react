@@ -93,10 +93,15 @@ const Cart = flux.createStore({
     getLineItems() {
         const line_items = [];
         for (let o in this.orders) {
-            line_items.push({
+            const product = this.orders[o].product;
+            let item = {
                 product_id: o,
                 quantity: this.orders[o].qty
-            });
+            }
+            if (!!product.extras) {
+                item.meta_data = [];
+            }
+            line_items.push(item);
         }
         return line_items;
     },
@@ -137,6 +142,7 @@ const Cart = flux.createStore({
                 }
             ]
         };
+        // console.log(payload); return;
         // const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = await API_CALLS.createOrder(payload);
@@ -192,6 +198,7 @@ const Cart = flux.createStore({
     reset: function() {
         db.delete(CART.DB_KEY_CUSTOMER_DATA);
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
+        db.delete(CART.DB_KEY_ORDERS);
         db.delete(CART.DB_KEY_PAYMENT_DATA);
         
         // persist existing customer data
@@ -273,7 +280,7 @@ const Cart = flux.createStore({
         },
 
         getAnOrder: function(id) {
-            return this.orders[id].product;
+            return !!this.orders[id] && this.orders[id].product;
         },
 
         /**
@@ -301,8 +308,9 @@ const Cart = flux.createStore({
          * Pretty straightforward
          */
         getCustomer: function() {
-            return JSON.stringify(this.customer) != '{}'?
-                this.customer : db.get(CART.DB_KEY_PERSISTED_CUSTOMER_DATA); 
+            const cust = JSON.stringify(this.customer) != '{}'?
+                this.customer : db.getSync(CART.DB_KEY_PERSISTED_CUSTOMER_DATA);
+            return cust;
         },
 
         /**

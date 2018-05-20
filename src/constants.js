@@ -134,6 +134,11 @@ export const db = {
             }
         });
     },
+    getSync: (key) => {
+        if (typeof localStorage == 'undefined') return;
+        const data = localStorage.getItem(key);
+        return JSON.parse(decodeURIComponent(escape(window.atob(data))));
+    },
     delete: (key) => {
         localStorage.removeItem(key);
     },
