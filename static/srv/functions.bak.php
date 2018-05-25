@@ -54,7 +54,7 @@ add_filter('rest_endpoints', function ($routes) {
 add_action('woocommerce_rest_insert_shop_order_object', 'before_checkout_create_order', 20, 2);
 function before_checkout_create_order( $order, $data ) {
     // $order->update_meta_data( '_custom_meta_key', 'value' );
-    write_log("ORDER");
+    // write_log("ORDER");
     $xtras_cost = 0;
     foreach ($order->get_items() as $item_id => $item_data) {
     
@@ -85,7 +85,7 @@ function before_checkout_create_order( $order, $data ) {
             $item_data->save();
         }
     
-        write_log([$item_total,$item_subtotal,$item_quantity]);
+        // write_log([$item_total,$item_subtotal,$item_quantity]);
         // Displaying this data (to check)
         // write_log('Product name: '.$product_name.' | Quantity: '.$item_quantity.' | Item total: '. number_format( $item_total, 2 ));
         // write_log($item_data);
@@ -93,7 +93,7 @@ function before_checkout_create_order( $order, $data ) {
     $order_total = $order->get_total();
     $order->set_total($order_total + $xtras_cost);
     $order->save();
-    write_log("DATA");
+    // write_log("DATA");
     // write_log($data);
 }
 
@@ -108,7 +108,3 @@ if (!function_exists('write_log')) {
         }
 //    }
 }
-
-add_filter("woocommerce_get_order_item_totals", function() {
-    write_log("TOTALS");
-});
