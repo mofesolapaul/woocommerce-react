@@ -30,6 +30,7 @@
     "react-dom": "^16.2.0",
     "react-google-maps": "^9.4.5",
     "react-paystack": "^1.0.1",
+    "react-places-autocomplete": "^7.1.1",
     "recompose": "^0.26.0",
     "toastr": "^2.1.4"
   },

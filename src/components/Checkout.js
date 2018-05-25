@@ -1,4 +1,7 @@
 import React from 'react';
+import PlacesAutocomplete from 'react-places-autocomplete';
+import Head from 'next/head';
+
 import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
@@ -86,6 +89,9 @@ export default class Checkout extends React.PureComponent {
         </View>;
         return (
             <Section>
+                <Head>
+                    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRVkaNQhmcgwt1DpKOYuP16wbdw7c_CE&libraries=places"></script>
+                </Head>
                 <div className="ConfirmLocation">
                     <div className="wrapper">
                         <div className="group">
