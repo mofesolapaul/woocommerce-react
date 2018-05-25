@@ -342,7 +342,7 @@ const Cart = flux.createStore({
          */
         getCustomer: function() {
             const cust = JSON.stringify(this.customer) != '{}'?
-                this.customer : db.getSync(CART.DB_KEY_PERSISTED_CUSTOMER_DATA);
+                this.customer : db.getSync(CART.DB_KEY_PERSISTED_CUSTOMER_DATA) || {};
             return cust;
         },
 
