@@ -4,11 +4,12 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-au
 class LocationSearchInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: props.address || '' }
+    this.state = { address: props.location || '' };
   }
 
   handleChange = (address) => {
-    this.setState({ address })
+    this.setState({ address });
+    this.props.actionHandler('map.searchbox.update', address);
   }
 
   handleSelect = (address) => {
@@ -24,18 +25,19 @@ class LocationSearchInput extends React.Component {
         value={this.state.address}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
+        shouldFetchSuggestions={this.state.address.length > 3}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps }) => (
           <div>
             <input
               {...getInputProps({
                 placeholder: 'Search Location ...',
-                className: 'location-search-input'
+                className: 'location-search-input field'
               })}
             />
             <div className="autocomplete-dropdown-container">
               {suggestions.map(suggestion => {
-                const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
+                const className = suggestion.active ? 'suggestion-item active' : 'suggestion-item';
                 // inline style for demonstration purpose
                 const style = suggestion.active
                             ? { backgroundColor: '#fafafa', cursor: 'pointer' }
@@ -53,3 +55,5 @@ class LocationSearchInput extends React.Component {
     );
   }
 }
+
+export default LocationSearchInput;

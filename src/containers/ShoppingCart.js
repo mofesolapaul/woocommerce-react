@@ -113,6 +113,10 @@ export default class ShoppingCart extends React.Component {
             case 'checkout.dismiss':
                 this.openCart();
                 break;
+            // case 'map.location.set':
+            //     console.log(data);
+            //     this.setState({userLocation: data});
+            //     break;
             case 'map.center':
                 this.setState({mapCenter: data});
                 this.state.mapSearchBox && this.setState({userLocation: this.state.mapSearchBox.value || ''});

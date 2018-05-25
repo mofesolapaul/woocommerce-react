@@ -132,3 +132,14 @@ ul {
 .Checkout {
     flex: 1
 }
+.autocomplete-dropdown-container {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+}
+.suggestion-item {
+    width: 100%;
+    padding: .5rem 1rem;
+    border-bottom: thin solid $wisteriasnow;
+    font-size: 12px;
+}

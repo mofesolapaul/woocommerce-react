@@ -6,7 +6,7 @@ import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
-import { Button, ButtonPane, PaystackButton, Section, Sectionizr, View } from '.';
+import { Button, ButtonPane, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -41,7 +41,7 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.phone':
             case 'shipping.method':
                 let {form} = this.state;
-                form[type] = data.value;
+                form[type] = data.value || data;
                 this.setState({ form });
 
                 if (type == 'shipping.method') {
@@ -89,9 +89,6 @@ export default class Checkout extends React.PureComponent {
         </View>;
         return (
             <Section>
-                <Head>
-                    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRVkaNQhmcgwt1DpKOYuP16wbdw7c_CE&libraries=places"></script>
-                </Head>
                 <div className="ConfirmLocation">
                     <div className="wrapper">
                         <div className="group">
@@ -141,7 +138,8 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         {!this.state.isStorePickup && <div className="group">
                             <label className="label">Enter delivery address</label>
-                            <input className="field" type="text" defaultValue={this.state['map.searchbox.update'] || props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
+                            <LocationSearchInput actionHandler={this.actionHandler} location={props.location}></LocationSearchInput>
+                            {/* <input type="text" onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" /> */}
                         </div>}
                         <div className="group">
                             <label className="label">Your name</label>
