@@ -1,9 +1,12 @@
 import React from 'react';
+import PlacesAutocomplete from 'react-places-autocomplete';
+import Head from 'next/head';
+
 import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
-import { Button, ButtonPane, PaystackButton, Section, Sectionizr, View } from '.';
+import { Button, ButtonPane, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -38,7 +41,7 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.phone':
             case 'shipping.method':
                 let {form} = this.state;
-                form[type] = data.value;
+                form[type] = data.value || data;
                 this.setState({ form });
 
                 if (type == 'shipping.method') {
@@ -57,7 +60,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'checkout.pay':
             case 'checkout.finish':
-                const test = !data['map.searchbox.update'] || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
+                const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
                 else {
                     this.actionHandler('app.busy');
@@ -89,27 +92,11 @@ export default class Checkout extends React.PureComponent {
                 <div className="ConfirmLocation">
                     <div className="wrapper">
                         <div className="group">
-                            <label className="label">Confirm your address</label>
-                            <input className="field" type="text" defaultValue={this.state['map.searchbox.update'] || props.location} onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" />
-                        </div>
-                        <div className="group">
-                            <label className="label">Your name</label>
-                            <input className="field" type="text" defaultValue={__['checkout.clientname']} onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
-                        </div>
-                        <div className="group">
-                            <label className="label">Email address</label>
-                            <input className="field" type="email" defaultValue={__['checkout.email']} onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
-                        </div>
-                        <div className="group">
-                            <label className="label">Phone</label>
-                            <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
-                        </div>
-                        <div className="group">
                             <label className="label">Shipping preference (you can come pickup at our store too)</label>
                             <select
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
-                                className="field"
+                                className="field fancy-select"
                                 onChange={e => this.actionHandler('shipping.method', e.target)}>
 
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
@@ -149,6 +136,23 @@ export default class Checkout extends React.PureComponent {
                                 <option value="flat_rate:16">Yaba - 3hrs delivery time: ₦800.00</option>
                             </select>
                         </div>
+                        {!this.state.isStorePickup && <div className="group">
+                            <label className="label">Enter delivery address</label>
+                            <LocationSearchInput actionHandler={this.actionHandler} location={props.location}></LocationSearchInput>
+                            {/* <input type="text" onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" /> */}
+                        </div>}
+                        <div className="group">
+                            <label className="label">Your name</label>
+                            <input className="field" type="text" defaultValue={__['checkout.clientname']} onChange={e => this.actionHandler('checkout.clientname', e.target)} placeholder="Put your name here" />
+                        </div>
+                        <div className="group">
+                            <label className="label">Email address</label>
+                            <input className="field" type="email" defaultValue={__['checkout.email']} onChange={e => this.actionHandler('checkout.email', e.target)} placeholder="Enter your active email address" />
+                        </div>
+                        <div className="group">
+                            <label className="label">Phone</label>
+                            <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
+                        </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
                             {this.props.readonly? pendingPaymentButtons:normalButtons}
@@ -164,7 +168,8 @@ export default class Checkout extends React.PureComponent {
                         overflow: auto;
                         // color: ${css.colors.ultrawhite};
                         padding: 1rem 2px;
-                        display: flex;
+                        // display: flex;
+                        // flex: 1,
                     }
                     .wrapper {
                         width: 100%;
@@ -177,6 +182,9 @@ export default class Checkout extends React.PureComponent {
                     ::placeholder {
                         color: rgba(0, 0, 0, 0.3);
                         font-family: 'Source Sans Pro', sans-serif;
+                    }
+                    .fancy-select {
+                        -webkit-appearance: button;
                     }
                 `}</style>
             </Section>

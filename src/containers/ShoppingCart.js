@@ -94,7 +94,6 @@ export default class ShoppingCart extends React.Component {
     actionHandler(type, data) {
         switch (type) {
             case 'order.checkout.pick_location':
-            case 'checkout.dismiss':
                 if (this.props.readonly) {
                     this.setState({ state: NEUTRAL });
                     return;
@@ -111,8 +110,13 @@ export default class ShoppingCart extends React.Component {
                 actions.deleteOrder(data.id);
                 break;
             case 'location.dismiss':
+            case 'checkout.dismiss':
                 this.openCart();
                 break;
+            // case 'map.location.set':
+            //     console.log(data);
+            //     this.setState({userLocation: data});
+            //     break;
             case 'map.center':
                 this.setState({mapCenter: data});
                 this.state.mapSearchBox && this.setState({userLocation: this.state.mapSearchBox.value || ''});

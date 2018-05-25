@@ -6,6 +6,7 @@ import ETALabel from './ETALabel';
 import ExtrasLabel from './ExtrasLabel';
 import ExtrasPopup from './ExtrasPopup';
 import Loading from './Loading';
+import LocationSearchInput from './LocationSearchInput';
 import Map from './Map';
 import NotFound from './NotFound';
 import OrderItem from './OrderItem';
@@ -29,6 +30,7 @@ export {
     ExtrasLabel,
     ExtrasPopup,
     Loading,
+    LocationSearchInput,
     Map,
     NotFound,
     OrderItem,

@@ -6,7 +6,8 @@ import {withCheckout} from '../hoc';
 
 // show more
 const OkBtn = ({clickHandler, finished}) => <div className="text-center">
-    <a onClick={() => finished? null:clickHandler('order.checkout.pick_location')} className={`btn sleek-btn green no-shadow`}>Continue</a>
+    {/* event emitted to actionHandler here used to be 'order.checkout.pick_location' */}
+    <a onClick={() => finished? null:clickHandler('order.checkout')} className={`btn sleek-btn green no-shadow`}>Continue</a>
 </div>;
 
 export default class OrderList extends React.Component {
