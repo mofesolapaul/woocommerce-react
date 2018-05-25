@@ -1,7 +1,7 @@
 import flux from 'flux-react';
 import actions from '../actions';
 import constants, {
-    db, isEmpty, poip_valid, API_CALLS, 
+    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
     ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, 
     ORDER_SHIPPING_COST} from '../constants';
@@ -14,6 +14,7 @@ const Cart = flux.createStore({
     shipping_cost: '0.00',
     order_created: null,
     pending_order_is_paid: false,
+    total: 0,
 
     actions: [
         actions.addToCart,
@@ -35,6 +36,14 @@ const Cart = flux.createStore({
         }
         if (!!this.orders[item.id]) this.orders[item.id].qty++;
         else this.orders[item.id] = { product: item, qty: 1 };
+
+        // extras?
+        if (hasExtras(item)) {
+            item.extras = {extras: {}};
+            const dressing = getDefaultDressing(item);
+            if (!!dressing) item.extras.dressing = dressing;
+        }
+
         this.persist();
         this.emit('order.add', {id: ORDER_ITEM_UPDATE, item_id: item.id});
     },
@@ -85,10 +94,46 @@ const Cart = flux.createStore({
     getLineItems() {
         const line_items = [];
         for (let o in this.orders) {
-            line_items.push({
+            const product = this.orders[o].product;
+            let item = {
                 product_id: o,
                 quantity: this.orders[o].qty
-            });
+            }
+            if (!!product.extras) {
+                const mainValue = [];
+                const metaValues = [];
+                console.log(product.extras);
+                if (!!product.extras.dressing) {
+                    mainValue.push({ "value": product.extras.dressing, "section": "588747e475a021.02250771" });
+                    metaValues.push({ "key": " ", "value": product.extras.dressing });
+                }
+
+                const xtras = !!Object.keys(product.extras.extras).length && product.extras.extras;
+                if (!!xtras) {
+                    // extras selected
+                    for (let o in xtras) {
+                        const x = xtras[o];
+                        mainValue.push({"value": x.name, "price": x.price, "section": "5886293c192a98.51432522"});
+                    }
+
+                    // the price thing
+                    metaValues.push({
+                        key: ` (+&#8358;${getExtrasTotal(xtras)})`,
+                        value: Object.keys(xtras).join(' , ')
+                    });
+
+                    // update item price
+                    item.price = parseFloat(product.price) + parseFloat(getExtrasTotal(xtras));
+                }
+                item.meta_data = [{
+                        key: "_tmcartepo_data",
+                        value: [...mainValue]
+                    },
+                    ...metaValues
+                ];
+                // console.log(item.meta_data);
+            }
+            line_items.push(item);
         }
         return line_items;
     },
@@ -109,7 +154,7 @@ const Cart = flux.createStore({
             email: customer['checkout.email'],
             phone: customer['checkout.phone'],
             address_1: customer['map.searchbox.update'],
-            state: 'LOS',
+            state: 'LA',
             city: 'Lagos',
             country: 'NG',
         };
@@ -127,8 +172,9 @@ const Cart = flux.createStore({
                     method_title: this.shipping_method.desc,
                     total: this.shipping_cost,
                 }
-            ]
+            ],
         };
+        // console.log(payload); return;
         // const payload = {...constants.sample_order, line_items: this.getLineItems()}
         try {
             const response = await API_CALLS.createOrder(payload);
@@ -184,6 +230,7 @@ const Cart = flux.createStore({
     reset: function() {
         db.delete(CART.DB_KEY_CUSTOMER_DATA);
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
+        db.delete(CART.DB_KEY_ORDERS);
         db.delete(CART.DB_KEY_PAYMENT_DATA);
         
         // persist existing customer data
@@ -250,8 +297,12 @@ const Cart = flux.createStore({
             let total = 0;
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price);
+                if (!!this.orders[o].product.extras) {
+                    total += (this.orders[o].qty *  getExtrasTotal(this.orders[o].product.extras.extras));
+                }
             });
-            return total + (!order_total? +this.shipping_cost:0);
+            this.total = total + (!order_total? +this.shipping_cost:0);
+            return this.total;
         },
 
         /**
@@ -259,6 +310,10 @@ const Cart = flux.createStore({
          */
         getAllOrders: function() {
             return Object.values(this.orders);
+        },
+
+        getAnOrder: function(id) {
+            return !!this.orders[id] && this.orders[id].product;
         },
 
         /**
@@ -286,8 +341,9 @@ const Cart = flux.createStore({
          * Pretty straightforward
          */
         getCustomer: function() {
-            return JSON.stringify(this.customer) != '{}'?
-                this.customer : db.get(CART.DB_KEY_PERSISTED_CUSTOMER_DATA); 
+            const cust = JSON.stringify(this.customer) != '{}'?
+                this.customer : db.getSync(CART.DB_KEY_PERSISTED_CUSTOMER_DATA);
+            return cust;
         },
 
         /**

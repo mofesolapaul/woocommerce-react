@@ -1,9 +1,9 @@
 import css from '../../styles/vars';
 import {View} from './';
 
-export default ({category, actionHandler, product}) => category? <View>
+export default ({category, actionHandler, product, orderItem}) => category? <View>
     <span className="btn sleek-btn extras-label font-sourcesans"
-        onClick={e => actionHandler('extras.show', {category, product})}>
+        onClick={e => actionHandler('extras.show', {category, product: orderItem})}>
         Manage Extras
     </span>
 

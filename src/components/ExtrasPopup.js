@@ -2,7 +2,7 @@ import React from 'react';
 import css from '../../styles/vars';
 import {View} from './';
 import { uid } from '../constants';
-import {bindToThis} from '../constants';
+import {bindToThis, getExtrasTotal} from '../constants';
 
 class ExtrasPopup extends React.Component {
     constructor(props) {
@@ -18,7 +18,6 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'setExtras');
         bindToThis(this, 'updateExtras');
         bindToThis(this, 'dismiss');
-        bindToThis(this, 'extrasTotal');
         bindToThis(this, 'extrasList');
         bindToThis(this, 'isExtraSelected');
         bindToThis(this, 'hasExtras');
@@ -58,21 +57,12 @@ class ExtrasPopup extends React.Component {
         }
         // pass it up, cos only containers should interact with the store directly
         this.actionHandler("extras.update", this.props.product);
+        this.dismiss();
     }
 
     dismiss() {
         this.setState({dressing: '', extras: {}});
         this.actionHandler("extras.dismiss");
-    }
-
-    extrasTotal() {
-        const {product} = this.props;
-        const x = this.state.extras;
-        let sum = 0;
-        Object.keys(x).forEach(function (k) {
-            sum += x[k].price;
-        });
-        return sum;
     }
 
     extrasList() {
@@ -112,7 +102,7 @@ class ExtrasPopup extends React.Component {
                         <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
                     </h3>
                     {!!product.extras && <div className="well">
-                        Your selection (N{this.extrasTotal()}):
+                        Your selection (N{getExtrasTotal(this.state.extras)}):
                         &nbsp;{this.extrasList()}
                     </div>}
                     <form>
@@ -168,6 +158,7 @@ class ExtrasPopup extends React.Component {
                 height: 100%;
                 background: rgba(255,255,255,.3);
                 z-index: 1000;
+                overflow-y: auto;
             }
             .extras-modal {
                 background: ${css.colors.desertbone};
@@ -175,11 +166,10 @@ class ExtrasPopup extends React.Component {
                 overflow-y: auto;
                 width: 90%;
                 max-width: 360px;
-                margin: auto;
+                margin: 5% auto;
                 left: 0;
                 right: 0;
-                top: 50%;
-                transform: translateY(-50%);
+                top: 0;
                 padding: 1rem;
                 border-radius: 4px;
                 filter: drop-shadow(0px 4px 6px rgba(0,0,0,.25));

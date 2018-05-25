@@ -8,15 +8,21 @@ import { Button, ButtonPane, PaystackButton, Section, Sectionizr, View } from '.
 export default class Checkout extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = {
-            form: {
-                'map.searchbox.update': props.location,
-                'checkout.email': '',
-                ...this.props.fieldDefaults,
-            },
-            isStorePickup: false,
+        // form
+        const form = {
+            'checkout.email': '',
+            ...this.props.fieldDefaults,
+            'map.searchbox.update': props.location,
         };
         
+        // don't remember shipping method
+        delete form['shipping.method'];
+
+        this.state = {
+            form: {...form},
+            isStorePickup: false,
+        };
+
         // bind
         bindToThis(this, 'actionHandler');
     }
@@ -103,7 +109,6 @@ export default class Checkout extends React.PureComponent {
                             <select
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
-                                defaultValue={__['shipping.method']}
                                 className="field"
                                 onChange={e => this.actionHandler('shipping.method', e.target)}>
 

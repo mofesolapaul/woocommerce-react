@@ -134,6 +134,11 @@ export const db = {
             }
         });
     },
+    getSync: (key) => {
+        if (typeof localStorage == 'undefined') return;
+        const data = localStorage.getItem(key);
+        return JSON.parse(decodeURIComponent(escape(window.atob(data))));
+    },
     delete: (key) => {
         localStorage.removeItem(key);
     },
@@ -316,3 +321,18 @@ export const hasExtras = (product) => {
 export const getExtrasData = (category) => {
     return EXTRAS[category] || {};
 };
+
+export const getExtrasTotal = (extras) => {
+    if (!extras) return 0;
+    let sum = 0;
+    Object.keys(extras).forEach(function (k) {
+        sum += extras[k].price;
+    });
+    return sum;
+}
+
+export const getDefaultDressing = (product) => {
+    const cat = hasExtras(product);
+    if (!cat) return;
+    return !!EXTRAS[cat].dressing && EXTRAS[cat].dressing[0];
+}
