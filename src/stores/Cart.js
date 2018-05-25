@@ -14,6 +14,7 @@ const Cart = flux.createStore({
     shipping_cost: '0.00',
     order_created: null,
     pending_order_is_paid: false,
+    total: 0,
 
     actions: [
         actions.addToCart,
@@ -99,12 +100,38 @@ const Cart = flux.createStore({
                 quantity: this.orders[o].qty
             }
             if (!!product.extras) {
+                const mainValue = [];
+                const metaValues = [];
+                console.log(product.extras);
+                if (!!product.extras.dressing) {
+                    mainValue.push({ "value": product.extras.dressing, "section": "588747e475a021.02250771" });
+                    metaValues.push({ "key": " ", "value": product.extras.dressing });
+                }
+
+                const xtras = !!Object.keys(product.extras.extras).length && product.extras.extras;
+                if (!!xtras) {
+                    // extras selected
+                    for (let o in xtras) {
+                        const x = xtras[o];
+                        mainValue.push({"value": x.name, "price": x.price, "section": "5886293c192a98.51432522"});
+                    }
+
+                    // the price thing
+                    metaValues.push({
+                        key: ` (+&#8358;${getExtrasTotal(xtras)})`,
+                        value: Object.keys(xtras).join(' , ')
+                    });
+
+                    // update item price
+                    item.price = parseFloat(product.price) + parseFloat(getExtrasTotal(xtras));
+                }
                 item.meta_data = [{
-                    key: "_tmcartepo_data",
-                    value: [
-                        { value: " Hawaiian Mustard Dressing ", price: "" }
-                    ]
-                }];
+                        key: "_tmcartepo_data",
+                        value: [...mainValue]
+                    },
+                    ...metaValues
+                ];
+                // console.log(item.meta_data);
             }
             line_items.push(item);
         }
@@ -127,7 +154,7 @@ const Cart = flux.createStore({
             email: customer['checkout.email'],
             phone: customer['checkout.phone'],
             address_1: customer['map.searchbox.update'],
-            state: 'LOS',
+            state: 'LA',
             city: 'Lagos',
             country: 'NG',
         };
@@ -145,7 +172,7 @@ const Cart = flux.createStore({
                     method_title: this.shipping_method.desc,
                     total: this.shipping_cost,
                 }
-            ]
+            ],
         };
         // console.log(payload); return;
         // const payload = {...constants.sample_order, line_items: this.getLineItems()}
@@ -274,7 +301,8 @@ const Cart = flux.createStore({
                     total += (this.orders[o].qty *  getExtrasTotal(this.orders[o].product.extras.extras));
                 }
             });
-            return total + (!order_total? +this.shipping_cost:0);
+            this.total = total + (!order_total? +this.shipping_cost:0);
+            return this.total;
         },
 
         /**
