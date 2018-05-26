@@ -3,7 +3,7 @@ import css from '../../styles/vars';
 import actions from '../actions';
 import {Cart} from '../stores';
 import {bindToThis, getExtrasData, hasExtras, ORDER_ITEM_UPDATE} from '../constants';
-import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductRowDivider, View } from '../components';
+import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductPopup, ProductRowDivider, View } from '../components';
 
 class ProductsContainer extends React.Component {
     constructor(props) {
@@ -13,6 +13,7 @@ class ProductsContainer extends React.Component {
             ...this.props,
             showExtras: false,
             productExtras: {},
+            expandedProduct: null,
         };
 
         // bind
@@ -73,6 +74,12 @@ class ProductsContainer extends React.Component {
             case 'extras.update':
                 actions.updateOrderItem(data);
                 break;
+            case 'product.expand':
+                this.setState({expandedProduct: data});
+                break;
+            case 'product-popup.dismiss':
+                this.setState({expandedProduct: null});
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
@@ -112,6 +119,11 @@ class ProductsContainer extends React.Component {
                     </ButtonPane>:null }
                 </div>
             </div>
+
+            <ProductPopup
+                actionHandler={this.actionHandler}
+                product={this.state.expandedProduct}
+                visible={!!this.state.expandedProduct} />
 
             {!!this.state.showExtras && <ExtrasPopup
                 actionHandler={this.actionHandler}

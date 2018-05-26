@@ -7,7 +7,7 @@ import ExtrasLabel from './ExtrasLabel';
 import ExtrasPopup from './ExtrasPopup';
 import Loading from './Loading';
 import LocationSearchInput from './LocationSearchInput';
-import Map from './Map';
+// import Map from './Map';
 import NotFound from './NotFound';
 import OrderItem from './OrderItem';
 import OrderList from './OrderList';
@@ -15,6 +15,7 @@ import PaystackButton from './PaystackButton';
 import PriceDisplay from './PriceDisplay';
 import Product from './Product';
 import ProductImage from './ProductImage';
+import ProductPopup from './ProductPopup';
 import ProductRowDivider from './ProductRowDivider';
 import {Section} from './Sectionizr';
 import Sectionizr from './Sectionizr';
@@ -31,7 +32,7 @@ export {
     ExtrasPopup,
     Loading,
     LocationSearchInput,
-    Map,
+    // Map,
     NotFound,
     OrderItem,
     OrderList,
@@ -39,6 +40,7 @@ export {
     PriceDisplay,
     Product,
     ProductImage,
+    ProductPopup,
     ProductRowDivider,
     Section,
     Sectionizr,

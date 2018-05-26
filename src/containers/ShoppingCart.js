@@ -1,7 +1,7 @@
 import React from 'react';
 import {Cart} from '../stores';
 import actions from '../actions';
-import { CartIcon, Checkout, Map, OrderList, View } from '../components';
+import { CartIcon, Checkout, OrderList, View } from '../components';
 import {bindToThis, kformat, ORDER_API_ERROR, ORDER_API_SUCCESS, ORDER_SHIPPING_COST} from '../constants';
 
 const NEUTRAL = 0;
@@ -183,12 +183,13 @@ export default class ShoppingCart extends React.Component {
                         total={this.state.total} />;
                 break;
             case PICK_LOCATION:
-                view = <Map actionHandler={this.actionHandler}
+                view = null;
+                {/* <Map actionHandler={this.actionHandler}
                             center={this.state.mapCenter}
                             lastLocation={this.state.userLocation}
                             distance={this.state.mapDestinationDistance}
                             duration={this.state.mapDestinationDuration}
-                            etaAddy={this.state.mapDirectionEndAddress} />;
+                            etaAddy={this.state.mapDirectionEndAddress} />; */}
                 break;
             case FILL_CHECKOUT_FORM:
                 view = <Checkout actionHandler={this.actionHandler}
