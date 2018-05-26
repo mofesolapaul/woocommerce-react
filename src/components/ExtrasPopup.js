@@ -95,7 +95,7 @@ class ExtrasPopup extends React.Component {
     render() {
         const {data, actionHandler, product} = this.props;
         return <View>
-            <div className="extras-curtain">
+            <div className="extras-curtain curtain">
                 <div className="extras-modal">
                     <h3>
                         <span className="">Extras ({data.cat})</span>
@@ -149,16 +149,6 @@ class ExtrasPopup extends React.Component {
             .padded {
                 padding-top: 1rem;
                 padding-top: 1rem;
-            }
-            .extras-curtain {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(255,255,255,.3);
-                z-index: 1000;
-                overflow-y: auto;
             }
             .extras-modal {
                 background: ${css.colors.desertbone};
