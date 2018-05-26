@@ -1,4 +1,5 @@
 import React from 'react';
+import {bindToThis} from '../constants';
 
 export default class ProductImage extends React.Component {
     constructor(props) {
@@ -6,10 +7,18 @@ export default class ProductImage extends React.Component {
         this.state = {
             images: [''],
             index: 0,
+            autoplay: props.autoplay,
         };
+
+        bindToThis(this, 'nextImage');
     }
     componentWillMount() {
         this.fetchImage();
+    }
+    componentDidMount() {
+        if (this.state.autoplay) {
+            setInterval(this.nextImage, 3500);
+        }
     }
     fetchImage() {
         let src = this.props.src;
@@ -30,6 +39,12 @@ export default class ProductImage extends React.Component {
             });
         }, this);
     }
+    nextImage() {
+        let index = this.state.index;
+        const len = this.state.images.length - 1;
+        index += index >= len? -len:1;
+        this.setState({index});
+    }
     render() {
         return <div className="img">
             {/* style */}
@@ -41,7 +56,7 @@ export default class ProductImage extends React.Component {
                     background: url(${this.state.images[this.state.index]}) no-repeat center;
                     background-size: cover;
                     position: relative;
-                    transition: 4s ease-in;
+                    transition: transform 4s ease-in;
                 }
             `}</style>
         </div>;
