@@ -58,6 +58,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       font-size: smaller;
       padding: 2px 5px;
       border-radius: 2px;
+      margin-right: 2px;
     }
   `}</style>
 </View>
