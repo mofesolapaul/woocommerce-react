@@ -7,7 +7,7 @@ import ExtrasLabel from './ExtrasLabel';
 import ExtrasPopup from './ExtrasPopup';
 import Loading from './Loading';
 import LocationSearchInput from './LocationSearchInput';
-import Map from './Map';
+// import Map from './Map';
 import NotFound from './NotFound';
 import OrderItem from './OrderItem';
 import OrderList from './OrderList';
@@ -31,7 +31,7 @@ export {
     ExtrasPopup,
     Loading,
     LocationSearchInput,
-    Map,
+    // Map,
     NotFound,
     OrderItem,
     OrderList,
