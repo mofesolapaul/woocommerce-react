@@ -340,3 +340,9 @@ export const getDefaultDressing = (product) => {
     if (!cat) return;
     return !!EXTRAS[cat].dressing && EXTRAS[cat].dressing[0];
 }
+
+/**
+ * Returns a list of srcs based on passed list of objects
+ * @param {Array} images 
+ */
+export const srcList = images => images.map(m => m.src);

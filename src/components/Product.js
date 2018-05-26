@@ -1,6 +1,6 @@
 import React from 'react';
 import css from '../../styles/vars';
-import {bindToThis} from '../constants';
+import {bindToThis, srcList} from '../constants';
 import { CartButtons, ExtrasLabel, PriceDisplay, ProductImage } from './';
 import { __esModule } from 'babel-runtime/helpers/possibleConstructorReturn';
 
@@ -48,7 +48,7 @@ class Product extends React.Component{
         let {item,_key: key} = this.props;
         return <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
             <div className="img-wrapper" onClick={e => (!!this.state.qty && this.props.hasExtras)? null:this.actionHandler('product.expand', item)}>
-                <ProductImage src={item.images.length? item.images[0].src:''} />
+                <ProductImage src={srcList(item.images)} />
                 {!!this.state.qty && <ExtrasLabel
                     category={this.props.hasExtras}
                     product={item}
