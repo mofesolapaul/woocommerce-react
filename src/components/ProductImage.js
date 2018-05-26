@@ -1,5 +1,6 @@
 import React from 'react';
 import {bindToThis} from '../constants';
+import {View} from '.';
 
 export default class ProductImage extends React.Component {
     constructor(props) {
@@ -8,6 +9,7 @@ export default class ProductImage extends React.Component {
             images: [''],
             index: 0,
             autoplay: props.autoplay,
+            wheel: props.wheel,
         };
 
         bindToThis(this, 'nextImage');
@@ -46,7 +48,13 @@ export default class ProductImage extends React.Component {
         this.setState({index});
     }
     render() {
-        return <div className="img">
+        return <View>
+            <div className="img" />
+            {!!this.state.wheel && <View>
+                <div className="pi--control pi--prev"></div>
+                <div className="pi--control pi--next"></div>
+            </View>}
+
             {/* style */}
             <style jsx>{`
                 .img {
@@ -58,7 +66,30 @@ export default class ProductImage extends React.Component {
                     position: relative;
                     transition: transform 4s ease-in;
                 }
+                .pi--control {
+                    position: absolute;
+                    width: 48px;
+                    height: 48px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    cursor: pointer;
+                    z-index: 2;
+                }
+                .pi--control:hover {
+                    background-size: 80%;
+                }
+                .pi--next {
+                    right: 0;
+                    background-image: url(static/img/icon-next-128.png);
+                }
+                .pi--prev {
+                    left: 0;
+                    background-image: url(static/img/icon-prev-128.png);
+                }
             `}</style>
-        </div>;
+        </View>;
     }
 }
