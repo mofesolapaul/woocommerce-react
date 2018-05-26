@@ -15,6 +15,7 @@ import PaystackButton from './PaystackButton';
 import PriceDisplay from './PriceDisplay';
 import Product from './Product';
 import ProductImage from './ProductImage';
+import ProductPopup from './ProductPopup';
 import ProductRowDivider from './ProductRowDivider';
 import {Section} from './Sectionizr';
 import Sectionizr from './Sectionizr';
@@ -39,6 +40,7 @@ export {
     PriceDisplay,
     Product,
     ProductImage,
+    ProductPopup,
     ProductRowDivider,
     Section,
     Sectionizr,
