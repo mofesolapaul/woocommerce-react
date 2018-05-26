@@ -15,6 +15,9 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
         {product.categories.map((c, i) => <span key={i} className="pp--label">{c.name}</span>)}
 
         <p className="pp--desc" dangerouslySetInnerHTML={{ __html: product.about }}></p>
+        <div className="text-center">
+          <a onClick={e => actionHandler('product-popup.dismiss')} className={`btn sleek-btn`}>Dismiss</a>
+        </div>
       </div>
     </div>
   </div>
