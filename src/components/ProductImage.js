@@ -13,6 +13,7 @@ export default class ProductImage extends React.Component {
         };
 
         bindToThis(this, 'nextImage');
+        bindToThis(this, 'prevImage');
     }
     componentWillMount() {
         this.fetchImage();
@@ -47,12 +48,18 @@ export default class ProductImage extends React.Component {
         index += index >= len? -len:1;
         this.setState({index});
     }
+    prevImage() {
+        let index = this.state.index;
+        const len = this.state.images.length - 1;
+        index -= index <= 0? -len:1;
+        this.setState({index});
+    }
     render() {
         return <View>
             <div className="img" />
             {!!this.state.wheel && <View>
-                <div className="pi--control pi--prev"></div>
-                <div className="pi--control pi--next"></div>
+                <div onClick={this.prevImage} className="pi--control pi--prev"></div>
+                <div onClick={this.nextImage} className="pi--control pi--next"></div>
             </View>}
 
             {/* style */}
