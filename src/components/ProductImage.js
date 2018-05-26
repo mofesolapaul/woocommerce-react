@@ -57,7 +57,7 @@ export default class ProductImage extends React.Component {
     render() {
         return <View>
             <div className="img" />
-            {!!this.state.wheel && <View>
+            {!!this.state.wheel && this.state.images.length > 1 && <View>
                 <div onClick={this.prevImage} className="pi--control pi--prev"></div>
                 <div onClick={this.nextImage} className="pi--control pi--next"></div>
             </View>}
