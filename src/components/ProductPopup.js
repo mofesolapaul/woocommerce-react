@@ -1,11 +1,12 @@
 import css from '../../styles/vars';
+import { srcList } from '../constants';
 import { ProductImage, View } from './';
 
 export default ({product, visible, actionHandler}) => !!visible && <View>
   <div className="product-popup curtain" id="pp--" onClick={e => e.target.id == 'pp--' && actionHandler('product-popup.dismiss')}>
     <div className="product-modal modal">
       <div className="pp--img-wheel">
-        {product.images.map((m, i) => <ProductImage key={i} src={m.src} />)}
+        <ProductImage src={srcList(product.images)} wheel />
       </div>
       <div className="pp--body">
         <h3 className="pp--title slim">{product.name}</h3>
@@ -32,6 +33,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       background: ${css.colors.wisteriasnow};
       flex-direction: column;
       overflow: hidden;
+      position: relative;
     }
     .pp--title {
       color: ${css.colors.rogueblue};

@@ -48,7 +48,7 @@ class Product extends React.Component{
         let {item,_key: key} = this.props;
         return <div className={`Product ${key%4!=0?'shift4':''} ${key%3!=0?'shift3':''}`}>
             <div className="img-wrapper" onClick={e => (!!this.state.qty && this.props.hasExtras)? null:this.actionHandler('product.expand', item)}>
-                <ProductImage wheel src={srcList(item.images)} />
+                <ProductImage src={srcList(item.images)} />
                 {!!this.state.qty && <ExtrasLabel
                     category={this.props.hasExtras}
                     product={item}
