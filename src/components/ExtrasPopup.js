@@ -96,7 +96,7 @@ class ExtrasPopup extends React.Component {
         const {data, actionHandler, product} = this.props;
         return <View>
             <div className="extras-curtain curtain">
-                <div className="extras-modal">
+                <div className="extras-modal modal">
                     <h3>
                         <span className="">Extras ({data.cat})</span>
                         <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
@@ -149,20 +149,6 @@ class ExtrasPopup extends React.Component {
             .padded {
                 padding-top: 1rem;
                 padding-top: 1rem;
-            }
-            .extras-modal {
-                background: ${css.colors.desertbone};
-                position: absolute;
-                overflow-y: auto;
-                width: 90%;
-                max-width: 360px;
-                margin: 5% auto;
-                left: 0;
-                right: 0;
-                top: 0;
-                padding: 1rem;
-                border-radius: 4px;
-                filter: drop-shadow(0px 4px 6px rgba(0,0,0,.25));
             }
             .well {
                 padding: .5rem;
