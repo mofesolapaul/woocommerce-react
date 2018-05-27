@@ -2,6 +2,7 @@
 
 * {
     box-sizing: border-box;
+    // -webkit-font-smoothing: antialiased;
 }
 html, body {
     margin: 0;
@@ -81,4 +82,89 @@ ul {
 }
 .hidden {
     display: none;
+}
+.close {
+    font-weight: 100;
+    border: none;
+    opacity: .4;
+    float: right;
+    padding: 0 .5rem;
+    cursor: pointer;
+}
+.close:hover {
+    opacity: .8;
+}
+.group {
+    margin-bottom: 1rem;
+    &:not(.full-width) {
+        @media(min-width: 601px) {
+            width: calc(50% - 5px);
+            float: left;
+            &:nth-child(even) {
+                float: right;
+            }
+        }
+    }
+    .label {
+        display: block;
+        margin-bottom: .3rem;
+        &:not(.decolorized) {
+            color: $fallleaf;
+        }
+    }
+    .field {
+        display: block;
+        box-sizing: border-box;
+        border: 1px solid $wisteriasnow;
+        width: 100%;
+        padding: .5rem 1rem;
+        border-radius: 3px;
+        // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-size: 14px;
+        outline: none;
+        font-family: 'Playfair Display', sans-serif;
+        background-color: white;
+    }
+    select.field {
+        appearance: none;
+    }
+}
+.Checkout {
+    flex: 1
+}
+.autocomplete-dropdown-container {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+}
+.suggestion-item {
+    width: 100%;
+    padding: .5rem 1rem;
+    border-bottom: thin solid $wisteriasnow;
+    font-size: 12px;
+}
+.curtain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .3);
+    z-index: 1000;
+    overflow-y: auto;
+
+    .modal {
+        background: $desertbone;
+        position: absolute;
+        overflow-y: auto;
+        width: 90%;
+        max-width: 360px;
+        margin: 5% auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        padding: 1rem;
+        border-radius: 4px;
+        filter: drop-shadow(0px 4px 6px rgba(0,0,0,.25));
+    }
 }

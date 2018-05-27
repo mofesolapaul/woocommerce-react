@@ -1,14 +1,14 @@
-import React from 'react'
-import { compose, withProps, lifecycle } from 'recompose'
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from 'react-google-maps'
-import { withCheckout } from '../hoc'
-import { bindToThis } from '../constants'
-import { ETALabel, View } from '.'
+import React from 'react';
+import { compose, withProps, lifecycle } from 'recompose';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, DirectionsRenderer } from 'react-google-maps';
+import { withCheckout } from '../hoc';
+import { bindToThis } from '../constants';
+import { ETALabel, View } from '.';
 
-const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox")
-const mapStyles = require('../../styles/map.json')
+const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
+const mapStyles = require('../../styles/map.json');
 
-const defaultCoordinates = {lat: 6.431070800000001, lng: 3.413754899999958}
+const defaultCoordinates = {lat: 6.431070800000001, lng: 3.413754899999958};
 
 const MapElement = compose(
     withProps({
@@ -19,7 +19,7 @@ const MapElement = compose(
     }),
     lifecycle({
         loadDirections(lat, lng) {
-            if (lat == defaultCoordinates.lat && lng == defaultCoordinates.lng) return
+            if (lat == defaultCoordinates.lat && lng == defaultCoordinates.lng) return;
             const DirectionsService = new google.maps.DirectionsService();
 
             DirectionsService.route({
@@ -30,13 +30,13 @@ const MapElement = compose(
                 if (status === google.maps.DirectionsStatus.OK) {
                     if (result.routes[0]) {
                         // all of this nesting ugliness is based on the result object structure
-                        let {legs} = result.routes[0]
+                        let {legs} = result.routes[0];
                         if (legs[0]) {
                             this.props.actionHandler('map.destination.meta', {
                                 distance: legs[0].distance.text,
                                 duration: legs[0].duration.text,
                                 end_address: legs[0].end_address
-                            })
+                            });
                         }
                     }
                     this.setState({
@@ -48,7 +48,7 @@ const MapElement = compose(
             });
         },
         componentWillMount() {
-            const refs = {}
+            const refs = {};
 
             this.setState({
                 bounds: null,
@@ -65,7 +65,7 @@ const MapElement = compose(
                     this.setState({
                         bounds: refs.map.getBounds(),
                         center: refs.map.getCenter(),
-                    })
+                    });
                 },
                 onSearchBoxMounted: ref => {
                     refs.searchBox = ref;
@@ -76,9 +76,9 @@ const MapElement = compose(
 
                     places.forEach(place => {
                         if (place.geometry.viewport) {
-                            bounds.union(place.geometry.viewport)
+                            bounds.union(place.geometry.viewport);
                         } else {
-                            bounds.extend(place.geometry.location)
+                            bounds.extend(place.geometry.location);
                         }
                     });
                     const nextMarkers = places.map(place => ({
@@ -92,17 +92,17 @@ const MapElement = compose(
                     });
 
                     // show directions
-                    this.loadDirections(nextCenter.lat(), nextCenter.lng())
+                    this.loadDirections(nextCenter.lat(), nextCenter.lng());
 
                     // save new coordinates
-                    this.props.actionHandler && this.props.actionHandler('map.center', { lat: nextCenter.lat(), lng: nextCenter.lng() })
+                    this.props.actionHandler && this.props.actionHandler('map.center', { lat: nextCenter.lat(), lng: nextCenter.lng() });
                     // refs.map.fitBounds(bounds);
                 },
-            })
+            });
         },
         componentDidMount() {
             // initial directions drawing
-            this.loadDirections(this.state.center.lat, this.state.center.lng)
+            this.loadDirections(this.state.center.lat, this.state.center.lng);
         }
     }),
     withScriptjs,
@@ -144,28 +144,28 @@ const MapElement = compose(
             null // <Marker key={index} position={marker.position} />
         )}
     </GoogleMap>
-)
+);
 
 export default class Map extends React.PureComponent {
     constructor(props) {
-        super(props)
-        this.state = { showETA: false }
+        super(props);
+        this.state = { showETA: false };
         
         // bind
-        bindToThis(this, 'actionHandler')
+        bindToThis(this, 'actionHandler');
     }
     componentDidMount() {}
     actionHandler(type, data) {
         switch (type) {
             case 'map.destination.meta':
-                this.setState({ showETA: !!data })
+                this.setState({ showETA: !!data });
                 break;
         }
-        this.props.actionHandler(type, data)
+        this.props.actionHandler(type, data);
     }
     render() {
-        const {duration, distance, etaAddy, actionHandler} = this.props
-        const ETAProps = {duration, distance, etaAddy, actionHandler}
+        const {duration, distance, etaAddy, actionHandler} = this.props;
+        const ETAProps = {duration, distance, etaAddy, actionHandler};
         return withCheckout(
             <View>
                 <MapElement {...this.props} actionHandler={this.actionHandler} />
@@ -179,6 +179,6 @@ export default class Map extends React.PureComponent {
                 section_header: 'Pick Location',
                 actionHandler: this.actionHandler,
             }
-        )
+        );
     }
 }

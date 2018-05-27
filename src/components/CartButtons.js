@@ -1,21 +1,21 @@
-import React from 'react'
-import css from '../../styles/vars'
-import {View} from './'
-import {bindToThis} from '../constants'
+import React from 'react';
+import css from '../../styles/vars';
+import {View} from './';
+import {bindToThis} from '../constants';
 
 export default class CartButtons extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         // bind
-        bindToThis(this, 'add')
-        bindToThis(this, 'remove')
+        bindToThis(this, 'add');
+        bindToThis(this, 'remove');
     }
     add() {
-        this.props.handler && this.props.handler('cart.button.add')
+        this.props.handler && this.props.handler('cart.button.add');
     }
     remove() {
-        this.props.handler && this.props.handler('cart.button.remove')
+        this.props.handler && this.props.handler('cart.button.remove');
     }
     render() {
         return <View>
@@ -51,6 +51,6 @@ export default class CartButtons extends React.Component {
                 user-select: none;
             }
             `}</style>
-        </View>
+        </View>;
     }
 }

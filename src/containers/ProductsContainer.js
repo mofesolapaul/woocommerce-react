@@ -1,65 +1,94 @@
-import React from 'react'
-import css from '../../styles/vars'
-import actions from '../actions'
-import {Cart} from '../stores'
-import {bindToThis, ORDER_ITEM_UPDATE} from '../constants'
-import { Button, ButtonPane, Loading, NotFound, Product, ProductRowDivider, View } from '../components'
+import React from 'react';
+import css from '../../styles/vars';
+import actions from '../actions';
+import {Cart} from '../stores';
+import {bindToThis, getExtrasData, hasExtras, ORDER_ITEM_UPDATE} from '../constants';
+import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductPopup, ProductRowDivider, View } from '../components';
 
 class ProductsContainer extends React.Component {
     constructor(props) {
-        super(props)
-        this.subscribers = {}
-        this.state = {...this.props}
+        super(props);
+        this.subscribers = {};
+        this.state = {
+            ...this.props,
+            showExtras: false,
+            productExtras: {},
+            expandedProduct: null,
+        };
 
         // bind
-        bindToThis(this, 'updateProducts')
-        bindToThis(this, 'actionHandler')
-        bindToThis(this, 'childSubscriber')
+        bindToThis(this, 'updateProducts');
+        bindToThis(this, 'actionHandler');
+        bindToThis(this, 'childSubscriber');
+
+        // expose showExtras()
+        props.registrar && props.registrar('showExtras', data=>this.setState({productExtras: data, showExtras: true}));
     }
+
     componentWillReceiveProps(props) {
-        const {items} = props
-        items.map(i => i.qty = Cart.getQty(i.id))
+        const {items} = props;
+        items.map(i => i.qty = Cart.getQty(i.id));
         this.setState({
             items: props.items,
-        })
+        });
     }
+
     componentWillMount() {
-        Cart.on('order.*', this.updateProducts)
+        Cart.on('order.*', this.updateProducts);
     }
+
     componentWillUnmount() {
-        Cart.off('order.*', this.updateProducts)
+        Cart.off('order.*', this.updateProducts);
     }
+
     updateProducts(d) {
         if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_ITEM_UPDATE:
-                    this.subscribers[d.item_id](Cart.getQty(d.item_id))
+                    this.subscribers[d.item_id](Cart.getQty(d.item_id));
                     break;
             }
         }
     }
 
-    // this method helps the child components - Prosucts - to subscribe to changes this container
+    // this method helps the child components - Products - to subscribe to changes this container
     // feels they should know about, via callbacks
     childSubscriber(id, cb) {
-        this.subscribers[id] = cb
+        this.subscribers[id] = cb;
     }
+
     actionHandler(type, data) {
         switch (type) {
             case 'cart.button.add':
-                actions.addToCart(data)
+                actions.addToCart(data);
                 break;
             case 'cart.button.remove':
-                actions.removeFromCart(data)
+                actions.removeFromCart(data);
+                break;
+            case 'extras.show':
+                this.setState({productExtras: data, showExtras: true});
+                break;
+            case 'extras.dismiss':
+                this.setState({productExtras: {}, showExtras: false});
+                break;
+            case 'extras.update':
+                actions.updateOrderItem(data);
+                break;
+            case 'product.expand':
+                this.setState({expandedProduct: data});
+                break;
+            case 'product-popup.dismiss':
+                this.setState({expandedProduct: null});
                 break;
             default:
-                this.props.actionHandler && this.props.actionHandler(type, data)
+                this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
         }
     }
+    
     render() {
-        let {items} = this.state
-        let {_showMore, canShowMore, loading, notfound, readonly} = this.props
+        let {items} = this.state;
+        let {_showMore, canShowMore, loading, notfound, readonly} = this.props;
         return <div className="wrapper">
             <div className="ProductsContainer">
                 <div className="ProductsList clearfix">
@@ -68,9 +97,11 @@ class ProductsContainer extends React.Component {
                             <Product 
                                 _key={index}
                                 item={product}
+                                hasExtras={hasExtras(product)}
                                 readonly={readonly}
                                 registrar={this.childSubscriber}
-                                actionHandler={this.actionHandler} />
+                                actionHandler={this.actionHandler}
+                                orderDelegate={Cart.getAnOrder} />
                             {(index+1)%2 || items.length-1 == index? null:<ProductRowDivider k={2} />}
                             {(index+1)%3 || items.length-1 == index? null:<ProductRowDivider k={3} />}
                             {(index+1)%4 || items.length-1 == index? null:<ProductRowDivider k={4} />}
@@ -88,6 +119,17 @@ class ProductsContainer extends React.Component {
                     </ButtonPane>:null }
                 </div>
             </div>
+
+            <ProductPopup
+                actionHandler={this.actionHandler}
+                product={this.state.expandedProduct}
+                visible={!!this.state.expandedProduct} />
+
+            {!!this.state.showExtras && <ExtrasPopup
+                actionHandler={this.actionHandler}
+                product={this.state.productExtras.product}
+                data={getExtrasData(this.state.productExtras.category)} />}
+
             <style jsx>{`
                 .wrapper {
                     position: relative
@@ -104,7 +146,7 @@ class ProductsContainer extends React.Component {
                     position: relative;
                 }
             `}</style>
-        </div>
+        </div>;
     }
 }
 

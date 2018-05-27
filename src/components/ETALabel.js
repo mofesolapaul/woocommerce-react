@@ -1,4 +1,4 @@
-import css from '../../styles/vars'
+import css from '../../styles/vars';
 
 export default props => (
     <div className="wrapper" onClick={e => props.actionHandler('order.checkout')}>

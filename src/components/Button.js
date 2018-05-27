@@ -6,7 +6,7 @@ export const ButtonPane = props => <div className="show-more-pane">
             text-align: center;
         }
     `}</style>
-</div>
+</div>;
 
 // show more
 export default (props) =>

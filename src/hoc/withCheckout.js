@@ -1,5 +1,5 @@
-import css from '../../styles/vars'
-import Head from 'next/head'
+import css from '../../styles/vars';
+import Head from 'next/head';
 
 export default (childComponent, options, detachedViews) => (
     <div className="OrderPreview">
@@ -46,18 +46,6 @@ export default (childComponent, options, detachedViews) => (
                     flex-direction: row-reverse;
                 }
             }
-            .close {
-                font-weight: 100;
-                border: none;
-                opacity: .4;
-                float: right;
-                padding: 0 .5rem;
-                cursor: pointer;
-            }
-            .close:hover {
-                opacity: .8;
-            }
-
             .flex {
                 height: 100%;
             }

@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import {URL} from '../Config'
+import Head from 'next/head';
+import {URL} from '../Config';
 
 const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) => (
     <div className="layout">
@@ -15,6 +15,8 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
             <link rel="icon" href={`${URL.base}static/favicon/cropped-smoothie_small_transparent_bg-32x32.png`} sizes="32x32" />
             <link rel="icon" href={`${URL.base}static/favicon/cropped-smoothie_small_transparent_bg-192x192.png`} sizes="192x192" />
             <link rel="apple-touch-icon-precomposed" href={`${URL.base}static/favicon/cropped-smoothie_small_transparent_bg-180x180.png`} />
+
+            <script key="gmaps" async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRVkaNQhmcgwt1DpKOYuP16wbdw7c_CE&libraries=places"></script>
         </Head>
         { children }
     <style jsx>{`
@@ -26,6 +28,6 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
     }
     `}</style>
     </div>
-)
+);
 
 export default Layout

@@ -1,4 +1,4 @@
-import flux from 'flux-react'
+import flux from 'flux-react';
 
 export default flux.createActions([
     'addToCart',
@@ -9,5 +9,6 @@ export default flux.createActions([
     'reset',
     'savePaymentDetails',
     'setShippingMethod',
+    'updateOrderItem',
     'updateQty',
-])
+]);

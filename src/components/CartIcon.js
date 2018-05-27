@@ -1,5 +1,5 @@
-import css from '../../styles/vars'
-import {URL} from '../Config'
+import css from '../../styles/vars';
+import {URL} from '../Config';
 
 export default ({clickHandler, visible, total}) => (
     <div className="CartIcon" onClick={clickHandler}>

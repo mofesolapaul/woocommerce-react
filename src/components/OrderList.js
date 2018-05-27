@@ -1,34 +1,35 @@
-import React from 'react'
-import css from '../../styles/vars'
-import {bindToThis, moneyFormat} from '../constants'
-import {OrderItem, View} from '.'
-import {withCheckout} from '../hoc'
+import React from 'react';
+import css from '../../styles/vars';
+import {bindToThis, moneyFormat} from '../constants';
+import {OrderItem, View} from '.';
+import {withCheckout} from '../hoc';
 
 // show more
 const OkBtn = ({clickHandler, finished}) => <div className="text-center">
-    <a onClick={() => finished? null:clickHandler('order.checkout.pick_location')} className={`btn sleek-btn green no-shadow`}>Continue</a>
-</div>
+    {/* event emitted to actionHandler here used to be 'order.checkout.pick_location' */}
+    <a onClick={() => finished? null:clickHandler('order.checkout')} className={`btn sleek-btn green no-shadow`}>Continue</a>
+</div>;
 
 export default class OrderList extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         
         // bind
-        bindToThis(this, 'actionHandler')
+        bindToThis(this, 'actionHandler');
     }
     actionHandler(type, data) {
         switch (type) {
             case 'order.qty.change':
                 if (!data.el.value || data.el.value < 1) data.el.value = 1;
-                else this.props.actionHandler(type, {id: data.id, value: data.el.value})
+                else this.props.actionHandler(type, {id: data.id, value: data.el.value});
                 break;
             default:
-                this.props.actionHandler && this.props.actionHandler(type, data)
-                break
+                this.props.actionHandler && this.props.actionHandler(type, data);
+                break;
         }
     }
     render() {
-        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />)
+        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />);
         let view = <View>
             <div className="summary">
                 <div className="content relative">
@@ -101,14 +102,14 @@ export default class OrderList extends React.Component {
                     overflow-y: auto;
                 }
             `}</style>
-        </View>
+        </View>;
         view = withCheckout(view, {
             page_title: 'SmoothieExpress: Order Review',
             section_name: 'cart',
             section_header: 'Order Review',
             actionHandler: this.actionHandler,
-        })
+        });
 
-        return view
+        return view;
     }
 }

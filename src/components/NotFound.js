@@ -1,4 +1,4 @@
-import css from '../../styles/vars'
+import css from '../../styles/vars';
 
 export default ({msg, retryHandler, visible}) => (
     !!visible?

@@ -49,3 +49,7 @@ src/Config\.js
 out
 *.zip
 
+features\.txt
+
+products\.json
+static/orders.json

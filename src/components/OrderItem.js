@@ -1,13 +1,22 @@
-import css from '../../styles/vars'
-import {moneyFormat} from '../constants'
+import css from '../../styles/vars';
+import {moneyFormat, hasExtras, getExtrasTotal} from '../constants';
 
 export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />
     <div className="info">
         <h3 className="title font-sourcesans">{item.product.name}</h3>
-        <p className="text font-playfair">{`\u20A6`}{moneyFormat(item.product.price)} per unit</p>
+        <p className="text font-playfair">
+            {`\u20A6`}{moneyFormat(item.product.price)} 
+            &nbsp;{!!item.product.extras? `+ \u20A6`+getExtrasTotal(item.product.extras.extras):''}
+            &nbsp;per unit</p>
         <a className="btn"
             onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
+        &nbsp;{hasExtras(item.product) &&
+                <a className="btn green"
+                    onClick={e => actionHandler('extras.show', {
+                        category: hasExtras(item.product),
+                        product: item.product
+                    })}>Manage Extras</a>}
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
@@ -63,6 +72,10 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
             border: none;
             font-weight: lighter;
             letter-spacing: .5px;
+        }
+        .btn.green {
+            background: rgba(0, 128, 128, .3);
+            color: teal;
         }
     `}</style>
 </div>
