@@ -162,7 +162,7 @@ const Cart = flux.createStore({
             payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
             payment_method: isPaid? 'paystack':'cod',
             // payment_method_title: 'Direct Bank Transfer',
-            set_paid: false,
+            set_paid: true,
             billing: {...billing},
             shipping: {...billing},
             line_items: this.getLineItems(),
