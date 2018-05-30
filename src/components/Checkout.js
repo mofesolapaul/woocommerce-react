@@ -39,6 +39,7 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.clientname':
             case 'checkout.email':
             case 'checkout.phone':
+            case 'checkout.note':
             case 'shipping.method':
                 let {form} = this.state;
                 form[type] = data.value || data;
@@ -152,6 +153,10 @@ export default class Checkout extends React.PureComponent {
                         <div className="group">
                             <label className="label">Phone</label>
                             <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
+                        </div>
+                        <div className="group">
+                            <label className="label">Notes (extra information about your order)</label>
+                            <textarea className="field" defaultValue={__['checkout.note']} onChange={e => this.actionHandler('checkout.note', e.target)} placeholder="What should we note about this order"></textarea>
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
