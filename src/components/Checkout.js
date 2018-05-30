@@ -80,8 +80,8 @@ export default class Checkout extends React.PureComponent {
         let {props} = this;
         let {fieldDefaults: __} = props;
         const normalButtons = <View>
-            {!this.state.isStorePickup && <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />}
-            &emsp; <Button label={this.state.isStorePickup? 'Complete Order':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
+            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
+            &emsp; <Button label={this.state.isStorePickup? 'Pay at the store':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
         </View>;
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />

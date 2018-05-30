@@ -102,7 +102,6 @@ const Cart = flux.createStore({
             if (!!product.extras) {
                 const mainValue = [];
                 const metaValues = [];
-                console.log(product.extras);
                 if (!!product.extras.dressing) {
                     mainValue.push({ "value": product.extras.dressing, "section": "588747e475a021.02250771" });
                     metaValues.push({ "key": " ", "value": product.extras.dressing });
