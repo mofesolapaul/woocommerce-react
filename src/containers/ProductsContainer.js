@@ -3,7 +3,7 @@ import css from '../../styles/vars';
 import actions from '../actions';
 import {Cart} from '../stores';
 import {bindToThis, getExtrasData, hasExtras, ORDER_ITEM_UPDATE} from '../constants';
-import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductPopup, ProductRowDivider, View } from '../components';
+import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductFilters, ProductPopup, ProductRowDivider, View } from '../components';
 
 class ProductsContainer extends React.Component {
     constructor(props) {
@@ -91,7 +91,7 @@ class ProductsContainer extends React.Component {
         let {_showMore, canShowMore, loading, notfound, readonly} = this.props;
         return <div className="wrapper">
             <div className="ProductsContainer">
-                Showing All Products
+                <ProductFilters />
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
