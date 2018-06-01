@@ -2,7 +2,7 @@ import {View} from '.';
 import {CATEGORIES} from '../constants';
 import css from '../../styles/vars';
 
-export default props => <View>
+export default ({visible}) => !!visible && <View>
     <div className="ProductFilters">
         <div className="pf--group">
             Showing

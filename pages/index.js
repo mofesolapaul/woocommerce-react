@@ -184,6 +184,7 @@ export default class Index extends React.Component {
             actionHandler: this.actionHandler, // action handler
             pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
             registrar: this.subscribeChild,
+            showFilters: this.state.productCacheExists, // Show filters or not
         };
 
         return <Layout>
