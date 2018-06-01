@@ -174,8 +174,11 @@ export const productCache = {
             this.load();
             return false;
         } else {
-            const products = await db.get(CACHE.DB_KEY_PRODUCTS);
-            products.map(p => console.log(getCategory(p)));
+            let products = await db.get(CACHE.DB_KEY_PRODUCTS);
+            if (!!category) {
+                category = category.toLowerCase();
+                products = products.filter(p => getCategory(p) == category);
+            }
             return products;
         }
     },
