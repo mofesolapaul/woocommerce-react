@@ -2,6 +2,7 @@ import Button, { ButtonPane } from './Button';
 import CartButtons from './CartButtons';
 import CartIcon from './CartIcon';
 import Checkout from './Checkout';
+import ConfirmOrder from './ConfirmOrder';
 import ETALabel from './ETALabel';
 import ExtrasLabel from './ExtrasLabel';
 import ExtrasPopup from './ExtrasPopup';
@@ -28,6 +29,7 @@ export {
     CartButtons,
     CartIcon,
     Checkout,
+    ConfirmOrder,
     ETALabel,
     ExtrasLabel,
     ExtrasPopup,

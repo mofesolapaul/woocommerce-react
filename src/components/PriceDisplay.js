@@ -19,7 +19,7 @@ export default ({price, qty}) => <View>
         font-size: larger;
         padding: .4rem .8rem;
         color: ${css.colors.ultrawhite};
-        background: ${!qty? css.colors.rogueblue:'teal'}
+        background: ${!qty? css.colors.rogueblue:'rgba(0,0,0,.9)'}
         padding-left: 1.2rem;
     }
     .qty {

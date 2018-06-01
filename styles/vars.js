@@ -10,9 +10,10 @@ export default {
         // greys
         veryblack: '#424449',
         rogueblue: '#525965',
-        bluetwilight: '#919ea1',
+        bluetwilight: '#412345',
         // accent
-        fallleaf: '#b66448',
+        fallleaf: 'black',
         fallleafdark: '#a35940',
+
     },
 }

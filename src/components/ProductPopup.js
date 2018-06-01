@@ -6,7 +6,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
   <div className="product-popup curtain" id="pp--" onClick={e => e.target.id == 'pp--' && actionHandler('product-popup.dismiss')}>
     <div className="product-modal modal">
       <div className="pp--img-wheel">
-        <ProductImage src={srcList(product.images)} wheel />
+        <ProductImage src={srcList(product.images)}  />
       </div>
       <div className="pp--body">
         <h3 className="pp--title slim">{product.name}</h3>
