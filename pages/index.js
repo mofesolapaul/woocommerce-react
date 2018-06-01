@@ -115,8 +115,13 @@ export default class Index extends React.Component {
         // when the user clicks 'Show more' too rapidly
         if (this.state.productFetchInProgress) return;
 
+        // apply last used filter if a new one's not specified
+        const lastUsedFilter = getActiveFilter();
+        const useFilter = !!filter || !!lastUsedFilter;
+
         // we filtering
-        if (!!filter) {
+        if (useFilter) {
+            filter = filter || lastUsedFilter;
             this.setState({
                 page: 1,
                 products: [],
