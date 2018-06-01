@@ -13,6 +13,10 @@ const Constants = {
         TestPublicKey: 'pk_test_blahblah',
         LivePublicKey: 'pk_live_blahblah',
     },
+    App: {
+        name: "Czar",
+        slogan: "Ain't Life just Fun!"
+    }
 }
 
 module.exports = Constants;

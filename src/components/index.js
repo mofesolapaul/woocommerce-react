@@ -14,6 +14,7 @@ import OrderList from './OrderList';
 import PaystackButton from './PaystackButton';
 import PriceDisplay from './PriceDisplay';
 import Product from './Product';
+import ProductFilters from './ProductFilters';
 import ProductImage from './ProductImage';
 import ProductPopup from './ProductPopup';
 import ProductRowDivider from './ProductRowDivider';
@@ -39,6 +40,7 @@ export {
     PaystackButton,
     PriceDisplay,
     Product,
+    ProductFilters,
     ProductImage,
     ProductPopup,
     ProductRowDivider,

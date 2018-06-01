@@ -169,11 +169,19 @@ export const apiFetchProducts = async (per_page, page) => {
  * Products cache
  */
 export const productCache = {
-    fetch: async function() {
+    fetch: async function(category) {
         if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
             this.load();
             return false;
-        } else return await db.get(CACHE.DB_KEY_PRODUCTS);
+        } else {
+            let products = await db.get(CACHE.DB_KEY_PRODUCTS);
+            if (!!category) {
+                category = category.toLowerCase();
+                db.put(CACHE.DB_KEY_FILTER_CATEGORY, category);
+                products = products.filter(p => getCategory(p) == category);
+            }
+            return products;
+        }
     },
     /**
      * Stores provided product data
@@ -253,6 +261,7 @@ export const CART = {
 export const CACHE = {
     DB_KEY_PRODUCTS: `____${0x1234571}`,
     DB_KEY_CACHE_SIGNATURE: `____${0x1234572}`,
+    DB_KEY_FILTER_CATEGORY: `____${0x1234574}`,
 };
 
 export const EXTRAS = {
@@ -346,3 +355,35 @@ export const getDefaultDressing = (product) => {
  * @param {Array} images 
  */
 export const srcList = images => images.map(m => m.src);
+
+/**
+ * Product categories
+ */
+export const CATEGORIES = [
+    "parfaits",
+    "salads",
+    "sandwiches",
+    "smoothies",
+];
+
+/**
+ * Return a product's first valid category
+ * @param {object} product 
+ */
+export const getCategory = (product) => {
+    let cats = [];
+    product.categories.map(c => {
+        cats.push(c.name.toLowerCase());
+    });
+    for (let c of cats) {
+        if (CATEGORIES.indexOf(c) !== -1) {
+            return c;
+        }
+    }
+    return false;
+};
+
+/**
+ * Helper for accessing stored category filter
+ */
+export const getActiveFilter = () => db.getSync(CACHE.DB_KEY_FILTER_CATEGORY) || '';
