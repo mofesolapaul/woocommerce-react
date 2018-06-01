@@ -65,7 +65,9 @@ export default class Checkout extends React.PureComponent {
                 const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
                 else {
-                     this.setState({isConfirming: true});
+                    this.orderType = type;
+                    this.orderData = data;
+                    this.setState({isConfirming: true});
                 }
                 break;
             case 'checkout.cancel':
@@ -77,7 +79,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'order.confirm':
                 this.actionHandler('app.busy');
-                this.props.actionHandler && this.props.actionHandler(type, data);
+                this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
