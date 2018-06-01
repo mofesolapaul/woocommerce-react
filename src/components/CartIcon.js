@@ -50,7 +50,7 @@ export default ({clickHandler, visible, total}) => (
                 background-color: ${css.colors.fallleaf};
             }
             .price {
-                background-color: teal;
+                background-color: #ee2210;
                 color: white;
                 font-size: larger;
                 text-align: center;
