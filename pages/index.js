@@ -4,7 +4,7 @@ import Layout from '../src/layouts/_default';
 import css from '../styles/vars';
 import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers';
 import Config from '../src/Config';
-import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, productCache, sleep, uid} from '../src/constants';
+import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, getActiveFilter, productCache, sleep, uid} from '../src/constants';
 import {Cart} from '../src/stores';
 
 export default class Index extends React.Component {
@@ -199,6 +199,7 @@ export default class Index extends React.Component {
             pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
             registrar: this.subscribeChild,
             showFilters: this.state.productCacheExists, // Show filters or not
+            activeFilter: getActiveFilter(), // Active filter
         };
 
         return <Layout>

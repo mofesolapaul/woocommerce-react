@@ -177,6 +177,7 @@ export const productCache = {
             let products = await db.get(CACHE.DB_KEY_PRODUCTS);
             if (!!category) {
                 category = category.toLowerCase();
+                db.put(CACHE.DB_KEY_FILTER_CATEGORY, category);
                 products = products.filter(p => getCategory(p) == category);
             }
             return products;
@@ -260,6 +261,7 @@ export const CART = {
 export const CACHE = {
     DB_KEY_PRODUCTS: `____${0x1234571}`,
     DB_KEY_CACHE_SIGNATURE: `____${0x1234572}`,
+    DB_KEY_FILTER_CATEGORY: `____${0x1234574}`,
 };
 
 export const EXTRAS = {
@@ -380,3 +382,8 @@ export const getCategory = (product) => {
     }
     return false;
 };
+
+/**
+ * Helper for accessing stored category filter
+ */
+export const getActiveFilter = () => db.getSync(CACHE.DB_KEY_FILTER_CATEGORY) || '';

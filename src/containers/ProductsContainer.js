@@ -88,10 +88,10 @@ class ProductsContainer extends React.Component {
     
     render() {
         let {items} = this.state;
-        let {_showMore, canShowMore, loading, notfound, readonly, showFilters} = this.props;
+        let {_showMore, canShowMore, loading, notfound, readonly, showFilters, activeFilter} = this.props;
         return <div className="wrapper">
             <div className="ProductsContainer">
-                <ProductFilters visible={showFilters} actionHandler={this.actionHandler} />
+                <ProductFilters visible={showFilters} actionHandler={this.actionHandler} activeFilter />
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
