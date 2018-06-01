@@ -169,11 +169,15 @@ export const apiFetchProducts = async (per_page, page) => {
  * Products cache
  */
 export const productCache = {
-    fetch: async function() {
+    fetch: async function(category) {
         if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
             this.load();
             return false;
-        } else return await db.get(CACHE.DB_KEY_PRODUCTS);
+        } else {
+            const products = await db.get(CACHE.DB_KEY_PRODUCTS);
+            products.map(p => console.log(getCategory(p)));
+            return products;
+        }
     },
     /**
      * Stores provided product data
@@ -346,3 +350,30 @@ export const getDefaultDressing = (product) => {
  * @param {Array} images 
  */
 export const srcList = images => images.map(m => m.src);
+
+/**
+ * Product categories
+ */
+export const CATEGORIES = [
+    "parfaits",
+    "salads",
+    "sandwiches",
+    "smoothies",
+];
+
+/**
+ * Return a product's first valid category
+ * @param {object} product 
+ */
+export const getCategory = (product) => {
+    let cats = [];
+    product.categories.map(c => {
+        cats.push(c.name.toLowerCase());
+    });
+    for (let c of cats) {
+        if (CATEGORIES.indexOf(c) !== -1) {
+            return c;
+        }
+    }
+    return false;
+};
