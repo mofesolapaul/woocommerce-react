@@ -6,7 +6,7 @@ import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
-import { Button, ButtonPane, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Button, ButtonPane, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -24,6 +24,7 @@ export default class Checkout extends React.PureComponent {
         this.state = {
             form: {...form},
             isStorePickup: false,
+            isConfirming: false,
         };
 
         // bind
@@ -64,12 +65,18 @@ export default class Checkout extends React.PureComponent {
                 const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
                 else {
-                    this.actionHandler('app.busy');
-                    this.props.actionHandler && this.props.actionHandler(type, data);
+                     this.setState({isConfirming: true});
                 }
                 break;
             case 'checkout.cancel':
                 this.actionHandler('toast.show', { msg: "You have cancelled the order" });
+                this.props.actionHandler && this.props.actionHandler(type, data);
+                break;
+            case 'order.holdon':
+                this.setState({isConfirming: false});
+                break;
+            case 'order.confirm':
+                this.actionHandler('app.busy');
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
             default:
@@ -163,6 +170,8 @@ export default class Checkout extends React.PureComponent {
                             {this.props.readonly? pendingPaymentButtons:normalButtons}
                         </ButtonPane>
                     </div>
+
+                    {this.state.isConfirming && <ConfirmOrder price={this.props.total} actionHandler={this.actionHandler} />}
                 </div>
 
                 {/* styles */}
