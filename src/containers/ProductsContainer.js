@@ -91,6 +91,7 @@ class ProductsContainer extends React.Component {
         let {_showMore, canShowMore, loading, notfound, readonly} = this.props;
         return <div className="wrapper">
             <div className="ProductsContainer">
+                Showing All Products
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
