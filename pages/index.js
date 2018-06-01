@@ -105,28 +105,39 @@ export default class Index extends React.Component {
                 this.notifySubscriber('showExtras', data);
                 break;
             case 'products.filter':
-                alert(data);
+                this.fetchProducts(data);
                 break;
         }
     }
 
-    async fetchProducts() {
+    async fetchProducts(filter) {
+        // prevent the case where the same products are loaded multiply
+        // when the user clicks 'Show more' too rapidly
+        if (this.state.productFetchInProgress) return;
+
+        // we filtering
+        if (!!filter) {
+            this.setState({
+                page: 1,
+                products: [],
+                productsOnDisplay: [],
+                displayOnFetch: true,
+                productsLoading: true,
+            });
+            await sleep(500) // because setState() is asynchronous
+        }
+
+        // get state values
         let {per_page, page, products, productsOnDisplay, productFetchInProgress} = this.state; 
         
         // Ensures that the loading anim is displayed when necessary
         // i.e: when user clicks on 'Show more' and there's nothing prefetched yet
         this.setState({ productsLoading: !products.length });
-
-        // prevent the case where the same products are loaded multiply
-        // when the user clicks 'Show more' too rapidly
-        if (productFetchInProgress) return;
         
         this.setState({productFetchInProgress: true, productsLoadingFailed: false});
 
-        // await sleep(500) // sleep for a half second
-        
         // load products from cache if entry exists
-        let cached = !!this.skipCache? false:await productCache.fetch();
+        let cached = !!this.skipCache? false:await productCache.fetch(filter);
         this.setState({productCacheExists: !!cached});
         if (!cached) {
             // if the cache did not hit the first time, skip it for subsequent requests
