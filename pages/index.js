@@ -104,6 +104,9 @@ export default class Index extends React.Component {
                 // - ProductsContainer & ShoppingCart
                 this.notifySubscriber('showExtras', data);
                 break;
+            case 'products.filter':
+                alert(data);
+                break;
         }
     }
 
