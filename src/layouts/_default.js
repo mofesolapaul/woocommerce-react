@@ -22,7 +22,7 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
     <style jsx>{`
     .layout {
         padding: 2%;
-        background: rgba(234,234,12,.4);
+        background: #ebe473;
         height: 100%;
         // display: flex;
     }
