@@ -9,6 +9,7 @@ export default class CartButtons extends React.Component {
 
         // bind
         bindToThis(this, 'add');
+        bindToThis(this, 'solo_add');
         bindToThis(this, 'remove');
     }
     add() {
@@ -27,7 +28,7 @@ export default class CartButtons extends React.Component {
                 <a className="btn cart-btn right" onClick={this.add}>+</a>
             </View>}
 
-            {!!this.props.solo && <a className="btn cart-btn solo-btn" onClick={this.add}>Add to cart</a>}
+            {!!this.props.solo && <a className="btn cart-btn solo-btn" onClick={this.solo_add}>Add to cart</a>}
 
             {/* style */}
             <style jsx>{`
