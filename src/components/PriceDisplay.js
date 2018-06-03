@@ -3,8 +3,8 @@ import {moneyFormat} from '../constants';
 import {View} from './';
 
 export default ({price, qty}) => <View>
-    <div className="price-display font-playfair">
-        {!!qty? <span className="qty font-sourcesans">({price} x {qty})</span>:null}
+    <div className="price-display font-secondary">
+        {!!qty? <span className="qty font-primary">({price} x {qty})</span>:null}
         {`\u20A6${ moneyFormat(price*(!qty?1:qty)||'0.00') }`}
     </div>
 

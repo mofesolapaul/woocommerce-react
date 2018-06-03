@@ -4,8 +4,8 @@ import {moneyFormat, hasExtras, getExtrasTotal} from '../constants';
 export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />
     <div className="info">
-        <h3 className="title font-sourcesans">{item.product.name}</h3>
-        <p className="text font-playfair">
+        <h3 className="title font-primary">{item.product.name}</h3>
+        <p className="text font-secondary">
             {`\u20A6`}{moneyFormat(item.product.price)} 
             &nbsp;{!!item.product.extras? `+ \u20A6`+getExtrasTotal(item.product.extras.extras):''}
             &nbsp;per unit</p>
@@ -20,7 +20,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
-        <input className="qty font-playfair" type="number" min="1" value={item.qty}
+        <input className="qty font-secondary" type="number" min="1" value={item.qty}
             onChange={e => actionHandler('order.qty.change', {id: item.product.id, el: e.target})} />
     </div>
 

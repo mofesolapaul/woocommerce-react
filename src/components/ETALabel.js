@@ -4,8 +4,8 @@ export default props => (
     <div className="wrapper" onClick={e => props.actionHandler('order.checkout')}>
         <div className="info">Click this label to proceed, you can edit your location later</div>
         <div className="ETA">
-            <h3 className="title slim font-sourcesans">{props.etaAddy}</h3>
-            <p className="font-sourcesans approx">approx. {props.duration} ({props.distance})</p>
+            <h3 className="title slim font-primary">{props.etaAddy}</h3>
+            <p className="font-primary approx">approx. {props.duration} ({props.distance})</p>
         </div>
 
         {/* styles */}

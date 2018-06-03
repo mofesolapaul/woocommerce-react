@@ -10,7 +10,7 @@ export default (childComponent, options, detachedViews) => (
         {detachedViews}
 
         <div className="flex col">
-            <h1 className="font-sourcesans">{options.section_header}
+            <h1 className="font-primary">{options.section_header}
                 <a className="close" onClick={() => options.actionHandler(`${options.section_name}.dismiss`)}>{`\u00d7`}</a>
             </h1>
             <div className="wrapper flex">

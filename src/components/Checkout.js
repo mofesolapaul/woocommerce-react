@@ -209,7 +209,7 @@ export default class Checkout extends React.PureComponent {
     render() {
         const PriceTag = 
             <div className="PriceTag">
-                <h3 className="price-label font-sourcesans slim">Total: {`\u20A6`}{this.props.total}</h3>
+                <h3 className="price-label font-primary slim">Total: {`\u20A6`}{this.props.total}</h3>
 
                 {/* styles */}
                 <style jsx>{`

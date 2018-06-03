@@ -208,7 +208,7 @@ export default class Index extends React.Component {
         };
 
         return <Layout>
-            <h1 className="title font-sourcesans">{App.name}</h1>
+            <h1 className="title font-primary">{App.name}</h1>
             <div className="text-center">
                 <h4 className="slogan">{App.slogan}</h4>
             </div>
