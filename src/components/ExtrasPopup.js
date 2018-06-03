@@ -95,7 +95,7 @@ class ExtrasPopup extends React.Component {
     render() {
         const {data, actionHandler, product} = this.props;
         return <View>
-            <div className="extras-curtain curtain">
+            <div className="extras-curtain curtain" id="ec--" onClick={e => e.target.id == 'ec--' && actionHandler('extras-popup.dismiss')}>
                 <div className="extras-modal modal">
                     <h3>
                         <span className="">Extras ({data.cat})</span>
