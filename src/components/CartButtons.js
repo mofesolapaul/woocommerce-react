@@ -35,7 +35,7 @@ export default class CartButtons extends React.Component {
             }
             .cart-btn:hover {
                 background: ${css.colors.fallleaf};
-                color: ${css.colors.ultrawhite};
+                color: ${css.colors.background};
                 border-color: transparent;
             }
             .left {

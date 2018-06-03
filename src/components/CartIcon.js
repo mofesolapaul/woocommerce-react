@@ -59,7 +59,7 @@ export default ({clickHandler, visible, total}) => (
             .frame {
                 height: calc(100% + 4px);
                 width: calc(100% + 4px);
-                border: 7px ${css.colors.ultrawhite} solid;
+                border: 7px ${css.colors.background} solid;
                 // box-sizing: content-box;
                 position: absolute;
                 top: -2px;

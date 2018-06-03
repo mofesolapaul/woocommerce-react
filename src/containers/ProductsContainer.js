@@ -136,7 +136,7 @@ class ProductsContainer extends React.Component {
                     position: relative
                 }
                 .ProductsContainer {
-                    background: ${css.colors.ultrawhite};
+                    background: ${css.colors.background};
                     border-radius: 3px;
                     max-width: 1120px;
                     padding: 2rem 1rem;

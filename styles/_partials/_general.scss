@@ -62,12 +62,12 @@ h1, h2, h3, h4, h5, h6 {
     }
     &:hover, &.dead {
         background:rgba(0,0,10,.9);
-        color: $ultrawhite;
+        color: $background;
         filter: none;
     }
     &.green {
         background: teal;
-        color: $ultrawhite;
+        color: $background;
         &:hover {
             background: darken(teal, 5%);
         }

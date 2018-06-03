@@ -182,7 +182,7 @@ export default class Checkout extends React.PureComponent {
                         // background: ${css.colors.rogueblue};
                         height: 100%;
                         overflow: auto;
-                        // color: ${css.colors.ultrawhite};
+                        // color: ${css.colors.background};
                         padding: 1rem 2px;
                         // display: flex;
                         // flex: 1,
@@ -218,7 +218,7 @@ export default class Checkout extends React.PureComponent {
                     }
                     .PriceTag {
                         background: teal;
-                        color: ${css.colors.ultrawhite};
+                        color: ${css.colors.background};
                         position: absolute;
                         padding: 0 2rem;
                         display: inline-block;

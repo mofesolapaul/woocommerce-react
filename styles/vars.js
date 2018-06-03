@@ -3,7 +3,7 @@
 export default {
     colors : {
         // whites
-        ultrawhite: '#f6f7f4',
+        background: '#f6f7f4',
         wisteriasnow: '#d8dfe4',
         orchidash: '#d2d8e1',
         desertbone: '#ebe473',

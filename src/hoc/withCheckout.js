@@ -23,7 +23,7 @@ export default (childComponent, options, detachedViews) => (
                 to { bottom: 0 }
             }
             .OrderPreview {
-                background: ${css.colors.ultrawhite};
+                background: ${css.colors.background};
                 padding: 2rem 5%;
                 box-shadow: rgba(82,89,101,.25) 0px -2px 8px 3px;
                 position: fixed;

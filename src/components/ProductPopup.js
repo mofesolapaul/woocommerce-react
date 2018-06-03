@@ -25,7 +25,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
   {/* styling */}
   <style jsx>{`
     .product-modal {
-      background: ${css.colors.ultrawhite};
+      background: ${css.colors.background};
       max-width: 480px;
       padding: 0;
     }
@@ -56,7 +56,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
     }
     .pp--label {
       background: ${css.colors.fallleafdark};
-      color: ${css.colors.ultrawhite};
+      color: ${css.colors.background};
       text-transform: uppercase;
       font-size: smaller;
       padding: 2px 5px;
