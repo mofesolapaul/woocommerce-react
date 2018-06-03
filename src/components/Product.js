@@ -1,6 +1,6 @@
 import React from 'react';
 import css from '../../styles/vars';
-import {bindToThis, srcList} from '../constants';
+import {bindToThis, srcList, uid} from '../constants';
 import { CartButtons, ExtrasLabel, PriceDisplay, ProductImage } from './';
 import { __esModule } from 'babel-runtime/helpers/possibleConstructorReturn';
 
@@ -24,11 +24,13 @@ class Product extends React.Component{
         let {qty} = this.state;
         switch (type) {
             case 'cart.button.add':
-                // show the extras popup
-                if (this.props.hasExtras && !this.state.qty);
-                
                 this.setState({ qty: qty+1 });
                 this.props.actionHandler(type, this.props.item);
+                break;
+            case 'cart.button.solo_add':
+                const item = {...this.props.item};
+                item.__id = item.id + '__' + uid();
+                this.props.actionHandler(type, item);
                 break;
             case 'cart.button.remove':
                 if (qty != 0) {
