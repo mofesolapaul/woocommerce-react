@@ -63,8 +63,7 @@ class ProductsContainer extends React.Component {
                 actions.addToCart(data);
                 break;
             case 'cart.button.solo_add':
-                console.log(data);
-                // actions.addToCart(data);
+                actions.addToCart(data);
                 break;
             case 'cart.button.remove':
                 actions.removeFromCart(data);
