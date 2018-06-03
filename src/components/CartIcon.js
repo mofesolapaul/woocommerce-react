@@ -47,10 +47,10 @@ export default ({clickHandler, visible, total}) => (
             .icon {
                 background: url('${URL.base}static/img/cart.png') center no-repeat;
                 background-size: 50%;
-                background-color: ${css.colors.fallleaf};
+                background-color: ${css.colors.foreground};
             }
             .price {
-                background-color: #ee2210;
+                background-color:  ${css.colors.primarydark};
                 color: white;
                 font-size: larger;
                 text-align: center;
@@ -59,7 +59,7 @@ export default ({clickHandler, visible, total}) => (
             .frame {
                 height: calc(100% + 4px);
                 width: calc(100% + 4px);
-                border: 7px ${css.colors.ultrawhite} solid;
+                border: 7px ${css.colors.background} solid;
                 // box-sizing: content-box;
                 position: absolute;
                 top: -2px;

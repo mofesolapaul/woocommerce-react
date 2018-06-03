@@ -10,7 +10,7 @@ export default (childComponent, options, detachedViews) => (
         {detachedViews}
 
         <div className="flex col">
-            <h1 className="font-sourcesans">{options.section_header}
+            <h1 className="font-primary">{options.section_header}
                 <a className="close" onClick={() => options.actionHandler(`${options.section_name}.dismiss`)}>{`\u00d7`}</a>
             </h1>
             <div className="wrapper flex">
@@ -23,7 +23,7 @@ export default (childComponent, options, detachedViews) => (
                 to { bottom: 0 }
             }
             .OrderPreview {
-                background: ${css.colors.ultrawhite};
+                background: ${css.colors.background};
                 padding: 2rem 5%;
                 box-shadow: rgba(82,89,101,.25) 0px -2px 8px 3px;
                 position: fixed;
@@ -51,7 +51,7 @@ export default (childComponent, options, detachedViews) => (
             }
             .wrapper {
                 flex-grow: 1;
-                padding-left:10px;
+                // padding-left:10px;
                 position: relative;
                 overflow: hidden;
             }

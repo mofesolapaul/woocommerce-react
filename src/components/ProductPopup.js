@@ -25,7 +25,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
   {/* styling */}
   <style jsx>{`
     .product-modal {
-      background: ${css.colors.ultrawhite};
+      background: ${css.colors.background};
       max-width: 480px;
       padding: 0;
     }
@@ -39,7 +39,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       position: relative;
     }
     .pp--title {
-      color: ${css.colors.rogueblue};
+      color: ${css.colors.foreground};
       transition: .25s ease-out;
       margin-bottom: 0;
       font-size: 150%;
@@ -55,8 +55,8 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       overflow-y: auto;
     }
     .pp--label {
-      background: ${css.colors.fallleafdark};
-      color: ${css.colors.ultrawhite};
+      background: ${css.colors.primarydark};
+      color: ${css.colors.background};
       text-transform: uppercase;
       font-size: smaller;
       padding: 2px 5px;

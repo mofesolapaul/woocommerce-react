@@ -24,7 +24,7 @@ export default ({msg, retryHandler, visible}) => (
                 background: ${css.colors.desertbone};
             }
             .NotFound:hover .btn {
-                background: ${css.colors.ultrawhite};
+                background: ${css.colors.background};
             }
             .circle {
                 display: block;

@@ -3,7 +3,7 @@ import toastr from 'toastr';
 import Layout from '../src/layouts/_default';
 import css from '../styles/vars';
 import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers';
-import Config from '../src/Config';
+import {App} from '../src/Config';
 import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, getActiveFilter, productCache, sleep, uid} from '../src/constants';
 import {Cart} from '../src/stores';
 
@@ -107,6 +107,9 @@ export default class Index extends React.Component {
             case 'products.filter':
                 this.fetchProducts(data);
                 break;
+            case 'cart.dismiss':
+                this.setState({ showCart: false });
+                break;
         }
     }
 
@@ -208,9 +211,9 @@ export default class Index extends React.Component {
         };
 
         return <Layout>
-            <h1 className="title font-sourcesans">{Config.App.name}</h1>
+            <h1 className="title font-primary">{App.name}</h1>
             <div className="text-center">
-                <h4 className="slogan">{Config.App.slogan}</h4>
+                <h4 className="slogan">{App.slogan}</h4>
             </div>
             
             <ProductsContainer {...productContainerProps}></ProductsContainer>
@@ -227,7 +230,7 @@ export default class Index extends React.Component {
             <style jsx>{`
                 .title {
                     text-transform: uppercase;
-                    color: ${css.colors.fallleaf};
+                    color: ${css.colors.foreground_deep};
                     // text-shadow: ${css.colors.bluetwilight} 2px 2px;
                     letter-spacing: 1px;
                     word-spacing: 2px;
@@ -242,7 +245,7 @@ export default class Index extends React.Component {
                     text-align: center;
                     margin-top: .5rem;
                     display: inline-block;
-                    color: ${css.colors.rogueblue};
+                    color: ${css.colors.foreground};
                     position: relative;
                 }
                 .slogan::before, .slogan::after {

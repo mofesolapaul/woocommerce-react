@@ -45,6 +45,10 @@ class ProductsContainer extends React.Component {
         if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_ITEM_UPDATE:
+                    // sometimes, in the case of products with extras, d.item_id
+                    // will not be a valid subscriber here
+                    if (!this.subscribers[d.item_id]) break;
+
                     this.subscribers[d.item_id](Cart.getQty(d.item_id));
                     break;
             }
@@ -60,6 +64,9 @@ class ProductsContainer extends React.Component {
     actionHandler(type, data) {
         switch (type) {
             case 'cart.button.add':
+                actions.addToCart(data);
+                break;
+            case 'cart.button.solo_add':
                 actions.addToCart(data);
                 break;
             case 'cart.button.remove':
@@ -136,7 +143,7 @@ class ProductsContainer extends React.Component {
                     position: relative
                 }
                 .ProductsContainer {
-                    background: ${css.colors.ultrawhite};
+                    background: ${css.colors.background};
                     border-radius: 3px;
                     max-width: 1120px;
                     padding: 2rem 1rem;

@@ -179,10 +179,10 @@ export default class Checkout extends React.PureComponent {
                 {/* styles */}
                 <style jsx>{`
                     .ConfirmLocation {
-                        // background: ${css.colors.rogueblue};
+                        // background: ${css.colors.foreground};
                         height: 100%;
                         overflow: auto;
-                        // color: ${css.colors.ultrawhite};
+                        // color: ${css.colors.background};
                         padding: 1rem 2px;
                         // display: flex;
                         // flex: 1,
@@ -209,7 +209,7 @@ export default class Checkout extends React.PureComponent {
     render() {
         const PriceTag = 
             <div className="PriceTag">
-                <h3 className="price-label font-sourcesans slim">Total: {`\u20A6`}{this.props.total}</h3>
+                <h3 className="price-label font-primary slim">Total: {`\u20A6`}{this.props.total}</h3>
 
                 {/* styles */}
                 <style jsx>{`
@@ -217,8 +217,8 @@ export default class Checkout extends React.PureComponent {
                         text-align: center;
                     }
                     .PriceTag {
-                        background: teal;
-                        color: ${css.colors.ultrawhite};
+                        background: ${css.colors.touchof};
+                        color: ${css.colors.background};
                         position: absolute;
                         padding: 0 2rem;
                         display: inline-block;

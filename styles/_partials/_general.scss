@@ -11,17 +11,17 @@ html, body {
     height: 100%;
     overflow: auto;
     background: #ebe473;
-    color: $veryblack;
+    color: $foreground_deep;
     font-size: 12px;
     font-family: 'Source Sans Pro', sans-serif;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', sans-serif;
+    @extend .font-secondary;
 }
-.font-sourcesans {
+.font-primary {
     font-family: 'Source Sans Pro', sans-serif;
 }
-.font-playfair {
+.font-secondary {
     font-family: 'Playfair Display', sans-serif;
 }
 .slim {
@@ -62,14 +62,14 @@ h1, h2, h3, h4, h5, h6 {
     }
     &:hover, &.dead {
         background:rgba(0,0,10,.9);
-        color: $ultrawhite;
+        color: $background;
         filter: none;
     }
     &.green {
-        background: teal;
-        color: $ultrawhite;
+        background: $touchof;
+        color: $background;
         &:hover {
-            background: darken(teal, 5%);
+            background: darken($touchof, 5%);
         }
     }
 }
@@ -109,7 +109,7 @@ ul {
         display: block;
         margin-bottom: .3rem;
         &:not(.decolorized) {
-            color: $fallleaf;
+            color: $primarydark;
         }
     }
     .field {

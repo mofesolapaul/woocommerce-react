@@ -4,8 +4,8 @@ export default props => (
     <div className="wrapper" onClick={e => props.actionHandler('order.checkout')}>
         <div className="info">Click this label to proceed, you can edit your location later</div>
         <div className="ETA">
-            <h3 className="title slim font-sourcesans">{props.etaAddy}</h3>
-            <p className="font-sourcesans approx">approx. {props.duration} ({props.distance})</p>
+            <h3 className="title slim font-primary">{props.etaAddy}</h3>
+            <p className="font-primary approx">approx. {props.duration} ({props.distance})</p>
         </div>
 
         {/* styles */}
@@ -30,7 +30,7 @@ export default props => (
             }
             .info {
                 display: inline-block;
-                background: ${css.colors.fallleaf};
+                background: ${css.colors.primary};
                 color: white;
                 padding: .5rem;
                 max-width: 98%;
@@ -42,7 +42,7 @@ export default props => (
             .ETA {
                 text-align: left;
                 padding: .5rem 1rem 1rem;
-                background: ${css.colors.fallleaf}; // #461f07;
+                background: ${css.colors.primary}; // #461f07;
                 color: #fff;
                 border-radius: 4px 4px 0 0;
                 filter: drop-shadow(0px -2px 5px rgba(0,0,0,.3));

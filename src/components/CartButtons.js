@@ -9,18 +9,26 @@ export default class CartButtons extends React.Component {
 
         // bind
         bindToThis(this, 'add');
+        bindToThis(this, 'solo_add');
         bindToThis(this, 'remove');
     }
     add() {
         this.props.handler && this.props.handler('cart.button.add');
+    }
+    solo_add() {
+        this.props.handler && this.props.handler('cart.button.solo_add');
     }
     remove() {
         this.props.handler && this.props.handler('cart.button.remove');
     }
     render() {
         return <View>
-            <a className="btn cart-btn left" onClick={this.remove}>{`\u2013`}</a>
-            <a className="btn cart-btn right" onClick={this.add}>+</a>
+            {!this.props.solo && <View>
+                <a className="btn cart-btn left" onClick={this.remove}>{`\u2013`}</a>
+                <a className="btn cart-btn right" onClick={this.add}>+</a>
+            </View>}
+
+            {!!this.props.solo && <a className="btn cart-btn solo-btn" onClick={this.solo_add}>Add to cart</a>}
 
             {/* style */}
             <style jsx>{`
@@ -34,8 +42,8 @@ export default class CartButtons extends React.Component {
                 padding: 0;
             }
             .cart-btn:hover {
-                background: ${css.colors.fallleaf};
-                color: ${css.colors.ultrawhite};
+                background: ${css.colors.primarydark};
+                color: ${css.colors.background};
                 border-color: transparent;
             }
             .left {
@@ -46,9 +54,17 @@ export default class CartButtons extends React.Component {
                 border-radius: 0 50% 50% 0;
             }
             .cart-btn:active {
-                background: ${css.colors.fallleafdark};
+                background: ${css.colors.primarydark};
                 box-shadow: rgba(82,89,101,.25) 1px 2px 6px inset;
                 user-select: none;
+            }
+            .solo-btn {
+                width: auto;
+                border-radius: 20px;
+                text-transform: uppercase;
+                font-size: smaller;
+                padding: 2px 6px;
+                font-weight: bolder;
             }
             `}</style>
         </View>;

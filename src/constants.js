@@ -176,9 +176,13 @@ export const productCache = {
         } else {
             let products = await db.get(CACHE.DB_KEY_PRODUCTS);
             if (!!category) {
-                category = category.toLowerCase();
                 db.put(CACHE.DB_KEY_FILTER_CATEGORY, category);
-                products = products.filter(p => getCategory(p) == category);
+
+                // apply filter if selected option is not 'Everything'
+                if (category != '~') {
+                    category = category.toLowerCase();
+                    products = products.filter(p => getCategory(p) == category);
+                }
             }
             return products;
         }

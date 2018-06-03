@@ -54,6 +54,8 @@ export default class ShoppingCart extends React.Component {
             order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
             customer: Cart.getCustomer(),
+        }, () => {
+            if (this.state.isEmpty) this.actionHandler('cart.dismiss');
         });
 
         // Order received
@@ -102,6 +104,7 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'cart.dismiss':
                 this.setState({ state: NEUTRAL });
+                this.props.actionHandler && this.props.actionHandler(type);
                 break;
             case 'order.qty.change':
                 actions.updateQty(data.id, data.value);

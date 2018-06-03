@@ -20,7 +20,7 @@ export default ({price, actionHandler}) => <View>
 
     <style jsx>{`
     .title {
-        color: ${css.colors.fallleaf}
+        color: ${css.colors.primary}
     }
     .padded {
         padding-top: 1rem;
