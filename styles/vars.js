@@ -6,7 +6,7 @@ export default {
         ultrawhite: '#f6f7f4',
         wisteriasnow: '#d8dfe4',
         orchidash: '#d2d8e1',
-        desertbone: '#ebddd4',
+        desertbone: '#ebe473',
         // greys
         veryblack: '#424449',
         rogueblue: '#525965',
