@@ -24,7 +24,7 @@ export default class CartButtons extends React.Component {
                 <a className="btn cart-btn right" onClick={this.add}>+</a>
             </View>}
 
-            {!!this.props.solo && <a className="btn cart-btn solo-btn" onClick={this.add}>Add</a>}
+            {!!this.props.solo && <a className="btn cart-btn solo-btn" onClick={this.add}>Add to cart</a>}
 
             {/* style */}
             <style jsx>{`
@@ -56,9 +56,11 @@ export default class CartButtons extends React.Component {
             }
             .solo-btn {
                 width: auto;
-                border-radius: 50%;
+                border-radius: 20px;
                 text-transform: uppercase;
                 font-size: smaller;
+                padding: 2px 6px;
+                font-weight: bolder;
             }
             `}</style>
         </View>;
