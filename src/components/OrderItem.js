@@ -10,7 +10,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
             &nbsp;{!!item.product.extras? `+ \u20A6`+getExtrasTotal(item.product.extras.extras):''}
             &nbsp;per unit</p>
         <a className="btn"
-            onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
+            onClick={e => actionHandler('order.delete', {id: item.product.__id || item.product.id})}>Remove from cart</a>
         &nbsp;{hasExtras(item.product) &&
                 <a className="btn green"
                     onClick={e => actionHandler('extras.show', {
