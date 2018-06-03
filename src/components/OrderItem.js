@@ -67,7 +67,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         .btn {
             padding: 2px 4px;
             background: ${css.colors.desertbone};
-            color: ${css.colors.primary};
+            color: ${css.colors.foreground};
             font-size: x-small;
             border: none;
             font-weight: lighter;

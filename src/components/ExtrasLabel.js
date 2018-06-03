@@ -17,9 +17,9 @@ export default ({category, actionHandler, product, orderItem}) => category? <Vie
         margin: auto;
         display: inline-block;
         z-index: 2;
-        font-size: larger;
+        font-size: small;
         padding: .8rem 1.2rem;
-        color: ${css.colors.background};
+        color: ${css.colors.foreground};
         background: ${css.colors.primary};
         border-radius: 50px;
         -webkit-font-smoothing: antialiased;
