@@ -58,7 +58,7 @@ class Product extends React.Component{
             </div>
             <div className="flex">
                 <h4 className="title slim">{item.name}</h4>
-                {this.props.readonly? null:<CartButtons handler={this.actionHandler} />}
+                {this.props.readonly? null:<CartButtons handler={this.actionHandler} solo={!!this.props.hasExtras} />}
             </div>
             <p className="desc" dangerouslySetInnerHTML={{ __html: item.description }}></p>
 
