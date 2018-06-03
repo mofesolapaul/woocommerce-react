@@ -6,14 +6,14 @@ export default {
         background: '#f6f7f4',
         wisteriasnow: '#d8dfe4',
         orchidash: '#d2d8e1',
-        desertbone: '#ebe473',
+        desertbone: '#e9e38a',
         // greys
         foreground_deep: '#424449',
         foreground: '#525965',
         bluetwilight: '#412345',
         // accent
-        primary: 'black',
-        primarydark: '#a35940',
+        primary: '#ebe473',
+        primarydark: '#ccc564',
         touchof: 'teal',
     },
 }
