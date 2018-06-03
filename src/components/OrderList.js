@@ -29,7 +29,7 @@ export default class OrderList extends React.Component {
         }
     }
     render() {
-        const items = this.props.items.map(t => <OrderItem key={t.product.id} item={t} actionHandler={this.actionHandler} />);
+        const items = this.props.items.map(t => <OrderItem key={t.product.__id || t.product.id} item={t} actionHandler={this.actionHandler} />);
         let view = <View>
             <div className="summary">
                 <div className="content relative">

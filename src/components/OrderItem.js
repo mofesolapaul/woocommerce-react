@@ -21,7 +21,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="action">
         <div><strong>Qty:</strong></div>
         <input className="qty font-secondary" type="number" min="1" value={item.qty}
-            onChange={e => actionHandler('order.qty.change', {id: item.product.id, el: e.target})} />
+            onChange={e => actionHandler('order.qty.change', {id: item.product.__id || item.product.id, el: e.target})} />
     </div>
 
     {/* styles */}

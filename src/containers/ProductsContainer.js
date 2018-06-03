@@ -45,6 +45,10 @@ class ProductsContainer extends React.Component {
         if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_ITEM_UPDATE:
+                    // sometimes, in the case of products with extras, d.item_id
+                    // will not be a valid subscriber here
+                    if (!this.subscribers[d.item_id]) break;
+
                     this.subscribers[d.item_id](Cart.getQty(d.item_id));
                     break;
             }
