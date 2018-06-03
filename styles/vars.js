@@ -13,7 +13,7 @@ export default {
         bluetwilight: '#412345',
         // accent
         primary: 'black',
-        fallleafdark: '#a35940',
+        primarydark: '#a35940',
         touchof: 'teal',
     },
 }

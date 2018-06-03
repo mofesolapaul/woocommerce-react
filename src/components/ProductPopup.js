@@ -55,7 +55,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       overflow-y: auto;
     }
     .pp--label {
-      background: ${css.colors.fallleafdark};
+      background: ${css.colors.primarydark};
       color: ${css.colors.background};
       text-transform: uppercase;
       font-size: smaller;

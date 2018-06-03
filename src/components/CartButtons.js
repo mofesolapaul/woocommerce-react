@@ -50,7 +50,7 @@ export default class CartButtons extends React.Component {
                 border-radius: 0 50% 50% 0;
             }
             .cart-btn:active {
-                background: ${css.colors.fallleafdark};
+                background: ${css.colors.primarydark};
                 box-shadow: rgba(82,89,101,.25) 1px 2px 6px inset;
                 user-select: none;
             }
