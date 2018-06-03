@@ -5,7 +5,7 @@
 // Define animations
 @include define-anim-loading-ball-1;
 @include define-anim-loading-ball-2;
-@include define-anim-color-pulse(blackish, $desertbone, $fallleaf);
+@include define-anim-color-pulse(blackish, $desertbone, $primary);
 
 // Loading
 .loading {

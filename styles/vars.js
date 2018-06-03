@@ -12,7 +12,7 @@ export default {
         foreground: '#525965',
         bluetwilight: '#412345',
         // accent
-        fallleaf: 'black',
+        primary: 'black',
         fallleafdark: '#a35940',
         touchof: 'teal',
     },

@@ -144,7 +144,7 @@ class ExtrasPopup extends React.Component {
 
             <style jsx>{`
             .title {
-                color: ${css.colors.fallleaf}
+                color: ${css.colors.primary}
             }
             .padded {
                 padding-top: 1rem;

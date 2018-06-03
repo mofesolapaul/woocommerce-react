@@ -227,7 +227,7 @@ export default class Index extends React.Component {
             <style jsx>{`
                 .title {
                     text-transform: uppercase;
-                    color: ${css.colors.fallleaf};
+                    color: ${css.colors.primary};
                     // text-shadow: ${css.colors.bluetwilight} 2px 2px;
                     letter-spacing: 1px;
                     word-spacing: 2px;

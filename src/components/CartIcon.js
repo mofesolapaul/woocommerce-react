@@ -47,7 +47,7 @@ export default ({clickHandler, visible, total}) => (
             .icon {
                 background: url('${URL.base}static/img/cart.png') center no-repeat;
                 background-size: 50%;
-                background-color: ${css.colors.fallleaf};
+                background-color: ${css.colors.primary};
             }
             .price {
                 background-color: #ee2210;
