@@ -3,7 +3,7 @@ import toastr from 'toastr';
 import Layout from '../src/layouts/_default';
 import css from '../styles/vars';
 import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers';
-import Config from '../src/Config';
+import {App} from '../src/Config';
 import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, getActiveFilter, productCache, sleep, uid} from '../src/constants';
 import {Cart} from '../src/stores';
 
@@ -208,9 +208,9 @@ export default class Index extends React.Component {
         };
 
         return <Layout>
-            <h1 className="title font-sourcesans">{Config.App.name}</h1>
+            <h1 className="title font-sourcesans">{App.name}</h1>
             <div className="text-center">
-                <h4 className="slogan">{Config.App.slogan}</h4>
+                <h4 className="slogan">{App.slogan}</h4>
             </div>
             
             <ProductsContainer {...productContainerProps}></ProductsContainer>
