@@ -51,7 +51,7 @@ export default (childComponent, options, detachedViews) => (
             }
             .wrapper {
                 flex-grow: 1;
-                padding-left:10px;
+                // padding-left:10px;
                 position: relative;
                 overflow: hidden;
             }
