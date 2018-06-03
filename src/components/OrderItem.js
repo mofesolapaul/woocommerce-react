@@ -1,10 +1,11 @@
 import css from '../../styles/vars';
-import {moneyFormat, hasExtras, getExtrasTotal} from '../constants';
+import {moneyFormat, hasExtras, extrasList, getExtrasTotal} from '../constants';
 
 export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />
     <div className="info">
         <h3 className="title font-primary">{item.product.name}</h3>
+        {!!item.product.extras ? <span>: {extrasList(item.product.extras.extras, item.product.extras.dressing)}</span>:''}
         <p className="text font-secondary">
             {`\u20A6`}{moneyFormat(item.product.price)} 
             &nbsp;{!!item.product.extras? `+ \u20A6`+getExtrasTotal(item.product.extras.extras):''}

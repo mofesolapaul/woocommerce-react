@@ -393,5 +393,6 @@ export const getCategory = (product) => {
 export const getActiveFilter = () => db.getSync(CACHE.DB_KEY_FILTER_CATEGORY) || '';
 
 export const extrasList = (extras, dressing) => {
-    return (dressing? dressing+', ':'') + Object.keys(extras).join(', ');
+    const xtras = !!extras ? Object.keys(extras).join(', '):'';
+    return (dressing? dressing+', ':'') + xtras;
 }
