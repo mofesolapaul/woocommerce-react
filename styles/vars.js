@@ -9,7 +9,7 @@ export default {
         desertbone: '#ebe473',
         // greys
         veryblack: '#424449',
-        rogueblue: '#525965',
+        foreground: '#525965',
         bluetwilight: '#412345',
         // accent
         fallleaf: 'black',

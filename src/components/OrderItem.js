@@ -27,7 +27,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
     {/* styles */}
     <style jsx>{`
         .OrderItem {
-            color: ${css.colors.rogueblue};
+            color: ${css.colors.foreground};
             margin-bottom: 1rem;
             position: relative;
         }

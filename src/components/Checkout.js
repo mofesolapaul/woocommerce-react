@@ -179,7 +179,7 @@ export default class Checkout extends React.PureComponent {
                 {/* styles */}
                 <style jsx>{`
                     .ConfirmLocation {
-                        // background: ${css.colors.rogueblue};
+                        // background: ${css.colors.foreground};
                         height: 100%;
                         overflow: auto;
                         // color: ${css.colors.background};

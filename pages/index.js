@@ -242,7 +242,7 @@ export default class Index extends React.Component {
                     text-align: center;
                     margin-top: .5rem;
                     display: inline-block;
-                    color: ${css.colors.rogueblue};
+                    color: ${css.colors.foreground};
                     position: relative;
                 }
                 .slogan::before, .slogan::after {

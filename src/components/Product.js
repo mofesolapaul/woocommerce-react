@@ -119,7 +119,7 @@ class Product extends React.Component{
                     padding: 1rem 0;
                 }
                 .title {
-                    color: ${css.colors.rogueblue};
+                    color: ${css.colors.foreground};
                     transition: .25s ease-out;
                     margin-bottom: 0;
                     font-size: 150%;

@@ -39,7 +39,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       position: relative;
     }
     .pp--title {
-      color: ${css.colors.rogueblue};
+      color: ${css.colors.foreground};
       transition: .25s ease-out;
       margin-bottom: 0;
       font-size: 150%;
