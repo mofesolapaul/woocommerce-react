@@ -391,3 +391,8 @@ export const getCategory = (product) => {
  * Helper for accessing stored category filter
  */
 export const getActiveFilter = () => db.getSync(CACHE.DB_KEY_FILTER_CATEGORY) || '';
+
+export const extrasList = (extras, dressing) => {
+    const xtras = !!extras ? Object.keys(extras).join(', '):'';
+    return (dressing? dressing+', ':'') + xtras;
+}

@@ -87,6 +87,9 @@ class ProductsContainer extends React.Component {
             case 'product-popup.dismiss':
                 this.setState({expandedProduct: null});
                 break;
+            case 'extras-popup.dismiss':
+                this.setState({showExtras: null});
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
