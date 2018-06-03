@@ -14,6 +14,6 @@ export default {
         // accent
         fallleaf: 'black',
         fallleafdark: '#a35940',
-
+        touchof: 'teal',
     },
 }

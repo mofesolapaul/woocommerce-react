@@ -66,10 +66,10 @@ h1, h2, h3, h4, h5, h6 {
         filter: none;
     }
     &.green {
-        background: teal;
+        background: $touchof;
         color: $background;
         &:hover {
-            background: darken(teal, 5%);
+            background: darken($touchof, 5%);
         }
     }
 }

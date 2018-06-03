@@ -75,7 +75,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         }
         .btn.green {
             background: rgba(0, 128, 128, .3);
-            color: teal;
+            color: ${css.colors.touchof};
         }
     `}</style>
 </div>

@@ -217,7 +217,7 @@ export default class Checkout extends React.PureComponent {
                         text-align: center;
                     }
                     .PriceTag {
-                        background: teal;
+                        background: ${css.colors.touchof};
                         color: ${css.colors.background};
                         position: absolute;
                         padding: 0 2rem;
