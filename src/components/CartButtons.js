@@ -14,6 +14,9 @@ export default class CartButtons extends React.Component {
     add() {
         this.props.handler && this.props.handler('cart.button.add');
     }
+    solo_add() {
+        this.props.handler && this.props.handler('cart.button.solo_add');
+    }
     remove() {
         this.props.handler && this.props.handler('cart.button.remove');
     }
