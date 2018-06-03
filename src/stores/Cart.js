@@ -49,10 +49,11 @@ const Cart = flux.createStore({
     },
 
     updateOrderItem: function(item) {
-        if (!!this.orders[item.id]) {
+        const id = item.__id || item.id;
+        if (!!this.orders[id]) {
             this.orders[item.id].product = item;
             this.persist();
-            this.emit('order.update', {id: ORDER_ITEM_UPDATE, item_id: item.id});
+            this.emit('order.update', {id: ORDER_ITEM_UPDATE, item_id: id});
         }
     },
 
