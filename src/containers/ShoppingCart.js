@@ -107,7 +107,6 @@ export default class ShoppingCart extends React.Component {
                 this.props.actionHandler && this.props.actionHandler(type);
                 break;
             case 'order.qty.change':
-                console.log("change");
                 actions.updateQty(data.id, data.value);
                 break;
             case 'order.delete':
