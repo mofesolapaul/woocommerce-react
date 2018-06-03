@@ -107,6 +107,9 @@ export default class Index extends React.Component {
             case 'products.filter':
                 this.fetchProducts(data);
                 break;
+            case 'cart.dismiss':
+                this.setState({ showCart: false });
+                break;
         }
     }
 

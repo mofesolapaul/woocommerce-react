@@ -44,6 +44,7 @@ export default class ShoppingCart extends React.Component {
     
     componentWillReceiveProps(nextProps) {
         if (nextProps.showOpened && this.state.state == NEUTRAL) {
+            console.log("Showing cart now");
             this.openCart();
         }
     }
@@ -102,6 +103,7 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'cart.dismiss':
                 this.setState({ state: NEUTRAL });
+                this.props.actionHandler && this.props.actionHandler(type);
                 break;
             case 'order.qty.change':
                 actions.updateQty(data.id, data.value);
