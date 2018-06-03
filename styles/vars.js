@@ -8,7 +8,7 @@ export default {
         orchidash: '#d2d8e1',
         desertbone: '#ebe473',
         // greys
-        veryblack: '#424449',
+        foreground_deep: '#424449',
         foreground: '#525965',
         bluetwilight: '#412345',
         // accent
