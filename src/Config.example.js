@@ -15,7 +15,8 @@ const Constants = {
     },
     App: {
         name: "Czar",
-        slogan: "Ain't Life just Fun!"
+        slogan: "Ain't Life just Fun!",
+        title: "Czar Stores : Know what you want",
     }
 }
 
