@@ -108,7 +108,7 @@ class Product extends React.Component{
                 }
                 
                 .Product:hover .title {
-                    color: ${css.colors.primary};
+                    color: ${css.colors.primarydark};
                 }
                 .Product:hover .img-wrapper::before {
                     top: 0;
