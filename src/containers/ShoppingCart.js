@@ -23,6 +23,7 @@ export default class ShoppingCart extends React.Component {
             shippingMethods: Cart.getShippingMethods(),
             shippingCost: '0.00',
             customer: Cart.getCustomer(),
+            order_id: null,
         };
 
         // bind
@@ -54,6 +55,7 @@ export default class ShoppingCart extends React.Component {
             order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
             customer: Cart.getCustomer(),
+            order_id: Cart.isOrderCreated(),
         }, () => {
             if (this.state.isEmpty) this.actionHandler('cart.dismiss');
         });
@@ -204,7 +206,7 @@ export default class ShoppingCart extends React.Component {
                             total={this.state.total}
                             fieldDefaults={this.state.customer}
                             readonly={this.props.readonly}
-                            order_id={Cart.isOrderCreated()} />;
+                            order_id={this.state.order_id} />;
                 break;
             default:
                 view = !this.state.isEmpty?
