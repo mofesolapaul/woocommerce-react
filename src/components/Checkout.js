@@ -105,6 +105,10 @@ export default class Checkout extends React.PureComponent {
                     class="btn sleek-btn"
                     reference={uid()}
                     email={this.state.form['checkout.email']}
+                    metadata={{
+                        "customer_name": this.state.form['checkout.clientname'],
+                        "order_id": this.props.readonly
+                    }}
                     amount={this.props.total * 100}
                     paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
                     ref={btn => this.actionHandler('set.paystack.btn', btn)}
