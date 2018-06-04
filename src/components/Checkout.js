@@ -105,7 +105,7 @@ export default class Checkout extends React.PureComponent {
                     reference={uid()}
                     email={this.state.form['checkout.email']}
                     amount={this.props.total * 100}
-                    paystackkey={Paystack.TestPublicKey}
+                    paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
                     ref={btn => this.actionHandler('set.paystack.btn', btn)}
                     callback={response => this.actionHandler('paystack.response', response)}
                     close={response => this.actionHandler('paystack.dismiss', response)}>
