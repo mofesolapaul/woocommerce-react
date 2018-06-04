@@ -114,6 +114,9 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'location.dismiss':
             case 'checkout.dismiss':
+                if (this.props.readonly) {
+                    this.actionHandler('toast.show', {type: 'w', msg: "You have a pending order, please complete or cancel it to dismiss the shopping cart"});
+                }
                 this.openCart();
                 break;
             // case 'map.location.set':
