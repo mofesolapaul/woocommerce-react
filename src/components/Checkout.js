@@ -80,6 +80,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'order.confirm':
                 this.actionHandler('app.busy');
+                this.setState({isConfirming: false});
                 this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
             default:
