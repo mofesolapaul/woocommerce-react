@@ -106,8 +106,23 @@ export default class Checkout extends React.PureComponent {
                     reference={uid()}
                     email={this.state.form['checkout.email']}
                     metadata={{
-                        "customer_name": this.state.form['checkout.clientname'],
-                        "order_id": this.props.readonly
+                        "custom_fields":[
+                            {
+                              "display_name":"Order ID",
+                              "variable_name":"Order ID",
+                              "value":this.props.order_id
+                            },
+                            {
+                              "display_name":"Customer Name",
+                              "variable_name":"Customer Name",
+                              "value":this.state.form['checkout.clientname']
+                            },
+                            {
+                              "display_name":"Phone Number",
+                              "variable_name":"Phone Number",
+                              "value":this.state.form['checkout.phone']
+                            },
+                        ]
                     }}
                     amount={this.props.total * 100}
                     paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
