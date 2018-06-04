@@ -30,12 +30,12 @@ const Cart = flux.createStore({
     ],
 
     addToCart: function(item) {
-        if (!!this.order_created) {
-            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"});
-            return;
-        }
-        if (!!this.orders[item.id]) this.orders[item.id].qty++;
-        else this.orders[item.id] = { product: item, qty: 1 };
+        if (this.orderImpossible()) return;
+
+        const id = item.__id || item.id;
+
+        if (!!this.orders[id]) this.orders[id].qty++;
+        else this.orders[id] = { product: item, qty: 1 };
 
         // extras?
         if (hasExtras(item)) {
@@ -49,18 +49,17 @@ const Cart = flux.createStore({
     },
 
     updateOrderItem: function(item) {
-        if (!!this.orders[item.id]) {
-            this.orders[item.id].product = item;
+        const id = item.__id || item.id;
+        if (!!this.orders[id]) {
+            this.orders[id].product = item;
             this.persist();
-            this.emit('order.update', {id: ORDER_ITEM_UPDATE, item_id: item.id});
+            this.emit('order.update', {id: ORDER_ITEM_UPDATE, item_id: id});
         }
     },
 
     removeFromCart: function(item) {
-        if (!!this.order_created) {
-            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"});
-            return;
-        }
+        if (this.orderImpossible()) return;
+
         if (!!this.orders[item.id]) {
             if (this.orders[item.id].qty == 1) delete this.orders[item.id];
             else this.orders[item.id].qty--;
@@ -70,20 +69,16 @@ const Cart = flux.createStore({
     },
 
     deleteOrder: function(id) {
-        if (!!this.order_created) {
-            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"});
-            return;
-        }
+        if (this.orderImpossible()) return;
+
         delete this.orders[id];
         this.persist();
         this.emit('order.delete', {id: ORDER_ITEM_UPDATE, item_id: id}); // products depend on this is to update their state
     },
 
     updateQty: function(id, qty) {
-        if (!!this.order_created) {
-            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"});
-            return;
-        }
+        if (this.orderImpossible()) return;
+        
         if (this.orders[id]) {
             this.orders[id].qty = qty;
             this.persist();
@@ -102,7 +97,6 @@ const Cart = flux.createStore({
             if (!!product.extras) {
                 const mainValue = [];
                 const metaValues = [];
-                console.log(product.extras);
                 if (!!product.extras.dressing) {
                     mainValue.push({ "value": product.extras.dressing, "section": "588747e475a021.02250771" });
                     metaValues.push({ "key": " ", "value": product.extras.dressing });
@@ -163,6 +157,7 @@ const Cart = flux.createStore({
             payment_method: isPaid? 'paystack':'cod',
             // payment_method_title: 'Direct Bank Transfer',
             set_paid: true,
+            customer_note: customer['checkout.note'],
             billing: {...billing},
             shipping: {...billing},
             line_items: this.getLineItems(),
@@ -200,13 +195,18 @@ const Cart = flux.createStore({
     },
 
     setShippingMethod: function(data) {
-        if (!!this.order_created) {
-            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete it to place another order"});
-            return;
-        }
+        if (this.orderImpossible()) return;
+
         this.shipping_method = data;
         this.shipping_cost = data.cost;
         this.emit('order.shipping_cost', {id: ORDER_SHIPPING_COST, cost: data.cost});
+    },
+
+    orderImpossible: function() {
+        if (!!this.order_created) {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'w', msg: "You have a pending order, please complete or cancel it to place another order"});
+            return true;
+        }
     },
 
     persist: function(which = 'orders') {

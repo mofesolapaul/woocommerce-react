@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import {URL} from '../Config';
+import {App, URL} from '../Config';
 
-const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) => (
+const Layout = ({title = App.title, children}) => (
     <div className="layout">
         <Head>
             <title>{ title }</title>
@@ -22,7 +22,7 @@ const Layout = ({title = 'SmoothieExpress - Check out our new shop', children}) 
     <style jsx>{`
     .layout {
         padding: 2%;
-        background: peach;
+        background: #ebe473;
         height: 100%;
         // display: flex;
     }

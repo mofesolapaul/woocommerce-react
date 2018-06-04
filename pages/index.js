@@ -3,7 +3,8 @@ import toastr from 'toastr';
 import Layout from '../src/layouts/_default';
 import css from '../styles/vars';
 import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/containers';
-import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, productCache, sleep, uid} from '../src/constants';
+import {App} from '../src/Config';
+import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, getActiveFilter, productCache, sleep, uid} from '../src/constants';
 import {Cart} from '../src/stores';
 
 export default class Index extends React.Component {
@@ -103,26 +104,48 @@ export default class Index extends React.Component {
                 // - ProductsContainer & ShoppingCart
                 this.notifySubscriber('showExtras', data);
                 break;
+            case 'products.filter':
+                this.fetchProducts(data);
+                break;
+            case 'cart.dismiss':
+                this.setState({ showCart: false });
+                break;
         }
     }
 
-    async fetchProducts() {
+    async fetchProducts(filter) {
+        // prevent the case where the same products are loaded multiply
+        // when the user clicks 'Show more' too rapidly
+        if (this.state.productFetchInProgress) return;
+
+        // apply last used filter if a new one's not specified
+        const lastUsedFilter = getActiveFilter();
+        const useFilter = !!filter || !!lastUsedFilter;
+
+        // we filtering
+        if (useFilter) {
+            filter = filter || lastUsedFilter;
+            this.setState({
+                page: 1,
+                products: [],
+                productsOnDisplay: [],
+                displayOnFetch: true,
+                productsLoading: true,
+            });
+            await sleep(500) // because setState() is asynchronous
+        }
+
+        // get state values
         let {per_page, page, products, productsOnDisplay, productFetchInProgress} = this.state; 
         
         // Ensures that the loading anim is displayed when necessary
         // i.e: when user clicks on 'Show more' and there's nothing prefetched yet
         this.setState({ productsLoading: !products.length });
-
-        // prevent the case where the same products are loaded multiply
-        // when the user clicks 'Show more' too rapidly
-        if (productFetchInProgress) return;
         
         this.setState({productFetchInProgress: true, productsLoadingFailed: false});
 
-        // await sleep(500) // sleep for a half second
-        
         // load products from cache if entry exists
-        let cached = !!this.skipCache? false:await productCache.fetch();
+        let cached = !!this.skipCache? false:await productCache.fetch(filter);
         this.setState({productCacheExists: !!cached});
         if (!cached) {
             // if the cache did not hit the first time, skip it for subsequent requests
@@ -183,12 +206,14 @@ export default class Index extends React.Component {
             actionHandler: this.actionHandler, // action handler
             pendingOrderIsPaid: this.state.pendingOrderIsPaid, // is the pending order paid for already?
             registrar: this.subscribeChild,
+            showFilters: this.state.productCacheExists, // Show filters or not
+            activeFilter: getActiveFilter(), // Active filter
         };
 
         return <Layout>
-            <h1 className="title font-sourcesans">Smoothie Express</h1>
+            <h1 className="title font-primary">{App.name}</h1>
             <div className="text-center">
-                <h4 className="slogan">Find your Blend, Find your Passion!</h4>
+                <h4 className="slogan">{App.slogan}</h4>
             </div>
             
             <ProductsContainer {...productContainerProps}></ProductsContainer>
@@ -205,7 +230,7 @@ export default class Index extends React.Component {
             <style jsx>{`
                 .title {
                     text-transform: uppercase;
-                    color: ${css.colors.fallleaf};
+                    color: ${css.colors.foreground_deep};
                     // text-shadow: ${css.colors.bluetwilight} 2px 2px;
                     letter-spacing: 1px;
                     word-spacing: 2px;
@@ -220,7 +245,7 @@ export default class Index extends React.Component {
                     text-align: center;
                     margin-top: .5rem;
                     display: inline-block;
-                    color: ${css.colors.rogueblue};
+                    color: ${css.colors.foreground};
                     position: relative;
                 }
                 .slogan::before, .slogan::after {

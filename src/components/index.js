@@ -2,6 +2,7 @@ import Button, { ButtonPane } from './Button';
 import CartButtons from './CartButtons';
 import CartIcon from './CartIcon';
 import Checkout from './Checkout';
+import ConfirmOrder from './ConfirmOrder';
 import ETALabel from './ETALabel';
 import ExtrasLabel from './ExtrasLabel';
 import ExtrasPopup from './ExtrasPopup';
@@ -14,6 +15,7 @@ import OrderList from './OrderList';
 import PaystackButton from './PaystackButton';
 import PriceDisplay from './PriceDisplay';
 import Product from './Product';
+import ProductFilters from './ProductFilters';
 import ProductImage from './ProductImage';
 import ProductPopup from './ProductPopup';
 import ProductRowDivider from './ProductRowDivider';
@@ -27,6 +29,7 @@ export {
     CartButtons,
     CartIcon,
     Checkout,
+    ConfirmOrder,
     ETALabel,
     ExtrasLabel,
     ExtrasPopup,
@@ -39,6 +42,7 @@ export {
     PaystackButton,
     PriceDisplay,
     Product,
+    ProductFilters,
     ProductImage,
     ProductPopup,
     ProductRowDivider,

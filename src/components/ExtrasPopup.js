@@ -2,7 +2,7 @@ import React from 'react';
 import css from '../../styles/vars';
 import {View} from './';
 import { uid } from '../constants';
-import {bindToThis, getExtrasTotal} from '../constants';
+import {bindToThis, extrasList, getExtrasTotal} from '../constants';
 
 class ExtrasPopup extends React.Component {
     constructor(props) {
@@ -18,7 +18,6 @@ class ExtrasPopup extends React.Component {
         bindToThis(this, 'setExtras');
         bindToThis(this, 'updateExtras');
         bindToThis(this, 'dismiss');
-        bindToThis(this, 'extrasList');
         bindToThis(this, 'isExtraSelected');
         bindToThis(this, 'hasExtras');
         bindToThis(this, 'hasDressing');
@@ -65,13 +64,6 @@ class ExtrasPopup extends React.Component {
         this.actionHandler("extras.dismiss");
     }
 
-    extrasList() {
-        const {product} = this.props;
-        const dressing = this.state.dressing;
-        const extras = this.state.extras;
-        return (dressing? dressing+', ':'') + Object.keys(extras).join(', ');
-    }
-
     isExtraSelected(name) {
         return !!this.state.extras[name];
     }
@@ -95,7 +87,7 @@ class ExtrasPopup extends React.Component {
     render() {
         const {data, actionHandler, product} = this.props;
         return <View>
-            <div className="extras-curtain curtain">
+            <div className="extras-curtain curtain" id="ec--" onClick={e => e.target.id == 'ec--' && actionHandler('extras-popup.dismiss')}>
                 <div className="extras-modal modal">
                     <h3>
                         <span className="">Extras ({data.cat})</span>
@@ -103,7 +95,7 @@ class ExtrasPopup extends React.Component {
                     </h3>
                     {!!product.extras && <div className="well">
                         Your selection (N{getExtrasTotal(this.state.extras)}):
-                        &nbsp;{this.extrasList()}
+                        &nbsp;{extrasList(this.state.extras, this.state.dressing)}
                     </div>}
                     <form>
                         {/* For extras with dressing (dressing is free) */}
@@ -144,7 +136,7 @@ class ExtrasPopup extends React.Component {
 
             <style jsx>{`
             .title {
-                color: ${css.colors.fallleaf}
+                color: ${css.colors.primary}
             }
             .padded {
                 padding-top: 1rem;

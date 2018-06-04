@@ -1,16 +1,17 @@
 import css from '../../styles/vars';
-import {moneyFormat, hasExtras, getExtrasTotal} from '../constants';
+import {moneyFormat, hasExtras, extrasList, getExtrasTotal} from '../constants';
 
 export default ({item, actionHandler}) => <div className="OrderItem flex">
     <div className="img" />
     <div className="info">
-        <h3 className="title font-sourcesans">{item.product.name}</h3>
-        <p className="text font-playfair">
+        <h3 className="title font-primary">{item.product.name}</h3>
+        {!!item.product.extras ? <span>: {extrasList(item.product.extras.extras, item.product.extras.dressing)}</span>:''}
+        <p className="text font-secondary">
             {`\u20A6`}{moneyFormat(item.product.price)} 
             &nbsp;{!!item.product.extras? `+ \u20A6`+getExtrasTotal(item.product.extras.extras):''}
             &nbsp;per unit</p>
         <a className="btn"
-            onClick={e => actionHandler('order.delete', {id: item.product.id})}>Remove from cart</a>
+            onClick={e => actionHandler('order.delete', {id: item.product.__id || item.product.id})}>Remove from cart</a>
         &nbsp;{hasExtras(item.product) &&
                 <a className="btn green"
                     onClick={e => actionHandler('extras.show', {
@@ -20,14 +21,14 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
     </div>
     <div className="action">
         <div><strong>Qty:</strong></div>
-        <input className="qty font-playfair" type="number" min="1" value={item.qty}
-            onChange={e => actionHandler('order.qty.change', {id: item.product.id, el: e.target})} />
+        <input className="qty font-secondary" type="number" min="1" value={item.qty}
+            onChange={e => actionHandler('order.qty.change', {id: item.product.__id || item.product.id, el: e.target})} />
     </div>
 
     {/* styles */}
     <style jsx>{`
         .OrderItem {
-            color: ${css.colors.rogueblue};
+            color: ${css.colors.foreground};
             margin-bottom: 1rem;
             position: relative;
         }
@@ -67,7 +68,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         .btn {
             padding: 2px 4px;
             background: ${css.colors.desertbone};
-            color: ${css.colors.fallleaf};
+            color: ${css.colors.foreground};
             font-size: x-small;
             border: none;
             font-weight: lighter;
@@ -75,7 +76,7 @@ export default ({item, actionHandler}) => <div className="OrderItem flex">
         }
         .btn.green {
             background: rgba(0, 128, 128, .3);
-            color: teal;
+            color: ${css.colors.touchof};
         }
     `}</style>
 </div>

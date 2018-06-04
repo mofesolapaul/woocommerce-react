@@ -6,7 +6,8 @@ import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
-import { Button, ButtonPane, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Button, ButtonPane, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Hidden } from './View';
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -24,6 +25,7 @@ export default class Checkout extends React.PureComponent {
         this.state = {
             form: {...form},
             isStorePickup: false,
+            isConfirming: false,
         };
 
         // bind
@@ -39,6 +41,7 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.clientname':
             case 'checkout.email':
             case 'checkout.phone':
+            case 'checkout.note':
             case 'shipping.method':
                 let {form} = this.state;
                 form[type] = data.value || data;
@@ -63,13 +66,22 @@ export default class Checkout extends React.PureComponent {
                 const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
                 else {
-                    this.actionHandler('app.busy');
-                    this.props.actionHandler && this.props.actionHandler(type, data);
+                    this.orderType = type;
+                    this.orderData = data;
+                    this.setState({isConfirming: true});
                 }
                 break;
             case 'checkout.cancel':
                 this.actionHandler('toast.show', { msg: "You have cancelled the order" });
                 this.props.actionHandler && this.props.actionHandler(type, data);
+                break;
+            case 'order.holdon':
+                this.setState({isConfirming: false});
+                break;
+            case 'order.confirm':
+                this.actionHandler('app.busy');
+                this.setState({isConfirming: false});
+                this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
@@ -80,12 +92,46 @@ export default class Checkout extends React.PureComponent {
         let {props} = this;
         let {fieldDefaults: __} = props;
         const normalButtons = <View>
-            {!this.state.isStorePickup && <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />}
-            &emsp; <Button label={this.state.isStorePickup? 'Complete Order':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
+            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
+            &emsp; <Button label={this.state.isStorePickup? 'Pay at the store':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
         </View>;
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.cancel', this.state.form);}} />
+        </View>;
+        const buttons = <View>
+            <Hidden>
+                <PaystackButton
+                    class="btn sleek-btn"
+                    reference={uid()}
+                    email={this.state.form['checkout.email']}
+                    metadata={{
+                        "custom_fields":[
+                            {
+                              "display_name":"Order ID",
+                              "variable_name":"Order ID",
+                              "value":this.props.order_id
+                            },
+                            {
+                              "display_name":"Customer Name",
+                              "variable_name":"Customer Name",
+                              "value":this.state.form['checkout.clientname']
+                            },
+                            {
+                              "display_name":"Phone Number",
+                              "variable_name":"Phone Number",
+                              "value":this.state.form['checkout.phone']
+                            },
+                        ]
+                    }}
+                    amount={this.props.total * 100}
+                    paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
+                    ref={btn => this.actionHandler('set.paystack.btn', btn)}
+                    callback={response => this.actionHandler('paystack.response', response)}
+                    close={response => this.actionHandler('paystack.dismiss', response)}>
+                </PaystackButton>
+            </Hidden>
+            {this.props.readonly? pendingPaymentButtons:normalButtons}
         </View>;
         return (
             <Section>
@@ -153,20 +199,26 @@ export default class Checkout extends React.PureComponent {
                             <label className="label">Phone</label>
                             <input className="field" type="text" defaultValue={__['checkout.phone']} onChange={e => this.actionHandler('checkout.phone', e.target)} placeholder="Phone number goes here" />
                         </div>
+                        <div className="group">
+                            <label className="label">Notes (extra information about your order)</label>
+                            <textarea className="field" defaultValue={__['checkout.note']} onChange={e => this.actionHandler('checkout.note', e.target)} placeholder="What should we note about this order"></textarea>
+                        </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            {this.props.readonly? pendingPaymentButtons:normalButtons}
+                            {buttons}
                         </ButtonPane>
                     </div>
+
+                    {this.state.isConfirming && <ConfirmOrder price={this.props.total} actionHandler={this.actionHandler} />}
                 </div>
 
                 {/* styles */}
                 <style jsx>{`
                     .ConfirmLocation {
-                        // background: ${css.colors.rogueblue};
+                        // background: ${css.colors.foreground};
                         height: 100%;
                         overflow: auto;
-                        // color: ${css.colors.ultrawhite};
+                        // color: ${css.colors.background};
                         padding: 1rem 2px;
                         // display: flex;
                         // flex: 1,
@@ -193,7 +245,7 @@ export default class Checkout extends React.PureComponent {
     render() {
         const PriceTag = 
             <div className="PriceTag">
-                <h3 className="price-label font-sourcesans slim">Total: {`\u20A6`}{this.props.total}</h3>
+                <h3 className="price-label font-primary slim">Total: {`\u20A6`}{this.props.total}</h3>
 
                 {/* styles */}
                 <style jsx>{`
@@ -201,8 +253,8 @@ export default class Checkout extends React.PureComponent {
                         text-align: center;
                     }
                     .PriceTag {
-                        background: teal;
-                        color: ${css.colors.ultrawhite};
+                        background: ${css.colors.touchof};
+                        color: ${css.colors.background};
                         position: absolute;
                         padding: 0 2rem;
                         display: inline-block;

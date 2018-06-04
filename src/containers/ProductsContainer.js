@@ -3,7 +3,7 @@ import css from '../../styles/vars';
 import actions from '../actions';
 import {Cart} from '../stores';
 import {bindToThis, getExtrasData, hasExtras, ORDER_ITEM_UPDATE} from '../constants';
-import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductPopup, ProductRowDivider, View } from '../components';
+import { Button, ButtonPane, ExtrasPopup, Loading, NotFound, Product, ProductFilters, ProductPopup, ProductRowDivider, View } from '../components';
 
 class ProductsContainer extends React.Component {
     constructor(props) {
@@ -45,6 +45,10 @@ class ProductsContainer extends React.Component {
         if (!!d && !!d.id) {
             switch (d.id) {
                 case ORDER_ITEM_UPDATE:
+                    // sometimes, in the case of products with extras, d.item_id
+                    // will not be a valid subscriber here
+                    if (!this.subscribers[d.item_id]) break;
+
                     this.subscribers[d.item_id](Cart.getQty(d.item_id));
                     break;
             }
@@ -61,6 +65,15 @@ class ProductsContainer extends React.Component {
         switch (type) {
             case 'cart.button.add':
                 actions.addToCart(data);
+                break;
+            case 'cart.button.solo_add':
+                actions.addToCart(data.product);
+
+                // show the ExtrasPopup
+                this.actionHandler('extras.show', {
+                    category: data.extrasPopupPayload.category,
+                    product: Cart.getAnOrder(data.extrasPopupPayload.product_id)
+                });
                 break;
             case 'cart.button.remove':
                 actions.removeFromCart(data);
@@ -80,6 +93,9 @@ class ProductsContainer extends React.Component {
             case 'product-popup.dismiss':
                 this.setState({expandedProduct: null});
                 break;
+            case 'extras-popup.dismiss':
+                this.setState({showExtras: null});
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
@@ -88,9 +104,10 @@ class ProductsContainer extends React.Component {
     
     render() {
         let {items} = this.state;
-        let {_showMore, canShowMore, loading, notfound, readonly} = this.props;
+        let {_showMore, canShowMore, loading, notfound, readonly, showFilters, activeFilter} = this.props;
         return <div className="wrapper">
             <div className="ProductsContainer">
+                <ProductFilters visible={showFilters} actionHandler={this.actionHandler} activeFilter={activeFilter} />
                 <div className="ProductsList clearfix">
                     <View>
                         { items.map((product, index) => <View key={index}>
@@ -135,7 +152,7 @@ class ProductsContainer extends React.Component {
                     position: relative
                 }
                 .ProductsContainer {
-                    background: ${css.colors.ultrawhite};
+                    background: ${css.colors.background};
                     border-radius: 3px;
                     max-width: 1120px;
                     padding: 2rem 1rem;

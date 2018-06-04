@@ -2,7 +2,7 @@ import css from '../../styles/vars';
 import {View} from './';
 
 export default ({category, actionHandler, product, orderItem}) => category? <View>
-    <span className="btn sleek-btn extras-label font-sourcesans"
+    <span className="btn sleek-btn extras-label font-primary"
         onClick={e => actionHandler('extras.show', {category, product: orderItem})}>
         Manage Extras
     </span>
@@ -17,10 +17,10 @@ export default ({category, actionHandler, product, orderItem}) => category? <Vie
         margin: auto;
         display: inline-block;
         z-index: 2;
-        font-size: larger;
+        font-size: small;
         padding: .8rem 1.2rem;
-        color: ${css.colors.ultrawhite};
-        background: ${css.colors.fallleaf};
+        color: ${css.colors.foreground};
+        background: ${css.colors.primary};
         border-radius: 50px;
         -webkit-font-smoothing: antialiased;
     }

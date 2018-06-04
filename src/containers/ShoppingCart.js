@@ -23,6 +23,7 @@ export default class ShoppingCart extends React.Component {
             shippingMethods: Cart.getShippingMethods(),
             shippingCost: '0.00',
             customer: Cart.getCustomer(),
+            order_id: null,
         };
 
         // bind
@@ -54,6 +55,9 @@ export default class ShoppingCart extends React.Component {
             order_total: Cart.getTotal(true),
             total: Cart.getTotal(),
             customer: Cart.getCustomer(),
+            order_id: Cart.isOrderCreated(),
+        }, () => {
+            if (this.state.isEmpty) this.actionHandler('cart.dismiss');
         });
 
         // Order received
@@ -102,6 +106,7 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'cart.dismiss':
                 this.setState({ state: NEUTRAL });
+                this.props.actionHandler && this.props.actionHandler(type);
                 break;
             case 'order.qty.change':
                 actions.updateQty(data.id, data.value);
@@ -111,6 +116,9 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'location.dismiss':
             case 'checkout.dismiss':
+                if (this.props.readonly) {
+                    this.actionHandler('toast.show', {type: 'w', msg: "You have a pending order, please complete or cancel it to dismiss the shopping cart"});
+                }
                 this.openCart();
                 break;
             // case 'map.location.set':
@@ -150,13 +158,13 @@ export default class ShoppingCart extends React.Component {
             case 'set.paystack.btn':
                 this.paystackBtn = data;
                 break;
-            case 'payment.closed':
+            case 'paystack.dismiss':
                 this.actionHandler('app.busy', false);
-                this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'w'});
+                this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'e'});
                 break;
-            case 'payment.response':
+            case 'paystack.response':
                 // this.actionHandler('app.busy', false)
-                this.actionHandler('toast.show', { msg: 'Payment received, completing order...', type: 'i' });
+                this.actionHandler('toast.show', { msg: 'Payment received via Paystack, completing order...', type: 'i' });
                 setTimeout(() => actions.savePaymentDetails(data), 1000);
                 break;
             case 'checkout.cancel':
@@ -198,7 +206,7 @@ export default class ShoppingCart extends React.Component {
                             total={this.state.total}
                             fieldDefaults={this.state.customer}
                             readonly={this.props.readonly}
-                            order_id={Cart.isOrderCreated()} />;
+                            order_id={this.state.order_id} />;
                 break;
             default:
                 view = !this.state.isEmpty?

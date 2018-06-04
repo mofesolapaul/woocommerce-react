@@ -6,7 +6,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
   <div className="product-popup curtain" id="pp--" onClick={e => e.target.id == 'pp--' && actionHandler('product-popup.dismiss')}>
     <div className="product-modal modal">
       <div className="pp--img-wheel">
-        <ProductImage src={srcList(product.images)} wheel />
+        <ProductImage src={srcList(product.images)}  />
       </div>
       <div className="pp--body">
         <h3 className="pp--title slim">{product.name}</h3>
@@ -25,7 +25,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
   {/* styling */}
   <style jsx>{`
     .product-modal {
-      background: ${css.colors.ultrawhite};
+      background: ${css.colors.background};
       max-width: 480px;
       padding: 0;
     }
@@ -39,7 +39,7 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       position: relative;
     }
     .pp--title {
-      color: ${css.colors.rogueblue};
+      color: ${css.colors.foreground};
       transition: .25s ease-out;
       margin-bottom: 0;
       font-size: 150%;
@@ -55,8 +55,8 @@ export default ({product, visible, actionHandler}) => !!visible && <View>
       overflow-y: auto;
     }
     .pp--label {
-      background: ${css.colors.fallleafdark};
-      color: ${css.colors.ultrawhite};
+      background: ${css.colors.primarydark};
+      color: ${css.colors.background};
       text-transform: uppercase;
       font-size: smaller;
       padding: 2px 5px;
