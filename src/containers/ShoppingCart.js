@@ -158,7 +158,7 @@ export default class ShoppingCart extends React.Component {
                 break;
             case 'paystack.dismiss':
                 this.actionHandler('app.busy', false);
-                this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'w'});
+                this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'e'});
                 break;
             case 'paystack.response':
                 // this.actionHandler('app.busy', false)
