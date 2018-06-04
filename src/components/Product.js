@@ -30,7 +30,13 @@ class Product extends React.Component{
             case 'cart.button.solo_add':
                 const item = {...this.props.item};
                 item.__id = item.id + '__' + uid();
-                this.props.actionHandler(type, item);
+                this.props.actionHandler(type, {
+                    product: item,
+                    extrasPopupPayload: {
+                        category: this.props.hasExtras, 
+                        product_id: item.__id
+                    }
+                });
                 break;
             case 'cart.button.remove':
                 if (qty != 0) {

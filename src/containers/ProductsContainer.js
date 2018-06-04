@@ -67,7 +67,13 @@ class ProductsContainer extends React.Component {
                 actions.addToCart(data);
                 break;
             case 'cart.button.solo_add':
-                actions.addToCart(data);
+                actions.addToCart(data.product);
+
+                // show the ExtrasPopup
+                this.actionHandler('extras.show', {
+                    category: data.extrasPopupPayload.category,
+                    product: Cart.getAnOrder(data.extrasPopupPayload.product_id)
+                });
                 break;
             case 'cart.button.remove':
                 actions.removeFromCart(data);
