@@ -153,13 +153,13 @@ export default class ShoppingCart extends React.Component {
             case 'set.paystack.btn':
                 this.paystackBtn = data;
                 break;
-            case 'payment.closed':
+            case 'paystack.dismiss':
                 this.actionHandler('app.busy', false);
                 this.actionHandler('toast.show', {msg: 'Payment could not be completed, please complete payment to expedite your order', type: 'w'});
                 break;
-            case 'payment.response':
+            case 'paystack.response':
                 // this.actionHandler('app.busy', false)
-                this.actionHandler('toast.show', { msg: 'Payment received, completing order...', type: 'i' });
+                this.actionHandler('toast.show', { msg: 'Payment received via Paystack, completing order...', type: 'i' });
                 setTimeout(() => actions.savePaymentDetails(data), 1000);
                 break;
             case 'checkout.cancel':

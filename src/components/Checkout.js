@@ -7,6 +7,7 @@ import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
 import { Button, ButtonPane, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Hidden } from './View';
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -97,6 +98,21 @@ export default class Checkout extends React.PureComponent {
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.cancel', this.state.form);}} />
         </View>;
+        const buttons = <View>
+            <Hidden>
+                <PaystackButton
+                    class="btn sleek-btn"
+                    reference={uid()}
+                    email={this.state.form['checkout.email']}
+                    amount={this.props.total * 100}
+                    paystackkey={Paystack.TestPublicKey}
+                    ref={btn => this.actionHandler('set.paystack.btn', btn)}
+                    callback={response => this.actionHandler('paystack.response', response)}
+                    close={response => this.actionHandler('paystack.dismiss', response)}>
+                </PaystackButton>
+            </Hidden>
+            {this.props.readonly? pendingPaymentButtons:normalButtons}
+        </View>;
         return (
             <Section>
                 <div className="ConfirmLocation">
@@ -169,7 +185,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            {this.props.readonly? pendingPaymentButtons:normalButtons}
+                            {buttons}
                         </ButtonPane>
                     </div>
 
