@@ -60,6 +60,7 @@ export default class OrderList extends React.Component {
                         width: 30%;
                         position: relative;
                         padding-left: .5rem;
+                        overflow-y: auto;
                     }
                 }
                 .summary > .content::before {

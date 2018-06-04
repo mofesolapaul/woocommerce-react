@@ -7,6 +7,7 @@ import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
 import { Button, ButtonPane, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Hidden } from './View';
 
 export default class Checkout extends React.PureComponent {
     constructor(props) {
@@ -79,6 +80,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'order.confirm':
                 this.actionHandler('app.busy');
+                this.setState({isConfirming: false});
                 this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
             default:
@@ -96,6 +98,40 @@ export default class Checkout extends React.PureComponent {
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.cancel', this.state.form);}} />
+        </View>;
+        const buttons = <View>
+            <Hidden>
+                <PaystackButton
+                    class="btn sleek-btn"
+                    reference={uid()}
+                    email={this.state.form['checkout.email']}
+                    metadata={{
+                        "custom_fields":[
+                            {
+                              "display_name":"Order ID",
+                              "variable_name":"Order ID",
+                              "value":this.props.order_id
+                            },
+                            {
+                              "display_name":"Customer Name",
+                              "variable_name":"Customer Name",
+                              "value":this.state.form['checkout.clientname']
+                            },
+                            {
+                              "display_name":"Phone Number",
+                              "variable_name":"Phone Number",
+                              "value":this.state.form['checkout.phone']
+                            },
+                        ]
+                    }}
+                    amount={this.props.total * 100}
+                    paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
+                    ref={btn => this.actionHandler('set.paystack.btn', btn)}
+                    callback={response => this.actionHandler('paystack.response', response)}
+                    close={response => this.actionHandler('paystack.dismiss', response)}>
+                </PaystackButton>
+            </Hidden>
+            {this.props.readonly? pendingPaymentButtons:normalButtons}
         </View>;
         return (
             <Section>
@@ -169,7 +205,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            {this.props.readonly? pendingPaymentButtons:normalButtons}
+                            {buttons}
                         </ButtonPane>
                     </div>
 
