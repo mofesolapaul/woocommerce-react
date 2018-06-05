@@ -211,7 +211,7 @@ export default class Index extends React.Component {
         };
 
         return <Layout>
-            <h1 className="title font-primary">{App.logo? <img src={`${URL.base}static/img/site-logo.png`} alt="site-logo" />:App.name}</h1>
+            <h1 className="title font-primary">{App.logo? <img className="site-logo" src={`${URL.base}static/img/site-logo.png`} alt="site-logo" />:App.name}</h1>
             <div className="text-center">
                 <h4 className="slogan">{App.slogan}</h4>
             </div>
@@ -240,6 +240,10 @@ export default class Index extends React.Component {
                 }
                 .title:hover {
                     text-shadow: none;
+                }
+                .site-logo {
+                    width: 60%;
+                    max-width: 240px;
                 }
                 .slogan {
                     text-align: center;
