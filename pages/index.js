@@ -211,7 +211,7 @@ export default class Index extends React.Component {
         };
 
         return <Layout>
-            <h1 className="title font-primary">{App.logo? <img className="site-logo" title={App.name} src={`${URL.base}static/img/site-logo.png`} alt="site-logo" />:App.name}</h1>
+            <h1 className="title font-primary">{App.logo? <img className="site-logo" title={App.name} src={`${URL.base}static/img/site-logo.png`} alt={App.name || "site-logo"} />:App.name}</h1>
             <div className="text-center">
                 <h4 className="slogan">{App.slogan}</h4>
             </div>
