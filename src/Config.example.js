@@ -17,6 +17,7 @@ const Constants = {
         name: "Czar",
         slogan: "Ain't Life just Fun!",
         title: "Czar Stores : Know what you want",
+        logo: null,
     }
 }
 
