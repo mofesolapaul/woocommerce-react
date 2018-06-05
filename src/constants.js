@@ -368,6 +368,7 @@ export const CATEGORIES = [
     "salads",
     "sandwiches",
     "smoothies",
+    "ice teas"
 ];
 
 /**
