@@ -156,7 +156,7 @@ const Cart = flux.createStore({
             payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
             payment_method: isPaid? 'paystack':'cod',
             // payment_method_title: 'Direct Bank Transfer',
-            set_paid: true,
+            set_paid: !isPaid,
             customer_note: customer['checkout.note'],
             billing: {...billing},
             shipping: {...billing},
@@ -223,6 +223,7 @@ const Cart = flux.createStore({
     orderCreated: function(id) {
         this.order_created = id;
         db.put(CART.DB_KEY_NEW_ORDER_ID, id);
+        db.put(CART.DB_KEY_ORDER_COST, this.total);
         db.put(CART.DB_KEY_CUSTOMER_DATA, this.customer);
         this.emit('app.order-created');
     },
@@ -232,6 +233,7 @@ const Cart = flux.createStore({
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
         db.delete(CART.DB_KEY_ORDERS);
         db.delete(CART.DB_KEY_PAYMENT_DATA);
+        db.delete(CART.DB_KEY_ORDER_COST);
         
         // persist existing customer data
         this.persist('customer');
@@ -258,9 +260,29 @@ const Cart = flux.createStore({
         }
     },
 
-    markOrderAsPaid: function() {
-        this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
-        this.reset();
+    markOrderAsPaid: async function() {
+        let mark_succeeded = false;
+        if (this.pending_order_is_paid) {
+            mark_succeeded = false;
+            try {
+                // do API_CALL
+                const response = await API_CALLS.markOrderAsPaid(this.order_created);
+                mark_succeeded = true;
+            } catch(e) {}
+        }
+        if (mark_succeeded) {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
+            this.reset();
+        } else {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'e', msg: "Unable to complete order, please try again."});
+        }
+    },
+
+    /**
+     * Get the saved cost of pending order
+     */
+    pendingOrderTotal: function () {
+        return db.getSync(CART.DB_KEY_ORDER_COST) || null
     },
 
     exports: {
@@ -294,6 +316,9 @@ const Cart = flux.createStore({
          * Pretty straightforward
          */
         getTotal: function(order_total = false) {
+            if (this.order_created) {
+                return this.pendingOrderTotal();
+            }
             let total = 0;
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price);

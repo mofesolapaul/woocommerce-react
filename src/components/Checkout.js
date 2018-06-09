@@ -16,11 +16,14 @@ export default class Checkout extends React.PureComponent {
         const form = {
             'checkout.email': '',
             ...this.props.fieldDefaults,
-            'map.searchbox.update': props.location,
         };
         
-        // don't remember shipping method
-        delete form['shipping.method'];
+        // except in readonly mode
+        if (!props.readonly) {
+            // don't remember shipping method
+            delete form['shipping.method'];
+            form['map.searchbox.update'] = props.location;
+        }
 
         this.state = {
             form: {...form},
@@ -30,9 +33,21 @@ export default class Checkout extends React.PureComponent {
 
         // bind
         bindToThis(this, 'actionHandler');
+        bindToThis(this, 'setIsStorePickup');
     }
     getShippingMethods() {
         this.actionHandler('get.shipping.methods');
+    }
+    componentDidMount() {
+        this.setIsStorePickup(this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setIsStorePickup(nextProps);
+    }
+    setIsStorePickup(props) {
+        if (props.readonly) {
+            this.setState({isStorePickup: props.fieldDefaults['shipping.method'] == 'flat_rate:51'});
+        }
     }
     actionHandler(type, data) {
         switch (type) {
@@ -110,7 +125,7 @@ export default class Checkout extends React.PureComponent {
                             {
                               "display_name":"Order ID",
                               "variable_name":"Order ID",
-                              "value":this.props.order_id
+                              "value":props.order_id
                             },
                             {
                               "display_name":"Customer Name",
@@ -124,14 +139,14 @@ export default class Checkout extends React.PureComponent {
                             },
                         ]
                     }}
-                    amount={this.props.total * 100}
+                    amount={props.total * 100}
                     paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
                     ref={btn => this.actionHandler('set.paystack.btn', btn)}
                     callback={response => this.actionHandler('paystack.response', response)}
                     close={response => this.actionHandler('paystack.dismiss', response)}>
                 </PaystackButton>
             </Hidden>
-            {this.props.readonly? pendingPaymentButtons:normalButtons}
+            {props.readonly? pendingPaymentButtons:normalButtons}
         </View>;
         return (
             <Section>
@@ -143,6 +158,7 @@ export default class Checkout extends React.PureComponent {
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
                                 className="field fancy-select"
+                                defaultValue={props.readonly && __['shipping.method']}
                                 onChange={e => this.actionHandler('shipping.method', e.target)}>
 
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
@@ -184,7 +200,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         {!this.state.isStorePickup && <div className="group">
                             <label className="label">Enter delivery address</label>
-                            <LocationSearchInput actionHandler={this.actionHandler} location={props.location}></LocationSearchInput>
+                            <LocationSearchInput actionHandler={this.actionHandler} location={props.readonly? __['map.searchbox.update']:props.location}></LocationSearchInput>
                             {/* <input type="text" onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" /> */}
                         </div>}
                         <div className="group">
@@ -209,7 +225,7 @@ export default class Checkout extends React.PureComponent {
                         </ButtonPane>
                     </div>
 
-                    {this.state.isConfirming && <ConfirmOrder price={this.props.total} actionHandler={this.actionHandler} />}
+                    {this.state.isConfirming && <ConfirmOrder price={props.total} actionHandler={this.actionHandler} />}
                 </div>
 
                 {/* styles */}

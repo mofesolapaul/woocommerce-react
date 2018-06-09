@@ -6,7 +6,6 @@ export default ({price, actionHandler}) => <View>
         <div className="extras-modal modal">
             <h3>
                 <span className="">Confirm Order</span>
-                <a className="close" onClick={this.dismiss}>{`\u00d7`}</a>
             </h3>
             <div className="well">
                 Your total bill is &#8358;{price}. Do you want to proceed with your order?
