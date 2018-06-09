@@ -409,10 +409,12 @@ export const PAYMENT_OPTIONS = [
             {
                 name: "cod",
                 label: "Cash on Delivery",
+                intent: "checkout.finish",
             },
             {
                 name: "bacs",
                 label: "Direct Bank Transfer",
+                intent: "checkout.finish",
             },
         ]
     },
@@ -422,6 +424,7 @@ export const PAYMENT_OPTIONS = [
             {
                 name: "paystack",
                 label: "Pay with Paystack",
+                intent: "checkout.pay",
             },
         ]
     },
