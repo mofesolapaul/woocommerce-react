@@ -122,7 +122,7 @@ export default class Checkout extends React.PureComponent {
                             {
                               "display_name":"Order ID",
                               "variable_name":"Order ID",
-                              "value":this.props.order_id
+                              "value":props.order_id
                             },
                             {
                               "display_name":"Customer Name",
@@ -136,14 +136,14 @@ export default class Checkout extends React.PureComponent {
                             },
                         ]
                     }}
-                    amount={this.props.total * 100}
+                    amount={props.total * 100}
                     paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
                     ref={btn => this.actionHandler('set.paystack.btn', btn)}
                     callback={response => this.actionHandler('paystack.response', response)}
                     close={response => this.actionHandler('paystack.dismiss', response)}>
                 </PaystackButton>
             </Hidden>
-            {this.props.readonly? pendingPaymentButtons:normalButtons}
+            {props.readonly? pendingPaymentButtons:normalButtons}
         </View>;
         return (
             <Section>
@@ -155,7 +155,7 @@ export default class Checkout extends React.PureComponent {
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
                                 className="field fancy-select"
-                                defaultValue={this.props.readonly && __['shipping.method']}
+                                defaultValue={props.readonly && __['shipping.method']}
                                 onChange={e => this.actionHandler('shipping.method', e.target)}>
 
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
@@ -197,7 +197,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         {!this.state.isStorePickup && <div className="group">
                             <label className="label">Enter delivery address</label>
-                            <LocationSearchInput actionHandler={this.actionHandler} location={props.location}></LocationSearchInput>
+                            <LocationSearchInput actionHandler={this.actionHandler} location={props.readonly? __['map.searchbox.update']:props.location}></LocationSearchInput>
                             {/* <input type="text" onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" /> */}
                         </div>}
                         <div className="group">
@@ -222,7 +222,7 @@ export default class Checkout extends React.PureComponent {
                         </ButtonPane>
                     </div>
 
-                    {this.state.isConfirming && <ConfirmOrder price={this.props.total} actionHandler={this.actionHandler} />}
+                    {this.state.isConfirming && <ConfirmOrder price={props.total} actionHandler={this.actionHandler} />}
                 </div>
 
                 {/* styles */}
