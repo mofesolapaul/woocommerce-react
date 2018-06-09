@@ -261,7 +261,7 @@ const Cart = flux.createStore({
     },
 
     markOrderAsPaid: async function() {
-        let mark_succeeded = false;
+        let mark_succeeded = true;
         if (this.pending_order_is_paid) {
             mark_succeeded = false;
             try {
