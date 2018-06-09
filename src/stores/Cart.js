@@ -4,7 +4,7 @@ import {versionCode} from '../Config';
 import constants, {
     db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, AppGlobals, Signature, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
-    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES, CACHE} from '../constants';
+    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES, CACHE, sleep} from '../constants';
 
 const Cart = flux.createStore({
     orders: {},
@@ -232,9 +232,7 @@ const Cart = flux.createStore({
 
     reset: function(hard = false) {
         if (hard) {
-            db.clear();
-            location.reload();
-            return;
+            return db.clear();
         }
 
         db.delete(CART.DB_KEY_CUSTOMER_DATA);
@@ -298,9 +296,11 @@ const Cart = flux.createStore({
          * Load data important to the cart
          */
         load: async function() {
-            if (await(db.get(CART.DB_KEY_ORDERS)) != versionCode) {
+            if (await(db.get(CART.DB_KEY_VERSION_CODE)) != versionCode) {
                 this.reset(true);
+                await sleep(500);
                 db.put(CART.DB_KEY_VERSION_CODE, versionCode);
+                return location.reload();
             }
 
             this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {};
