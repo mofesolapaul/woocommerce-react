@@ -156,7 +156,7 @@ const Cart = flux.createStore({
             payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
             payment_method: isPaid? 'paystack':'cod',
             // payment_method_title: 'Direct Bank Transfer',
-            set_paid: true,
+            set_paid: !isPaid,
             customer_note: customer['checkout.note'],
             billing: {...billing},
             shipping: {...billing},
@@ -258,7 +258,11 @@ const Cart = flux.createStore({
         }
     },
 
-    markOrderAsPaid: function() {
+    markOrderAsPaid: async function() {
+        if (this.pending_order_is_paid) {
+            // do API_CALL
+            console.log("order is paid");
+        }
         this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
         this.reset();
     },
