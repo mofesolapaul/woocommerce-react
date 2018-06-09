@@ -30,9 +30,21 @@ export default class Checkout extends React.PureComponent {
 
         // bind
         bindToThis(this, 'actionHandler');
+        bindToThis(this, 'setIsStorePickup');
     }
     getShippingMethods() {
         this.actionHandler('get.shipping.methods');
+    }
+    componentDidMount() {
+        this.setIsStorePickup(this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setIsStorePickup(nextProps);
+    }
+    setIsStorePickup(props) {
+        if (props.readonly) {
+            this.setState({isStorePickup: props.fieldDefaults['shipping.method'] == 'flat_rate:51'});
+        }
     }
     actionHandler(type, data) {
         switch (type) {
@@ -143,6 +155,7 @@ export default class Checkout extends React.PureComponent {
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
                                 className="field fancy-select"
+                                defaultValue={this.props.readonly && __['shipping.method']}
                                 onChange={e => this.actionHandler('shipping.method', e.target)}>
 
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
