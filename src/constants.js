@@ -407,12 +407,12 @@ export const PAYMENT_OPTIONS = [
         name: "Cash",
         options: [
             {
-                name: "Cash on Delivery",
-                label: "cod",
+                name: "cod",
+                label: "Cash on Delivery",
             },
             {
-                name: "Direct Bank Transfer",
-                label: "bacs",
+                name: "bacs",
+                label: "Direct Bank Transfer",
             },
         ]
     },
@@ -420,8 +420,8 @@ export const PAYMENT_OPTIONS = [
         name: "Online Payment",
         options: [
             {
-                name: "Pay with Paystack",
-                label: "paystack",
+                name: "paystack",
+                label: "Pay with Paystack",
             },
         ]
     },

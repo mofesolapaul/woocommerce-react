@@ -107,6 +107,7 @@ export default class Checkout extends React.PureComponent {
         let {props} = this;
         let {fieldDefaults: __} = props;
         const normalButtons = <View>
+            <CheckoutButton />
             <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label={this.state.isStorePickup? 'Pay at the store':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
         </View>;
@@ -221,7 +222,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
-                            <CheckoutButton />
+                            {buttons}
                         </ButtonPane>
                     </div>
 
