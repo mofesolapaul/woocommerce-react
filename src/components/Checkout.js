@@ -4,7 +4,7 @@ import Head from 'next/head';
 
 import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
-import { bindToThis, pullInt, uid, AppGlobals } from '../constants';
+import { bindToThis, pullInt, uid, AppGlobals, BACS_NOTIF } from '../constants';
 import { Paystack, DEBUG } from '../Config';
 import { Button, ButtonPane, CheckoutButton, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 import { Hidden } from './View';
@@ -238,7 +238,7 @@ export default class Checkout extends React.PureComponent {
                         </ButtonPane>
                     </div>
 
-                    {this.state.isConfirming && <ConfirmOrder price={props.total} actionHandler={this.actionHandler} />}
+                    {this.state.isConfirming && <ConfirmOrder price={props.total} actionHandler={this.actionHandler} moreInfo={AppGlobals.payment_method == 'bacs' && BACS_NOTIF} />}
                 </div>
 
                 {/* styles */}

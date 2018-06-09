@@ -435,8 +435,16 @@ export const PAYMENT_OPTIONS = [
  */
 export const AppGlobals = {}
 
+/**
+ * The supported payment types
+ */
 export const PAYMENT_TYPES = {
     "cod": "Cash on Delivery",
     "bacs": "Direct Bank Transfer",
     "paystack": "Pay with Paystack",
 }
+
+export const BACS_NOTIF = "Make your payment directly into our bank account (bank details available at checkout). Please use your registered email or depositor’s name. Your order won’t be shipped until the funds have cleared in our account.\n" +
+"Account name: Smoothie Express Limited\n" +
+"Bank name: Guaranty Trust Bank\n" +
+"Account number: 0160242372"
