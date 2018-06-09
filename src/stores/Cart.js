@@ -1,10 +1,9 @@
 import flux from 'flux-react';
 import actions from '../actions';
 import constants, {
-    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, API_CALLS, 
+    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, AppGlobals, Signature, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
-    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, 
-    ORDER_SHIPPING_COST} from '../constants';
+    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES, CACHE} from '../constants';
 
 const Cart = flux.createStore({
     orders: {},
@@ -152,9 +151,11 @@ const Cart = flux.createStore({
             city: 'Lagos',
             country: 'NG',
         };
+        
+        const _pm = AppGlobals.payment_method || (isPaid? 'paystack':'cod');
         const payload = {
-            payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
-            payment_method: isPaid? 'paystack':'cod',
+            payment_method_title: PAYMENT_TYPES[_pm],
+            payment_method: _pm,
             // payment_method_title: 'Direct Bank Transfer',
             set_paid: !isPaid,
             customer_note: customer['checkout.note'],
@@ -261,7 +262,7 @@ const Cart = flux.createStore({
     },
 
     markOrderAsPaid: async function() {
-        let mark_succeeded = false;
+        let mark_succeeded = true;
         if (this.pending_order_is_paid) {
             mark_succeeded = false;
             try {
@@ -376,6 +377,18 @@ const Cart = flux.createStore({
          */
         pendingOrderIsPaid: function() {
             return this.pending_order_is_paid;
+        },
+
+        /**
+         * Name's pretty descriptive
+         */
+        shouldShowAccountFundsAlert: function() {
+            const shouldDo = Signature.get(Signature.DAY) != db.getSync(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE);
+            if (shouldDo) {
+                // wait till tomorrow to show the next one
+                db.put(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE, Signature.get(Signature.DAY));
+            }
+            return shouldDo;
         }
     }
 });

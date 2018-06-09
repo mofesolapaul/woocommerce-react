@@ -6,6 +6,7 @@ import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/container
 import {App, URL} from '../src/Config';
 import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, getActiveFilter, productCache, sleep, uid} from '../src/constants';
 import {Cart} from '../src/stores';
+import {Alert} from '../src/components';
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -26,6 +27,8 @@ export default class Index extends React.Component {
             pendingOrderIsPaid: false,
             productFetchInProgress: false,
             productCacheExists: false,
+            alert: {},
+            showAlert: false,
         };
 
         // bind
@@ -34,6 +37,7 @@ export default class Index extends React.Component {
         bindToThis(this, 'showProducts');
         bindToThis(this, 'updateState');
         bindToThis(this, 'subscribeChild');
+        bindToThis(this, 'accountFundsAlert');
     }
 
     componentWillMount() {
@@ -45,6 +49,10 @@ export default class Index extends React.Component {
     componentWillUnmount() {
         Cart.off('app.*', this.updateState);
         Cart.off('cart.reset', this.reload);
+    }
+
+    componentDidMount() {
+        this.accountFundsAlert();
     }
 
     reload() {
@@ -79,6 +87,18 @@ export default class Index extends React.Component {
         this.subscribers[id](data);
     }
 
+    accountFundsAlert() {
+        if (Cart.shouldShowAccountFundsAlert()) {
+            this.setState({
+                alert: {
+                    title: "Important information",
+                    message: "Dear customer,<br><p>If you have subscribed for our <strong>Account Funds</strong> payment service, please use the Legacy Shop (the one you used before, on our website) to complete your order.</p>Thanks."
+                },
+                showAlert: true
+            });
+        }
+    }
+
     actionHandler(type, data) {
         switch (type) {
             case 'toast.show':
@@ -109,6 +129,12 @@ export default class Index extends React.Component {
                 break;
             case 'cart.dismiss':
                 this.setState({ showCart: false });
+                break;
+            case 'alert.show':
+                this.setState({ showAlert: true });
+                break;
+            case 'alert.dismiss':
+                this.setState({ showAlert: false });
                 break;
         }
     }
@@ -223,6 +249,8 @@ export default class Index extends React.Component {
                 readonly={this.state.orderCreated}
                 showOpened={this.state.showCart}
                 skipPayment={this.state.pendingOrderIsPaid} />
+
+            {this.state.showAlert && <Alert data={this.state.alert} actionHandler={this.actionHandler} />}
 
             <LoadingScreen show={this.state.busy} />
             

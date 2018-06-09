@@ -72,6 +72,9 @@ h1, h2, h3, h4, h5, h6 {
             background: darken($touchof, 5%);
         }
     }
+    &.right-curve {
+        border-radius: 0 100px 100px 0;
+    }
 }
 ul {
     padding: 0;

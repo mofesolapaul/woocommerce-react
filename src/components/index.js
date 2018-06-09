@@ -1,7 +1,9 @@
+import Alert from './Alert';
 import Button, { ButtonPane } from './Button';
 import CartButtons from './CartButtons';
 import CartIcon from './CartIcon';
 import Checkout from './Checkout';
+import CheckoutButton from './CheckoutButton';
 import ConfirmOrder from './ConfirmOrder';
 import ETALabel from './ETALabel';
 import ExtrasLabel from './ExtrasLabel';
@@ -24,11 +26,13 @@ import Sectionizr from './Sectionizr';
 import View from './View';
 
 export {
+    Alert,
     Button,
     ButtonPane,
     CartButtons,
     CartIcon,
     Checkout,
+    CheckoutButton,
     ConfirmOrder,
     ETALabel,
     ExtrasLabel,

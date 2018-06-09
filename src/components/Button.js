@@ -10,6 +10,14 @@ export const ButtonPane = props => <div className="show-more-pane">
 
 // show more
 export default (props) =>
-    <a onClick={!!props.finished? null:props.clickHandler} className={`btn sleek-btn ${!!props.finished? 'dead':''} ${props.className || ''}`}>
+    <a
+        onClick={!!props.finished? null:props.clickHandler}
+        className={`
+            btn sleek-btn
+            ${!!props.finished? 'dead':''}
+            ${props.className || ''}
+            ${props['no-shadow'] && 'no-shadow'}
+            ${props['right-curve'] && 'right-curve'}
+        `}>
         {!!props.finished? "Yup, that's all!" : (props.label || 'Show more')}
     </a>

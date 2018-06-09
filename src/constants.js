@@ -170,7 +170,8 @@ export const apiFetchProducts = async (per_page, page) => {
  */
 export const productCache = {
     fetch: async function(category) {
-        if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
+        // this is how we determine whether to invalidate cache
+        if (Signature.get() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
             this.load();
             return false;
         } else {
@@ -206,7 +207,7 @@ export const productCache = {
         });
         
         // store it up
-        db.put(CACHE.DB_KEY_CACHE_SIGNATURE, this.signature());
+        db.put(CACHE.DB_KEY_CACHE_SIGNATURE, Signature.get());
         db.put(CACHE.DB_KEY_PRODUCTS, this.__buffer);
     },
     clear: function() {
@@ -238,16 +239,6 @@ export const productCache = {
             }
         }
     },
-    /**
-     * this is how we determine whether to invalidate cache
-     */
-    signature: function() {
-        const dateObject = new Date();
-        const month = dateObject.getMonth();
-        const year = dateObject.getFullYear();
-        const weekOfMonth = Math.ceil(dateObject.getDate() / 7);
-        return btoa(`${weekOfMonth},${month},${year}`);
-    },
     test: async function() {
         console.log('CACHEE');
         console.log('fetch', this.fetch());
@@ -267,6 +258,7 @@ export const CACHE = {
     DB_KEY_PRODUCTS: `____${0x1234571}`,
     DB_KEY_CACHE_SIGNATURE: `____${0x1234572}`,
     DB_KEY_FILTER_CATEGORY: `____${0x1234574}`,
+    DB_KEY_ACFUNDS_ALERT_SIGNATURE: `____${0x1234576}`,
 };
 
 export const EXTRAS = {
@@ -397,4 +389,78 @@ export const getActiveFilter = () => db.getSync(CACHE.DB_KEY_FILTER_CATEGORY) ||
 export const extrasList = (extras, dressing) => {
     const xtras = !!extras ? Object.keys(extras).join(', '):'';
     return (dressing? dressing+', ':'') + xtras;
+}
+
+/**
+ * Product categories
+ */
+export const PAYMENT_OPTIONS = [
+    {
+        name: "Cash",
+        options: [
+            {
+                name: "cod",
+                label: "Cash on Delivery",
+                intent: "checkout.finish",
+            },
+            {
+                name: "bacs",
+                label: "Direct Bank Transfer",
+                intent: "checkout.finish",
+            },
+        ]
+    },
+    {
+        name: "Online Payment",
+        options: [
+            {
+                name: "paystack",
+                label: "Pay with Paystack",
+                intent: "checkout.pay",
+            },
+        ]
+    },
+];
+
+/**
+ * Shared object for making things available across the app
+ */
+export const AppGlobals = {}
+
+/**
+ * The supported payment types
+ */
+export const PAYMENT_TYPES = {
+    "cod": "Cash on Delivery",
+    "bacs": "Direct Bank Transfer",
+    "paystack": "Pay with Paystack",
+}
+
+/**
+ * Direct Bank Transfer notification
+ */
+export const BACS_NOTIF = "Make your payment directly into our bank account (bank details available at checkout). Please use your registered email or depositor’s name. Your order won’t be shipped until the funds have cleared in our account.<br><br>" +
+"Account name: Smoothie Express Limited<br>" +
+"Bank name: Guaranty Trust Bank<br>" +
+"Account number: <strong>0160242372</strong>";
+
+export const Signature = {
+    // constants
+    WEEK: 'WEEK',
+    DAY: 'DAY',
+
+    // generates a signature
+    get: (type = Signature.WEEK) => {
+        const dateObject = new Date();
+        const day = dateObject.getDay();
+        const month = dateObject.getMonth();
+        const year = dateObject.getFullYear();
+        const weekOfMonth = Math.ceil(dateObject.getDate() / 7);
+        
+        if (type == Signature.WEEK) {
+            return btoa(`${weekOfMonth},${month},${year}`);
+        } else if (type == Signature.DAY) {
+            return btoa(`${day},${month},${year}`);
+        }
+    },
 }
