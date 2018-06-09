@@ -223,6 +223,7 @@ const Cart = flux.createStore({
     orderCreated: function(id) {
         this.order_created = id;
         db.put(CART.DB_KEY_NEW_ORDER_ID, id);
+        db.put(CART.DB_KEY_ORDER_COST, this.total);
         db.put(CART.DB_KEY_CUSTOMER_DATA, this.customer);
         this.emit('app.order-created');
     },
@@ -232,6 +233,7 @@ const Cart = flux.createStore({
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
         db.delete(CART.DB_KEY_ORDERS);
         db.delete(CART.DB_KEY_PAYMENT_DATA);
+        db.delete(CART.DB_KEY_ORDER_COST);
         
         // persist existing customer data
         this.persist('customer');
@@ -277,6 +279,13 @@ const Cart = flux.createStore({
         }
     },
 
+    /**
+     * Get the saved cost of pending order
+     */
+    pendingOrderTotal: function () {
+        return db.getSync(CART.DB_KEY_ORDER_COST) || null
+    },
+
     exports: {
         /**
          * Load data important to the cart
@@ -308,6 +317,9 @@ const Cart = flux.createStore({
          * Pretty straightforward
          */
         getTotal: function(order_total = false) {
+            if (this.order_created) {
+                return this.pendingOrderTotal();
+            }
             let total = 0;
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price);

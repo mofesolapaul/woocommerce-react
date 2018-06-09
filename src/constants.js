@@ -260,6 +260,7 @@ export const CART = {
     DB_KEY_CUSTOMER_DATA: `____${0x1234569}`,
     DB_KEY_PAYMENT_DATA: `____${0x1234570}`,
     DB_KEY_PERSISTED_CUSTOMER_DATA: `____${0x1234573}`,
+    DB_KEY_ORDER_COST: `____${0x1234575}`,
 };
 
 export const CACHE = {
