@@ -14,9 +14,10 @@ export default (props) =>
         onClick={!!props.finished? null:props.clickHandler}
         className={`
             btn sleek-btn
-            ${!!props.finished? 'dead':''} ${props.className || ''}
+            ${!!props.finished? 'dead':''}
+            ${props.className || ''}
             ${props['no-shadow'] && 'no-shadow'}
-            ${props.className}
+            ${props['right-curve'] && 'right-curve'}
         `}>
         {!!props.finished? "Yup, that's all!" : (props.label || 'Show more')}
     </a>
