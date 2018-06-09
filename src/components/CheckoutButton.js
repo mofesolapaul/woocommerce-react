@@ -1,12 +1,12 @@
 import {Button, View} from '.';
 import {PAYMENT_OPTIONS, uid} from '../constants';
 
-export default ({actionHandler}) => <View>
+export default ({actionHandler, selected}) => <View>
     <div className="text-center group full-width cb">
-        <select className="field cb--select" onChange={e => actionHandler('payment.option', e.target.value)}>
+        <select className="field cb--select" onChange={e => actionHandler('payment.option', e.target.value)} value={selected}>
             <option value="" style={{display: 'none'}}>Choose payment method</option>
             {PAYMENT_OPTIONS.map(section => <optgroup label={section.name} key={uid()}>
-                {section.options.map(option => <option value={option.intent} key={uid()}>{option.label}</option>)}
+                {section.options.map(option => <option value={option.intent + '|' + option.name} key={uid()}>{option.label}</option>)}
             </optgroup>)}
         </select>
         <Button label="Proceed" clickHandler={() => actionHandler('checkout.do')} no-shadow right-curve />

@@ -29,6 +29,7 @@ export default class Checkout extends React.PureComponent {
             form: {...form},
             isStorePickup: false,
             isConfirming: false,
+            orderType: '',
         };
 
         // bind
@@ -94,11 +95,15 @@ export default class Checkout extends React.PureComponent {
                 this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
             case 'payment.option':
-                this.orderType = data;
+                this.setState({orderType: data});
                 break;
             case 'checkout.do':
-                if (!this.orderType) this.actionHandler('toast.show', {msg: "Please select your preferred payment method", type: 'w'});
-                else this.doCheckout(this.orderType, this.state.form);
+                if (!this.state.orderType) this.actionHandler('toast.show', {msg: "Please select your preferred payment method", type: 'w'});
+                else {
+                    // extract intent part
+                    const intent = this.state.orderType.split(/\|/)[0];
+                    this.doCheckout(intent, this.state.form);
+                }
                 break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
@@ -153,7 +158,7 @@ export default class Checkout extends React.PureComponent {
                     close={response => this.actionHandler('paystack.dismiss', response)}>
                 </PaystackButton>
             </Hidden>
-            {props.readonly? pendingPaymentButtons:<CheckoutButton actionHandler={this.actionHandler} />}
+            {props.readonly? pendingPaymentButtons:<CheckoutButton actionHandler={this.actionHandler} selected={this.state.orderType} />}
         </View>;
         return (
             <Section>
@@ -251,7 +256,7 @@ export default class Checkout extends React.PureComponent {
                     }
                     .title {
                         font-weight: 100;
-                        border-bottom: solid thin #fff
+                        border-bottom: solid thin #fff;
                         max-width: 360px;
                     }
                     ::placeholder {
