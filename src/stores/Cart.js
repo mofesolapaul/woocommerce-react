@@ -232,9 +232,11 @@ const Cart = flux.createStore({
 
     reset: function(hard = false) {
         if (hard) {
-            return db.clear();
+            db.clear();
+            location.reload();
+            return;
         }
-        
+
         db.delete(CART.DB_KEY_CUSTOMER_DATA);
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
         db.delete(CART.DB_KEY_ORDERS);
