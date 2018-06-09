@@ -16,11 +16,14 @@ export default class Checkout extends React.PureComponent {
         const form = {
             'checkout.email': '',
             ...this.props.fieldDefaults,
-            'map.searchbox.update': props.location,
         };
         
-        // don't remember shipping method (except readonly mode)
-        if (!props.readonly) delete form['shipping.method'];
+        // except in readonly mode
+        if (!props.readonly) {
+            // don't remember shipping method
+            delete form['shipping.method'];
+            form['map.searchbox.update'] = props.location;
+        }
 
         this.state = {
             form: {...form},
@@ -75,6 +78,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'checkout.pay':
             case 'checkout.finish':
+                console.log(data);
                 const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
                 if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
                 else {
