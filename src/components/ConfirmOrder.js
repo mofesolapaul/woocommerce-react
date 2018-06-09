@@ -19,21 +19,10 @@ export default ({price, actionHandler, moreInfo}) => <View>
     </div>
 
     <style jsx>{`
-    .title {
-        color: ${css.colors.primary}
-    }
-    .padded {
-        padding-top: 1rem;
-        padding-top: 1rem;
-    }
     .well {
         padding: .5rem;
         background: rgba(0,0,0,.1);
         border-radius: 4px;
-    }
-    .ttl {
-        margin: 0;
-        display: inline-block;
     }
     `}</style>
 </View>
