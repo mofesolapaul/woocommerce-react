@@ -92,7 +92,7 @@ export default class Index extends React.Component {
             this.setState({
                 alert: {
                     title: "Important information",
-                    message: "Dear customer,<br><p>If you have subscribed for our Account Funds payment service, please use the Legacy Shop (the one you used before, on our website) to complete your order.</p>Thanks."
+                    message: "Dear customer,<br><p>If you have subscribed for our <strong>Account Funds</strong> payment service, please use the Legacy Shop (the one you used before, on our website) to complete your order.</p>Thanks."
                 },
                 showAlert: true
             });
