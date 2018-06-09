@@ -16,6 +16,7 @@ export default (props) =>
             btn sleek-btn
             ${!!props.finished? 'dead':''} ${props.className || ''}
             ${props['no-shadow'] && 'no-shadow'}
+            ${props.className}
         `}>
         {!!props.finished? "Yup, that's all!" : (props.label || 'Show more')}
     </a>
