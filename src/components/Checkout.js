@@ -19,8 +19,8 @@ export default class Checkout extends React.PureComponent {
             'map.searchbox.update': props.location,
         };
         
-        // don't remember shipping method
-        delete form['shipping.method'];
+        // don't remember shipping method (except readonly mode)
+        if (!props.readonly) delete form['shipping.method'];
 
         this.state = {
             form: {...form},
