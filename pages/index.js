@@ -37,6 +37,7 @@ export default class Index extends React.Component {
         bindToThis(this, 'showProducts');
         bindToThis(this, 'updateState');
         bindToThis(this, 'subscribeChild');
+        bindToThis(this, 'accountFundsAlert');
     }
 
     componentWillMount() {
@@ -48,6 +49,10 @@ export default class Index extends React.Component {
     componentWillUnmount() {
         Cart.off('app.*', this.updateState);
         Cart.off('cart.reset', this.reload);
+    }
+
+    componentDidMount() {
+        this.accountFundsAlert();
     }
 
     reload() {
@@ -83,7 +88,15 @@ export default class Index extends React.Component {
     }
 
     accountFundsAlert() {
-        
+        if (Cart.shouldShowAccountFundsAlert()) {
+            this.setState({
+                alert: {
+                    title: "Important information",
+                    message: "Dear customer,<br><p>If you have subscribed for our Account Funds payment service, please use the Legacy Shop (the one you used before, on our website) to complete your order.</p>Thanks."
+                },
+                showAlert: true
+            });
+        }
     }
 
     actionHandler(type, data) {

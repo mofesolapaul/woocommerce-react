@@ -1,9 +1,9 @@
 import flux from 'flux-react';
 import actions from '../actions';
 import constants, {
-    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, API_CALLS, 
-    AppGlobals, APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
-    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES} from '../constants';
+    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, AppGlobals, Signature, API_CALLS, 
+    APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
+    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES, CACHE} from '../constants';
 
 const Cart = flux.createStore({
     orders: {},
@@ -377,6 +377,14 @@ const Cart = flux.createStore({
          */
         pendingOrderIsPaid: function() {
             return this.pending_order_is_paid;
+        },
+
+        /**
+         * Name's pretty descriptive
+         */
+        shouldShowAccountFundsAlert: function() {
+            const shouldDo = Signature.get(Signature.DAY) != db.getSync(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE);
+            return shouldDo;
         }
     }
 });
