@@ -6,7 +6,7 @@ import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
 import { bindToThis, pullInt, uid } from '../constants';
 import { Paystack, DEBUG } from '../Config';
-import { Button, ButtonPane, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Button, ButtonPane, CheckoutButton, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 import { Hidden } from './View';
 
 export default class Checkout extends React.PureComponent {
@@ -220,6 +220,7 @@ export default class Checkout extends React.PureComponent {
                             <textarea className="field" defaultValue={__['checkout.note']} onChange={e => this.actionHandler('checkout.note', e.target)} placeholder="What should we note about this order"></textarea>
                         </div>
                         <div className="clearfix"></div>
+                        <CheckoutButton />
                         <ButtonPane>
                             {buttons}
                         </ButtonPane>
