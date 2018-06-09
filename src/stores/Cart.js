@@ -1,5 +1,6 @@
 import flux from 'flux-react';
 import actions from '../actions';
+import {versionCode} from '../Config';
 import constants, {
     db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, AppGlobals, Signature, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
@@ -229,7 +230,11 @@ const Cart = flux.createStore({
         this.emit('app.order-created');
     },
 
-    reset: function() {
+    reset: function(hard = false) {
+        if (hard) {
+            return db.clear();
+        }
+        
         db.delete(CART.DB_KEY_CUSTOMER_DATA);
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
         db.delete(CART.DB_KEY_ORDERS);
@@ -291,6 +296,11 @@ const Cart = flux.createStore({
          * Load data important to the cart
          */
         load: async function() {
+            if (await(db.get(CART.DB_KEY_ORDERS)) != versionCode) {
+                this.reset(true);
+                db.put(CART.DB_KEY_VERSION_CODE, versionCode);
+            }
+
             this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {};
             this.emit('order.loaded');
             this.order_created = await(db.get(CART.DB_KEY_NEW_ORDER_ID));
