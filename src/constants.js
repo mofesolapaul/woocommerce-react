@@ -207,7 +207,7 @@ export const productCache = {
         });
         
         // store it up
-        db.put(CACHE.DB_KEY_CACHE_SIGNATURE, this.signature());
+        db.put(CACHE.DB_KEY_CACHE_SIGNATURE, Signature.get());
         db.put(CACHE.DB_KEY_PRODUCTS, this.__buffer);
     },
     clear: function() {
@@ -258,6 +258,7 @@ export const CACHE = {
     DB_KEY_PRODUCTS: `____${0x1234571}`,
     DB_KEY_CACHE_SIGNATURE: `____${0x1234572}`,
     DB_KEY_FILTER_CATEGORY: `____${0x1234574}`,
+    DB_KEY_ACFUNDS_ALERT_SIGNATURE: `____${0x1234576}`,
 };
 
 export const EXTRAS = {
@@ -445,20 +446,21 @@ export const BACS_NOTIF = "Make your payment directly into our bank account (ban
 
 export const Signature = {
     // constants
-    WEEK: 'WEEk',
+    WEEK: 'WEEK',
     DAY: 'DAY',
 
     // generates a signature
-    get: (type = this.WEEK) => {
+    get: (type = Signature.WEEK) => {
         const dateObject = new Date();
         const day = dateObject.getDay();
         const month = dateObject.getMonth();
         const year = dateObject.getFullYear();
         const weekOfMonth = Math.ceil(dateObject.getDate() / 7);
-        if (type == this.WEEK) {
+        
+        if (type == Signature.WEEK) {
             return btoa(`${weekOfMonth},${month},${year}`);
-        } else if (type == this.DAY) {
-            return btoa(`${weekOfMonth},${month},${year}`);
+        } else if (type == Signature.DAY) {
+            return btoa(`${day},${month},${year}`);
         }
     },
 }
