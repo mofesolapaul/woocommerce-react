@@ -1,3 +1,4 @@
+import Alert from './Alert';
 import Button, { ButtonPane } from './Button';
 import CartButtons from './CartButtons';
 import CartIcon from './CartIcon';
@@ -25,6 +26,7 @@ import Sectionizr from './Sectionizr';
 import View from './View';
 
 export {
+    Alert,
     Button,
     ButtonPane,
     CartButtons,
