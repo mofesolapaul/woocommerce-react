@@ -398,3 +398,31 @@ export const extrasList = (extras, dressing) => {
     const xtras = !!extras ? Object.keys(extras).join(', '):'';
     return (dressing? dressing+', ':'') + xtras;
 }
+
+/**
+ * Product categories
+ */
+export const PAYMENT_OPTIONS = [
+    {
+        name: "Cash",
+        options: [
+            {
+                name: "Cash on Delivery",
+                label: "cod",
+            },
+            {
+                name: "Direct Bank Transfer",
+                label: "bacs",
+            },
+        ]
+    },
+    {
+        name: "Online Payment",
+        options: [
+            {
+                name: "Pay with Paystack",
+                label: "paystack",
+            },
+        ]
+    },
+];
