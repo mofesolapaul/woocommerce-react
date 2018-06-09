@@ -259,12 +259,22 @@ const Cart = flux.createStore({
     },
 
     markOrderAsPaid: async function() {
+        let mark_succeeded = false;
         if (this.pending_order_is_paid) {
-            // do API_CALL
-            console.log("order is paid");
+            mark_succeeded = false;
+            try {
+                // do API_CALL
+                const response = await API_CALLS.markOrderAsPaid(this.order_created);
+                mark_succeeded = true;
+                console.log(response);
+            } catch(e) {
+                return;
+            }
         }
-        this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
-        this.reset();
+        if (mark_succeeded) {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
+            this.reset();
+        }
     },
 
     exports: {
