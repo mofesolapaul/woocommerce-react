@@ -268,14 +268,13 @@ const Cart = flux.createStore({
                 // do API_CALL
                 const response = await API_CALLS.markOrderAsPaid(this.order_created);
                 mark_succeeded = true;
-                console.log(response);
-            } catch(e) {
-                return;
-            }
+            } catch(e) {}
         }
         if (mark_succeeded) {
             this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
             this.reset();
+        } else {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'e', msg: "Unable to complete order, please try again."});
         }
     },
 
