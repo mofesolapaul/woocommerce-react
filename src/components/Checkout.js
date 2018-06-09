@@ -117,11 +117,6 @@ export default class Checkout extends React.PureComponent {
     confirmLocationView() {
         let {props} = this;
         let {fieldDefaults: __} = props;
-        const normalButtons = <View>
-            <CheckoutButton actionHandler={this.actionHandler} />
-            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
-            &emsp; <Button label={this.state.isStorePickup? 'Pay at the store':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
-        </View>;
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.cancel', this.state.form);}} />
@@ -158,7 +153,7 @@ export default class Checkout extends React.PureComponent {
                     close={response => this.actionHandler('paystack.dismiss', response)}>
                 </PaystackButton>
             </Hidden>
-            {props.readonly? pendingPaymentButtons:normalButtons}
+            {props.readonly? pendingPaymentButtons:<CheckoutButton actionHandler={this.actionHandler} />}
         </View>;
         return (
             <Section>
