@@ -170,7 +170,8 @@ export const apiFetchProducts = async (per_page, page) => {
  */
 export const productCache = {
     fetch: async function(category) {
-        if (this.signature() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
+        // this is how we determine whether to invalidate cache
+        if (Signature.get() != await db.get(CACHE.DB_KEY_CACHE_SIGNATURE)) {
             this.load();
             return false;
         } else {
@@ -237,16 +238,6 @@ export const productCache = {
                 data = false;
             }
         }
-    },
-    /**
-     * this is how we determine whether to invalidate cache
-     */
-    signature: function() {
-        const dateObject = new Date();
-        const month = dateObject.getMonth();
-        const year = dateObject.getFullYear();
-        const weekOfMonth = Math.ceil(dateObject.getDate() / 7);
-        return btoa(`${weekOfMonth},${month},${year}`);
     },
     test: async function() {
         console.log('CACHEE');
@@ -450,4 +441,24 @@ export const PAYMENT_TYPES = {
 export const BACS_NOTIF = "Make your payment directly into our bank account (bank details available at checkout). Please use your registered email or depositor’s name. Your order won’t be shipped until the funds have cleared in our account.<br><br>" +
 "Account name: Smoothie Express Limited<br>" +
 "Bank name: Guaranty Trust Bank<br>" +
-"Account number: <strong>0160242372</strong>"
+"Account number: <strong>0160242372</strong>";
+
+export const Signature = {
+    // constants
+    WEEK: 'WEEk',
+    DAY: 'DAY',
+
+    // generates a signature
+    get: (type = this.WEEK) => {
+        const dateObject = new Date();
+        const day = dateObject.getDay();
+        const month = dateObject.getMonth();
+        const year = dateObject.getFullYear();
+        const weekOfMonth = Math.ceil(dateObject.getDate() / 7);
+        if (type == this.WEEK) {
+            return btoa(`${weekOfMonth},${month},${year}`);
+        } else if (type == this.DAY) {
+            return btoa(`${weekOfMonth},${month},${year}`);
+        }
+    },
+}
