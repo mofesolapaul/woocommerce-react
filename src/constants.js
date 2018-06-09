@@ -106,7 +106,7 @@ export const API_CALLS = {
         return await Wc.get('shipping_methods');
     },
     async markOrderAsPaid(order_id, data) {
-        return await Wc.put(`orders/${order_id}`, data);
+        return await Wc.put(`orders/${order_id}`, {set_paid: true});
     },
     async fetchOrders(data) {
         return await Wc.get(`orders`, data);
