@@ -34,6 +34,7 @@ export default class Checkout extends React.PureComponent {
         // bind
         bindToThis(this, 'actionHandler');
         bindToThis(this, 'setIsStorePickup');
+        bindToThis(this, 'doCheckout');
     }
     getShippingMethods() {
         this.actionHandler('get.shipping.methods');
@@ -78,13 +79,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'checkout.pay':
             case 'checkout.finish':
-                const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
-                if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
-                else {
-                    this.orderType = type;
-                    this.orderData = data;
-                    this.setState({isConfirming: true});
-                }
+                this.doCheckout(type, data);
                 break;
             case 'checkout.cancel':
                 this.actionHandler('toast.show', { msg: "You have cancelled the order" });
@@ -98,16 +93,32 @@ export default class Checkout extends React.PureComponent {
                 this.setState({isConfirming: false});
                 this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
+            case 'payment.option':
+                this.orderType = data;
+                break;
+            case 'checkout.do':
+                if (!this.orderType) this.actionHandler('toast.show', {msg: "Please select your preferred payment method", type: 'w'});
+                else this.doCheckout(this.orderType, this.state.form);
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
+        }
+    }
+    doCheckout(type, data) {
+        const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
+        if (test) this.actionHandler('toast.show', {msg: "We need all checkout details to process your order", type: 'w'});
+        else {
+            this.orderType = type;
+            this.orderData = data;
+            this.setState({isConfirming: true});
         }
     }
     confirmLocationView() {
         let {props} = this;
         let {fieldDefaults: __} = props;
         const normalButtons = <View>
-            <CheckoutButton />
+            <CheckoutButton actionHandler={this.actionHandler} />
             <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label={this.state.isStorePickup? 'Pay at the store':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
         </View>;
