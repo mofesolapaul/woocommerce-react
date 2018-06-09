@@ -6,6 +6,7 @@ import { LoadingScreen, ProductsContainer, ShoppingCart } from '../src/container
 import {App, URL} from '../src/Config';
 import constants, {API_CALLS, APP_SHOW_TOAST, apiFetchProducts, bindToThis, getActiveFilter, productCache, sleep, uid} from '../src/constants';
 import {Cart} from '../src/stores';
+import {Alert} from '../src/components';
 
 export default class Index extends React.Component {
     constructor(props) {
@@ -26,6 +27,8 @@ export default class Index extends React.Component {
             pendingOrderIsPaid: false,
             productFetchInProgress: false,
             productCacheExists: false,
+            alert: {},
+            showAlert: false,
         };
 
         // bind
@@ -109,6 +112,12 @@ export default class Index extends React.Component {
                 break;
             case 'cart.dismiss':
                 this.setState({ showCart: false });
+                break;
+            case 'alert.show':
+                this.setState({ showAlert: true });
+                break;
+            case 'alert.dismiss':
+                this.setState({ showAlert: false });
                 break;
         }
     }
@@ -223,6 +232,8 @@ export default class Index extends React.Component {
                 readonly={this.state.orderCreated}
                 showOpened={this.state.showCart}
                 skipPayment={this.state.pendingOrderIsPaid} />
+
+            {this.state.showAlert && <Alert data={this.state.alert} actionHandler={this.actionHandler} />}
 
             <LoadingScreen show={this.state.busy} />
             

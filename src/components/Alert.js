@@ -1,15 +1,13 @@
 import {Button, ButtonPane, View} from '.';
 import css from '../../styles/vars';
 
-export default ({title, message, actionHandler}) => <View>
+export default ({data, actionHandler}) => <View>
     <div className="extras-curtain curtain">
         <div className="extras-modal modal">
             <h3>
-                <span className="">{title}</span>
+                <span className="">{data.title || ''}</span>
             </h3>
-            <div className="well">
-                {message}
-            </div>
+            <div className="well" dangerouslySetInnerHTML={{ __html: data.message || '' }}></div>
             <ButtonPane>
                 <Button label="Ok" clickHandler={e => {actionHandler('alert.dismiss');}} />
             </ButtonPane>
