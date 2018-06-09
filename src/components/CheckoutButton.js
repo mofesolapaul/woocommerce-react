@@ -2,8 +2,10 @@ import {Button, View} from '.';
 
 export default props => <View>
     <div className="text-center group full-width cb">
-        <select className="field cb--select"></select>
-        <Button label="Pay Online" no-shadow right-curve />
+        <select className="field cb--select">
+            <option value="" style={{display: 'none'}}>Choose payment method</option>
+        </select>
+        <Button label="Proceed" no-shadow right-curve />
     </div>
 
     {/* style */}
