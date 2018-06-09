@@ -12,10 +12,11 @@ export default props => <View>
             display: flex;
             flex: 1;
             max-width: 380px;
+            margin: auto;
         }
         .cb--select {
             -webkit-appearance: button;
-            border-radius: 50px 0 0 50px;
+            border-radius: 100px 0 0 100px;
         }
     `}</style>
 </View>

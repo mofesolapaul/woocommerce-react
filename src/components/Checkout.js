@@ -220,8 +220,8 @@ export default class Checkout extends React.PureComponent {
                             <textarea className="field" defaultValue={__['checkout.note']} onChange={e => this.actionHandler('checkout.note', e.target)} placeholder="What should we note about this order"></textarea>
                         </div>
                         <div className="clearfix"></div>
-                        <CheckoutButton />
                         <ButtonPane>
+                            <CheckoutButton />
                             {buttons}
                         </ButtonPane>
                     </div>
