@@ -82,6 +82,10 @@ export default class Index extends React.Component {
         this.subscribers[id](data);
     }
 
+    accountFundsAlert() {
+        
+    }
+
     actionHandler(type, data) {
         switch (type) {
             case 'toast.show':
