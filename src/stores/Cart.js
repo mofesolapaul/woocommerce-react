@@ -384,6 +384,10 @@ const Cart = flux.createStore({
          */
         shouldShowAccountFundsAlert: function() {
             const shouldDo = Signature.get(Signature.DAY) != db.getSync(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE);
+            if (shouldDo) {
+                // wait till tomorrow to show the next one
+                db.put(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE, Signature.get(Signature.DAY));
+            }
             return shouldDo;
         }
     }
