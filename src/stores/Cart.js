@@ -2,9 +2,8 @@ import flux from 'flux-react';
 import actions from '../actions';
 import constants, {
     db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, API_CALLS, 
-    APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
-    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, 
-    ORDER_SHIPPING_COST} from '../constants';
+    AppGlobals, APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
+    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES} from '../constants';
 
 const Cart = flux.createStore({
     orders: {},
@@ -152,9 +151,11 @@ const Cart = flux.createStore({
             city: 'Lagos',
             country: 'NG',
         };
+        
+        const _pm = AppGlobals.payment_method || (isPaid? 'paystack':'cod');
         const payload = {
-            payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
-            payment_method: isPaid? 'paystack':'cod',
+            payment_method_title: PAYMENT_TYPES[_pm],
+            payment_method: _pm,
             // payment_method_title: 'Direct Bank Transfer',
             set_paid: !isPaid,
             customer_note: customer['checkout.note'],

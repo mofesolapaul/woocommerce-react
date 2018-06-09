@@ -429,3 +429,14 @@ export const PAYMENT_OPTIONS = [
         ]
     },
 ];
+
+/**
+ * Shared object for making things available across the app
+ */
+export const AppGlobals = {}
+
+export const PAYMENT_TYPES = {
+    "cod": "Cash on Delivery",
+    "bacs": "Direct Bank Transfer",
+    "paystack": "Pay with Paystack",
+}

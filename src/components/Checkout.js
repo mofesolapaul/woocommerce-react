@@ -4,7 +4,7 @@ import Head from 'next/head';
 
 import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
-import { bindToThis, pullInt, uid } from '../constants';
+import { bindToThis, pullInt, uid, AppGlobals } from '../constants';
 import { Paystack, DEBUG } from '../Config';
 import { Button, ButtonPane, CheckoutButton, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 import { Hidden } from './View';
@@ -100,9 +100,10 @@ export default class Checkout extends React.PureComponent {
             case 'checkout.do':
                 if (!this.state.orderType) this.actionHandler('toast.show', {msg: "Please select your preferred payment method", type: 'w'});
                 else {
-                    // extract intent part
-                    const intent = this.state.orderType.split(/\|/)[0];
-                    this.doCheckout(intent, this.state.form);
+                    // split intent from payment method id
+                    const payment_data = this.state.orderType.split(/\|/);
+                    AppGlobals.payment_method = payment_data[1];
+                    this.doCheckout(payment_data[0], this.state.form);
                 }
                 break;
             default:
