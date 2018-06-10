@@ -1,10 +1,10 @@
 import flux from 'flux-react';
 import actions from '../actions';
+import {versionCode} from '../Config';
 import constants, {
-    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, API_CALLS, 
+    db, getDefaultDressing, getExtrasTotal, hasExtras, isEmpty, poip_valid, AppGlobals, Signature, API_CALLS, 
     APP_SHOW_TOAST, CART, ORDER_API_ERROR, 
-    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, 
-    ORDER_SHIPPING_COST} from '../constants';
+    ORDER_API_SUCCESS, ORDER_ITEM_UPDATE, ORDER_SHIPPING_COST, PAYMENT_TYPES, CACHE, sleep} from '../constants';
 
 const Cart = flux.createStore({
     orders: {},
@@ -152,11 +152,13 @@ const Cart = flux.createStore({
             city: 'Lagos',
             country: 'NG',
         };
+        
+        const _pm = AppGlobals.payment_method || (isPaid? 'paystack':'cod');
         const payload = {
-            payment_method_title: isPaid? 'Paystack Online Payment':'Cash on delivery',
-            payment_method: isPaid? 'paystack':'cod',
+            payment_method_title: PAYMENT_TYPES[_pm],
+            payment_method: _pm,
             // payment_method_title: 'Direct Bank Transfer',
-            set_paid: true,
+            set_paid: !isPaid,
             customer_note: customer['checkout.note'],
             billing: {...billing},
             shipping: {...billing},
@@ -223,15 +225,21 @@ const Cart = flux.createStore({
     orderCreated: function(id) {
         this.order_created = id;
         db.put(CART.DB_KEY_NEW_ORDER_ID, id);
+        db.put(CART.DB_KEY_ORDER_COST, this.total);
         db.put(CART.DB_KEY_CUSTOMER_DATA, this.customer);
         this.emit('app.order-created');
     },
 
-    reset: function() {
+    reset: function(hard = false) {
+        if (hard) {
+            return db.clear();
+        }
+
         db.delete(CART.DB_KEY_CUSTOMER_DATA);
         db.delete(CART.DB_KEY_NEW_ORDER_ID);
         db.delete(CART.DB_KEY_ORDERS);
         db.delete(CART.DB_KEY_PAYMENT_DATA);
+        db.delete(CART.DB_KEY_ORDER_COST);
         
         // persist existing customer data
         this.persist('customer');
@@ -258,9 +266,29 @@ const Cart = flux.createStore({
         }
     },
 
-    markOrderAsPaid: function() {
-        this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
-        this.reset();
+    markOrderAsPaid: async function() {
+        let mark_succeeded = true;
+        if (this.pending_order_is_paid) {
+            mark_succeeded = false;
+            try {
+                // do API_CALL
+                const response = await API_CALLS.markOrderAsPaid(this.order_created);
+                mark_succeeded = true;
+            } catch(e) {}
+        }
+        if (mark_succeeded) {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 's', msg: "Order complete! Thank you."});
+            this.reset();
+        } else {
+            this.emit('app.toast', {id: APP_SHOW_TOAST, type: 'e', msg: "Unable to complete order, please try again."});
+        }
+    },
+
+    /**
+     * Get the saved cost of pending order
+     */
+    pendingOrderTotal: function () {
+        return db.getSync(CART.DB_KEY_ORDER_COST) || null
     },
 
     exports: {
@@ -268,6 +296,13 @@ const Cart = flux.createStore({
          * Load data important to the cart
          */
         load: async function() {
+            if (await(db.get(CART.DB_KEY_VERSION_CODE)) != versionCode) {
+                this.reset(true);
+                await sleep(500);
+                db.put(CART.DB_KEY_VERSION_CODE, versionCode);
+                return location.reload();
+            }
+
             this.orders = await(db.get(CART.DB_KEY_ORDERS)) || {};
             this.emit('order.loaded');
             this.order_created = await(db.get(CART.DB_KEY_NEW_ORDER_ID));
@@ -294,6 +329,9 @@ const Cart = flux.createStore({
          * Pretty straightforward
          */
         getTotal: function(order_total = false) {
+            if (this.order_created) {
+                return this.pendingOrderTotal();
+            }
             let total = 0;
             isEmpty(this.orders)? 0:Object.keys(this.orders).map((o) => {
                 total += (this.orders[o].qty * this.orders[o].product.price);
@@ -351,6 +389,18 @@ const Cart = flux.createStore({
          */
         pendingOrderIsPaid: function() {
             return this.pending_order_is_paid;
+        },
+
+        /**
+         * Name's pretty descriptive
+         */
+        shouldShowAccountFundsAlert: function() {
+            const shouldDo = Signature.get(Signature.DAY) != db.getSync(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE);
+            if (shouldDo) {
+                // wait till tomorrow to show the next one
+                db.put(CACHE.DB_KEY_ACFUNDS_ALERT_SIGNATURE, Signature.get(Signature.DAY));
+            }
+            return shouldDo;
         }
     }
 });

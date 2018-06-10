@@ -1,9 +1,13 @@
 'use strict';
 
+const DEBUG = true;
+
 const Constants = {
-    DEBUG: true,
+    DEBUG,
+    versionCode: 1,
     URL: {
-        root: 'http://woocommerce-domain.com'
+        root: 'http://woocommerce-domain.com',
+        base: DEBUG? 'http://localhost:9200/':'http://woocommerce-domain.com',
     },
     Keys: {
         ConsumerKey: 'ck_blahblahblah',
@@ -17,6 +21,7 @@ const Constants = {
         name: "Czar",
         slogan: "Ain't Life just Fun!",
         title: "Czar Stores : Know what you want",
+        logo: null,
     }
 }
 

@@ -4,9 +4,9 @@ import Head from 'next/head';
 
 import css from '../../styles/vars';
 import { withCheckout } from '../hoc';
-import { bindToThis, pullInt, uid } from '../constants';
+import { bindToThis, pullInt, uid, AppGlobals, BACS_NOTIF } from '../constants';
 import { Paystack, DEBUG } from '../Config';
-import { Button, ButtonPane, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
+import { Button, ButtonPane, CheckoutButton, ConfirmOrder, LocationSearchInput, PaystackButton, Section, Sectionizr, View } from '.';
 import { Hidden } from './View';
 
 export default class Checkout extends React.PureComponent {
@@ -16,23 +16,40 @@ export default class Checkout extends React.PureComponent {
         const form = {
             'checkout.email': '',
             ...this.props.fieldDefaults,
-            'map.searchbox.update': props.location,
         };
         
-        // don't remember shipping method
-        delete form['shipping.method'];
+        // except in readonly mode
+        if (!props.readonly) {
+            // don't remember shipping method
+            delete form['shipping.method'];
+            form['map.searchbox.update'] = props.location;
+        }
 
         this.state = {
             form: {...form},
             isStorePickup: false,
             isConfirming: false,
+            orderType: '',
         };
 
         // bind
         bindToThis(this, 'actionHandler');
+        bindToThis(this, 'setIsStorePickup');
+        bindToThis(this, 'doCheckout');
     }
     getShippingMethods() {
         this.actionHandler('get.shipping.methods');
+    }
+    componentDidMount() {
+        this.setIsStorePickup(this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setIsStorePickup(nextProps);
+    }
+    setIsStorePickup(props) {
+        if (props.readonly) {
+            this.setState({isStorePickup: props.fieldDefaults['shipping.method'] == 'flat_rate:51'});
+        }
     }
     actionHandler(type, data) {
         switch (type) {
@@ -63,13 +80,7 @@ export default class Checkout extends React.PureComponent {
                 break;
             case 'checkout.pay':
             case 'checkout.finish':
-                const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
-                if (test) this.actionHandler('toast.show', {msg: "We need all these details to process your order", type: 'w'});
-                else {
-                    this.orderType = type;
-                    this.orderData = data;
-                    this.setState({isConfirming: true});
-                }
+                this.doCheckout(type, data);
                 break;
             case 'checkout.cancel':
                 this.actionHandler('toast.show', { msg: "You have cancelled the order" });
@@ -83,18 +94,35 @@ export default class Checkout extends React.PureComponent {
                 this.setState({isConfirming: false});
                 this.props.actionHandler && this.props.actionHandler(this.orderType, this.orderData);
                 break;
+            case 'payment.option':
+                this.setState({orderType: data});
+                break;
+            case 'checkout.do':
+                if (!this.state.orderType) this.actionHandler('toast.show', {msg: "Please select your preferred payment method", type: 'w'});
+                else {
+                    // split intent from payment method id
+                    const payment_data = this.state.orderType.split(/\|/);
+                    AppGlobals.payment_method = payment_data[1];
+                    this.doCheckout(payment_data[0], this.state.form);
+                }
+                break;
             default:
                 this.props.actionHandler && this.props.actionHandler(type, data);
                 break;
         }
     }
+    doCheckout(type, data) {
+        const test = (!this.state.isStorePickup && !data['map.searchbox.update']) || !data['checkout.clientname'] || !data['checkout.email'] || !data['checkout.phone'] || !data['shipping.method'];
+        if (test) this.actionHandler('toast.show', {msg: "We need all checkout details to process your order", type: 'w'});
+        else {
+            this.orderType = type;
+            this.orderData = data;
+            this.setState({isConfirming: true});
+        }
+    }
     confirmLocationView() {
         let {props} = this;
         let {fieldDefaults: __} = props;
-        const normalButtons = <View>
-            <Button label="Pay Online" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
-            &emsp; <Button label={this.state.isStorePickup? 'Pay at the store':'Pay On Delivery'} clickHandler={e => {this.actionHandler('checkout.finish', this.state.form);}} />
-        </View>;
         const pendingPaymentButtons = <View>
             <Button label="Complete Order" clickHandler={e => {this.actionHandler('checkout.pay', this.state.form);}} />
             &emsp; <Button label="Cancel" clickHandler={e => {this.actionHandler('checkout.cancel', this.state.form);}} />
@@ -110,7 +138,7 @@ export default class Checkout extends React.PureComponent {
                             {
                               "display_name":"Order ID",
                               "variable_name":"Order ID",
-                              "value":this.props.order_id
+                              "value":props.order_id
                             },
                             {
                               "display_name":"Customer Name",
@@ -124,14 +152,14 @@ export default class Checkout extends React.PureComponent {
                             },
                         ]
                     }}
-                    amount={this.props.total * 100}
+                    amount={props.total * 100}
                     paystackkey={DEBUG? Paystack.TestPublicKey:Paystack.LivePublicKey}
                     ref={btn => this.actionHandler('set.paystack.btn', btn)}
                     callback={response => this.actionHandler('paystack.response', response)}
                     close={response => this.actionHandler('paystack.dismiss', response)}>
                 </PaystackButton>
             </Hidden>
-            {this.props.readonly? pendingPaymentButtons:normalButtons}
+            {props.readonly? pendingPaymentButtons:<CheckoutButton actionHandler={this.actionHandler} selected={this.state.orderType} />}
         </View>;
         return (
             <Section>
@@ -143,6 +171,7 @@ export default class Checkout extends React.PureComponent {
                                 name="shipping_method[0]"
                                 data-index="0" id="shipping_method_0"
                                 className="field fancy-select"
+                                defaultValue={props.readonly && __['shipping.method']}
                                 onChange={e => this.actionHandler('shipping.method', e.target)}>
 
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
@@ -184,7 +213,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         {!this.state.isStorePickup && <div className="group">
                             <label className="label">Enter delivery address</label>
-                            <LocationSearchInput actionHandler={this.actionHandler} location={props.location}></LocationSearchInput>
+                            <LocationSearchInput actionHandler={this.actionHandler} location={props.readonly? __['map.searchbox.update']:props.location}></LocationSearchInput>
                             {/* <input type="text" onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" /> */}
                         </div>}
                         <div className="group">
@@ -201,7 +230,7 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         <div className="group">
                             <label className="label">Notes (extra information about your order)</label>
-                            <textarea className="field" defaultValue={__['checkout.note']} onChange={e => this.actionHandler('checkout.note', e.target)} placeholder="What should we note about this order"></textarea>
+                            <textarea className="field" rows="1" defaultValue={__['checkout.note']} onChange={e => this.actionHandler('checkout.note', e.target)} placeholder="What should we note about this order"></textarea>
                         </div>
                         <div className="clearfix"></div>
                         <ButtonPane>
@@ -209,7 +238,7 @@ export default class Checkout extends React.PureComponent {
                         </ButtonPane>
                     </div>
 
-                    {this.state.isConfirming && <ConfirmOrder price={this.props.total} actionHandler={this.actionHandler} />}
+                    {this.state.isConfirming && <ConfirmOrder price={props.total} actionHandler={this.actionHandler} moreInfo={AppGlobals.payment_method == 'bacs' && BACS_NOTIF} />}
                 </div>
 
                 {/* styles */}
@@ -228,7 +257,7 @@ export default class Checkout extends React.PureComponent {
                     }
                     .title {
                         font-weight: 100;
-                        border-bottom: solid thin #fff
+                        border-bottom: solid thin #fff;
                         max-width: 360px;
                     }
                     ::placeholder {
