@@ -187,7 +187,12 @@ export default class Checkout extends React.PureComponent {
                         </div>
                         {!this.state.isStorePickup && <div className="group">
                             <label className="label">Enter delivery address</label>
-                            <LocationSearchInput actionHandler={this.actionHandler} location={props.readonly? __['map.searchbox.update']:props.location}></LocationSearchInput>
+                            <LocationSearchInput
+                                actionHandler={this.actionHandler}
+                                location={props.readonly? 
+                                    __['map.searchbox.update']:
+                                    (__['map.searchbox.update'] || props.location)}>
+                                </LocationSearchInput>
                             {/* <input type="text" onChange={e => this.actionHandler('map.searchbox.update', e.target)} placeholder="Where are you located?" /> */}
                         </div>}
                         <div className="group">
