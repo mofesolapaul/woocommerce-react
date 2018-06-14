@@ -183,7 +183,7 @@ export const productCache = {
                 // apply filter if selected option is not 'Everything'
                 if (category != '~') {
                     category = category.toLowerCase();
-                    products = products.filter(p => (console.log(getCategory(p)), getCategory(p) == category));
+                    products = products.filter(p => getCategories(p).indexOf(category) !== -1);
                 }
             }
             return products;
@@ -375,17 +375,19 @@ export const CATEGORIES = [
  * Return a product's first valid category
  * @param {object} product 
  */
-export const getCategory = (product) => {
+export const getCategories = (product) => {
     let cats = [];
     product.categories.map(c => {
         cats.push(c.name.toLowerCase());
     });
+    
+    const allowed = [];
     for (let c of cats) {
         if (deepContains(CATEGORIES, c)) {
-            return c;
+            allowed.push(c);
         }
     }
-    return false;
+    return allowed;
 };
 
 /**
