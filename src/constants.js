@@ -182,7 +182,7 @@ export const productCache = {
                 // apply filter if selected option is not 'Everything'
                 if (category != '~') {
                     category = category.toLowerCase();
-                    products = products.filter(p => getCategory(p) == category);
+                    products = products.filter(p => getCategories(p).indexOf(category) !== -1);
                 }
             }
             return products;
@@ -361,25 +361,32 @@ export const CATEGORIES = [
     "parfaits",
     "salads",
     "sandwiches",
-    "smoothies",
-    "ice teas"
+    "ice teas",
+    [
+        "smoothies",
+        "regular blends",
+        "weightloss blends",
+        "fitness blends",
+    ],
 ];
 
 /**
  * Return a product's first valid category
  * @param {object} product 
  */
-export const getCategory = (product) => {
+export const getCategories = (product) => {
     let cats = [];
     product.categories.map(c => {
         cats.push(c.name.toLowerCase());
     });
+    
+    const allowed = [];
     for (let c of cats) {
-        if (CATEGORIES.indexOf(c) !== -1) {
-            return c;
+        if (deepContains(CATEGORIES, c)) {
+            allowed.push(c);
         }
     }
-    return false;
+    return allowed;
 };
 
 /**
@@ -440,7 +447,7 @@ export const PAYMENT_TYPES = {
 /**
  * Direct Bank Transfer notification
  */
-export const BACS_NOTIF = "Make your payment directly into our bank account (bank details available at checkout). Please use your registered email or depositor’s name. Your order won’t be shipped until the funds have cleared in our account.<br><br>" +
+export const BACS_NOTIF = "Please make your payment directly into our bank account. Please use your delivery name in the transfer description so we can easily identify the payment. Your order won't be shipped until the funds have cleared in our account.<br><br>" +
 "Account name: Smoothie Express Limited<br>" +
 "Bank name: Guaranty Trust Bank<br>" +
 "Account number: <strong>0160242372</strong>";
@@ -464,4 +471,19 @@ export const Signature = {
             return btoa(`${day},${month},${year}`);
         }
     },
+}
+
+/**
+ * Performs a deep contains() for an array
+ * @inspiration https://www.tcg.com/blog/array_deep_contains_function_for_javascript/
+ * @param {*} arr 
+ * @param {*} value 
+ */
+const deepContains = function (arr, value) {
+    let i = arr.length;
+    const compare = x => x == value || x.indexOf(value) !== -1;
+    while (i--) {
+        if (compare(arr[i])) return true;
+    }
+    return false;
 }
