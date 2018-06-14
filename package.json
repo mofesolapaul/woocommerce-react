@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-react",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "React implementation of a store, with Woocommerce backend",
   "main": "index.js",
   "scripts": {
