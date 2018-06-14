@@ -176,39 +176,13 @@ export default class Checkout extends React.PureComponent {
 
                                 <option value="" style={{display: 'none'}}>Select Shipping Method</option>
                                 <option value="flat_rate:51">Store Pick Up (20 Minutes)</option>
-                                <option value="flat_rate:22">Airport road - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:46">Ajah - 2hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:35">Amuwo-odofin - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:20">Anthony - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:48">Alausa - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:23">Ajao Estate - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:30">Apapa - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:37">Festac town - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:29">Gbagada - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:45">Igbo efon (6th roundabout) - VGC 1hr30mins: ₦800.00</option>
-                                <option value="flat_rate:31">Ijora - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:44">Ikate (3rd roundabout) - Agungi 1hr-1hr 15mins: ₦600.00</option>
-                                <option value="flat_rate:21">Ikeja - 3hrs delivery time: ₦800.00</option>
                                 <option value="flat_rate:42">Ikoyi - 45mins-1hr delivery time: ₦400.00</option>
-                                <option value="flat_rate:25">Ilupeju - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:39">Isolo - 3hrs delivery time: ₦1,200.00</option>
                                 <option value="flat_rate:43">Lekki phase 1 - Marua (2nd roundabout) 45mins - 1hr: ₦400.00</option>
-                                <option value="flat_rate:27">Magodo - 3hrs delivery time: ₦1,200.00</option>
                                 <option value="flat_rate:41">Marina &amp; Lagos island - 45mins - 1hr 15mins delivery time: ₦400.00</option>
-                                <option value="flat_rate:24">Mafoluku - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:19">Maryland - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:33">Ogba - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:28">Ojodu - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:32">Ogudu - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:26">Ojota - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:18">Ojuelegba - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:34">Omole - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:36">Okota - 3hrs delivery time: ₦1,200.00</option>
-                                <option value="flat_rate:47">Oregun - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:17">Surulere - 3hrs delivery time: ₦800.00</option>
-                                <option value="flat_rate:38">Satellite town - 3hrs delivery: ₦1,200.00</option>
                                 <option value="flat_rate:40">Victoria island - 45mins-1hr delivery time: ₦400.00</option>
-                                <option value="flat_rate:16">Yaba - 3hrs delivery time: ₦800.00</option>
                             </select>
                         </div>
                         {!this.state.isStorePickup && <div className="group">
