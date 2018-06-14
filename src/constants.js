@@ -440,7 +440,7 @@ export const PAYMENT_TYPES = {
 /**
  * Direct Bank Transfer notification
  */
-export const BACS_NOTIF = "Make your payment directly into our bank account (bank details available at checkout). Please use your registered email or depositor’s name. Your order won’t be shipped until the funds have cleared in our account.<br><br>" +
+export const BACS_NOTIF = "Please make your payment directly into our bank account. Please use your delivery name in the transfer description so we can easily identify the payment. Your order won't be shipped until the funds have cleared in our account.<br><br>" +
 "Account name: Smoothie Express Limited<br>" +
 "Bank name: Guaranty Trust Bank<br>" +
 "Account number: <strong>0160242372</strong>";
