@@ -177,7 +177,6 @@ export const productCache = {
         } else {
             let products = await db.get(CACHE.DB_KEY_PRODUCTS);
             if (!!category) {
-                console.log(category);
                 db.put(CACHE.DB_KEY_FILTER_CATEGORY, category);
 
                 // apply filter if selected option is not 'Everything'
