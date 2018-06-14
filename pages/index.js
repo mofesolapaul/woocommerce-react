@@ -151,6 +151,7 @@ export default class Index extends React.Component {
         // we filtering
         if (useFilter) {
             filter = filter || lastUsedFilter;
+            console.log(filter);
             this.setState({
                 page: 1,
                 products: [],

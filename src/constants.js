@@ -364,9 +364,9 @@ export const CATEGORIES = [
     "ice teas",
     [
         "smoothies",
-        "regular blends",
-        "weight loss blends",
-        "fitness blends",
+        "regular-blends",
+        "weightloss-blends",
+        "fitness-blends",
     ],
 ];
 
