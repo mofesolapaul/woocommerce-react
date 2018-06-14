@@ -8,7 +8,12 @@ export default ({visible, actionHandler, activeFilter}) => !!visible && <View>
             Showing
             <select className="pf--list" onChange={e => actionHandler('products.filter', e.target.value)} defaultValue={activeFilter}>
                 <option value="~">Everything</option>
-                {CATEGORIES.map((c,k) => <option key={k} value={c}>{c}</option>)}
+                {CATEGORIES.map((c,k) => 
+                    !Array.isArray(c)? 
+                        <option key={k} value={c}>{c}</option> : 
+                        <optgroup label={c[0]} key={k}>
+                            {c.slice(1).map((s,j) => <option key={`_${j}`} value={s}>{s}</option>)}
+                        </optgroup>)}
             </select>
         </div>
     </div>
