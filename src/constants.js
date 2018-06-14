@@ -177,12 +177,13 @@ export const productCache = {
         } else {
             let products = await db.get(CACHE.DB_KEY_PRODUCTS);
             if (!!category) {
+                console.log(category);
                 db.put(CACHE.DB_KEY_FILTER_CATEGORY, category);
 
                 // apply filter if selected option is not 'Everything'
                 if (category != '~') {
                     category = category.toLowerCase();
-                    products = products.filter(p => getCategory(p) == category);
+                    products = products.filter(p => (console.log(getCategory(p)), getCategory(p) == category));
                 }
             }
             return products;
@@ -380,7 +381,7 @@ export const getCategory = (product) => {
         cats.push(c.name.toLowerCase());
     });
     for (let c of cats) {
-        if (CATEGORIES.indexOf(c) !== -1) {
+        if (deepContains(CATEGORIES, c)) {
             return c;
         }
     }
@@ -469,4 +470,19 @@ export const Signature = {
             return btoa(`${day},${month},${year}`);
         }
     },
+}
+
+/**
+ * Performs a deep contains() for an array
+ * @inspiration https://www.tcg.com/blog/array_deep_contains_function_for_javascript/
+ * @param {*} arr 
+ * @param {*} value 
+ */
+const deepContains = function (arr, value) {
+    let i = arr.length;
+    const compare = x => x == value || x.indexOf(value) !== -1;
+    while (i--) {
+        if (compare(arr[i])) return true;
+    }
+    return false;
 }
